@@ -50,7 +50,6 @@ public class GameFrame extends JFrame {
 		
 		this.setTitle("Foosball - Player #" + playerID);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setLocationRelativeTo(null);
 		this.pack();
 		this.setResizable(false);
 		this.setVisible(true);
@@ -70,16 +69,36 @@ public class GameFrame extends JFrame {
 				double speed = 5;
 				if (up) {
 					me.moveV(-speed); // move up
+					
+					down = false;
+					left = false;
+					right = false;
+					
 				} else if (down) {
 					me.moveV(speed);
+					
+					up = false;
+					left = false;
+					right = false;
+					
 				} else if (left) {
 					me.moveH(-speed);
+					
+					up = false;
+					down = false;
+					right = false;
+					
 				} else if (right) {
 					me.moveH(speed);
+					
+					up = false;
+					down = false;
+					left = false;
 				}
 				canvas.repaint();
 			}
 		};
+		
 		animationTimer = new Timer(interval, al); 
 		animationTimer.start();
 	}
@@ -128,6 +147,7 @@ public class GameFrame extends JFrame {
 				}
 			}
 		};
+		
 		contentPane.addKeyListener(kl);
 		contentPane.setFocusable(true);
 		contentPane.requestFocus();
