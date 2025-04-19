@@ -1,3 +1,5 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -48,8 +50,10 @@ public class GameServer {
 			
 			while (numPlayers < maxPlayers) {
 				Socket s = ss.accept();
-				DataInputStream in = new DataInputStream(s.getInputStream());
-				DataOutputStream out = new DataOutputStream(s.getOutputStream());
+				BufferedInputStream bis = new BufferedInputStream(s.getInputStream());
+				DataInputStream in = new DataInputStream(bis);
+				BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream());
+				DataOutputStream out = new DataOutputStream(bos);
 				
 				numPlayers++;
 				out.writeInt(numPlayers);
