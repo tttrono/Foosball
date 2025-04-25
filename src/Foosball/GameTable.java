@@ -1,7 +1,10 @@
 package Foosball;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import Shapes.*;
@@ -17,6 +20,9 @@ public class GameTable {
 	ArrayList<DrawingObject> board;
 	ArrayList<DrawingObject> table;
 	ArrayList<DrawingObject> goal;
+	
+	Shape upperbounds;
+	Shape lowerbounds;
 	
 	public GameTable() {
 		
@@ -69,5 +75,27 @@ public class GameTable {
 			object.draw(g2d);
 		}
 
+		// Adding invisible wall bounds for collisions
+		upperbounds = new Rectangle2D.Double(88, 39, 848, 138);		
+		g2d.setColor(Color.BLACK);	// Colors.INVISIBLE
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(upperbounds);
+		
+		lowerbounds = new Rectangle2D.Double(88, 333, 848, 137);					
+		g2d.setColor(Color.BLACK);	// Colors.INVISIBLE
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(lowerbounds);
+		
 	}
+	
+	public double upperbounds_X() { return upperbounds.getBounds2D().getX(); }			// upper left corner 
+	public double upperbounds_Y() { return upperbounds.getBounds2D().getY(); }			// upper left corner
+	public double upperbounds_Width() { return upperbounds.getBounds2D().getWidth(); }
+	public double upperbounds_Height() { return upperbounds.getBounds2D().getHeight(); }
+	
+	public double lowerbounds_X() { return lowerbounds.getBounds2D().getX(); }			
+	public double lowerbounds_Y() { return lowerbounds.getBounds2D().getY(); }			
+	public double lowerbounds_Width() { return lowerbounds.getBounds2D().getWidth(); }
+	public double lowerbounds_Height() { return lowerbounds.getBounds2D().getHeight(); }
+	
 }

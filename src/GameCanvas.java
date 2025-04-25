@@ -59,14 +59,6 @@ public class GameCanvas extends JComponent {
 		
 	}
 	
-//	private void drawGame(Graphics2D g2d) {
-//		//objects.add(board);
-//		
-//		for (DrawingObject object: objects) {
-//			object.draw(g2d);
-//		}
-//	}
-	
 	public Player getMePlayer() {
 		return me;
 	}
