@@ -93,8 +93,8 @@ public class GameTable {
 	public double upperbounds_Width() { return upperbounds.getBounds2D().getWidth(); }
 	public double upperbounds_Height() { return upperbounds.getBounds2D().getHeight(); }
 	
-	public double lowerbounds_X() { return lowerbounds.getBounds2D().getX(); }			
-	public double lowerbounds_Y() { return lowerbounds.getBounds2D().getY(); }			
+	public double lowerbounds_X() { return lowerbounds.getBounds2D().getX(); }			// lower half bounds	
+	public double lowerbounds_Y() { return lowerbounds.getBounds2D().getY(); }			// lower half bounds
 	public double lowerbounds_Width() { return lowerbounds.getBounds2D().getWidth(); }
 	public double lowerbounds_Height() { return lowerbounds.getBounds2D().getHeight(); }
 	
