@@ -2,12 +2,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 import java.util.ArrayList;
+import javax.swing.JComponent;
 
 import Foosball.*;
 import Shapes.DrawingObject;
@@ -18,25 +14,27 @@ public class GameCanvas extends JComponent {
 	
 	private Player me;
 	private Player opponent;
-	//private boolean gameSetup = true;
 	
-	Floor floor;
-	GameBoard board;
+	GameTable board;
+	SoccerBall ball;
+	ScoreDials dials;
 	
 	public GameCanvas() {
 		
 		objects = new ArrayList<DrawingObject>();
-		floor = new Floor();
-		board = new GameBoard();
+		
+		board = new GameTable();
+		ball = new SoccerBall();
+		dials = new ScoreDials();
 		
 	}
 	
 	public void createPlayers(int playerID) {
 		if (playerID == 1) {
-			me = new Player(100, 400, 50, Color.BLUE);
+			me = new Player(150, 400, 50, Color.BLUE);
 			opponent = new Player(490, 400, 50, Color.RED);
 		} else {
-			opponent = new Player(100, 400, 50, Color.BLUE);
+			opponent = new Player(150, 400, 50, Color.BLUE);
 			me = new Player(490, 400, 50, Color.RED);
 		}
 	}
@@ -50,15 +48,10 @@ public class GameCanvas extends JComponent {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
 		
-//		if (gameSetup) {
-//			drawGame(g2d);
-//			gameSetup = false;
-//		}
-		
-		floor.draw(g2d);
 		board.draw(g2d);
 		me.draw(g2d);
 		opponent.draw(g2d);
+		dials.draw(g2d);
 		
 //		for (DrawingObject object: objects) {
 //			object.draw(g2d);
