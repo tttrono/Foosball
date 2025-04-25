@@ -1,4 +1,4 @@
-package Foosball;
+package Foosball.Teams;
 
 import java.awt.Graphics2D;
 

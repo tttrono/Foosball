@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import Shapes.Circle;
 import Shapes.DrawingObject;
 
-public class SoccerBall implements DrawingObject {
+public class SoccerBall {
 	
 	private double x, y;
 
@@ -14,7 +14,6 @@ public class SoccerBall implements DrawingObject {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void draw(Graphics2D g2d) {
 		
 		Circle ball = new Circle(405, 300, 12, 0, Color.WHITE);
