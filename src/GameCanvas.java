@@ -66,4 +66,8 @@ public class GameCanvas extends JComponent {
 	public Player getOpponentPlayer() {
 		return opponent;
 	}
+	
+	public GameTable getBoard() {
+		return board;
+	}
 }

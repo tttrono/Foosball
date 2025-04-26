@@ -3,12 +3,12 @@ package Shapes;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 
 /** An isosceles trapezoid is a rectangle with 2 unparallel sides
- *  rather slanting in opposite angles. */
-public class HorizontalTrapezoid implements DrawingObject {
+ *  rather slanting in opposite angles. 
+ *  A horizontal isotrapazeoid lies on its side at a 90degree angle. */
+public class HorizontalIsoTrapezoid implements DrawingObject {
 
 	private double x;
 	private double y;
@@ -20,9 +20,9 @@ public class HorizontalTrapezoid implements DrawingObject {
 	private float stroke;
 	private Color color;	
 
-	/** Initiates the isosceles trapezoid from a centerpoint input, 
-	 *  length 1 and length 2, a height, and rotation value.  */
-	public HorizontalTrapezoid(double x, double y, double length_1, double length_2, 
+	/** Initiates the isosceles trapezoid from a centerpoint input (x,y), 
+	 *  length 1, length 2, a height, and rotation value.  */
+	public HorizontalIsoTrapezoid(double x, double y, double length_1, double length_2, 
 			double h, float s, Color c) {
 		
 		this.x = x;
@@ -46,11 +46,6 @@ public class HorizontalTrapezoid implements DrawingObject {
 		trapezoid.lineTo(x - height/2.0, y - length_1/2.0);
 		trapezoid.lineTo(x + height/2.0, y - length_2/2.0);
 		trapezoid.lineTo(x + height/2.0, y + length_2/2.0);
-		
-//		trapezoid.moveTo(x - length_1/2.0, y - height/2.0);
-//		trapezoid.lineTo(x + length_1/2.0, y - height/2.0);
-//		trapezoid.lineTo(x + length_2/2.0, y + height/2.0);
-//		trapezoid.lineTo(x - length_2/2.0, y + height/2.0);
 		
 		trapezoid.closePath();
 		

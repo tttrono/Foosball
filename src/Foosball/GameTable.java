@@ -59,15 +59,15 @@ public class GameTable {
 		}
 		
 		table.add(new Rectangle(x, y, 865, 447, 22, Colors.MOCHA));
-		table.add(new HorizontalTrapezoid(x-432, y, 468, 424, 21, 0, Colors.LIGHT_WOOD));	
-		table.add(new HorizontalTrapezoid(x+432, y, 424, 468, 20, 0, Colors.LIGHT_WOOD));	
+		table.add(new HorizontalIsoTrapezoid(x-432, y, 468, 424, 21, 0, Colors.LIGHT_WOOD));	
+		table.add(new HorizontalIsoTrapezoid(x+432, y, 424, 468, 20, 0, Colors.LIGHT_WOOD));	
 		
 		for (DrawingObject object: table) {
 			object.draw(g2d);
 		}
 		
-		goal.add(new HorizontalTrapezoid(x-432, y, 190, 158, 21, 0, Color.BLACK));	// goal left
-		goal.add(new HorizontalTrapezoid(x+433, y, 158, 190, 21, 0, Color.BLACK)); 	// goal right
+		goal.add(new HorizontalIsoTrapezoid(x-432, y, 190, 158, 21, 0, Color.BLACK));	// goal left
+		goal.add(new HorizontalIsoTrapezoid(x+433, y, 158, 190, 21, 0, Color.BLACK)); 	// goal right
 		
 		goal.add(new Rectangle(x, y, 904, 489, 20, Colors.DARKER_WOOD)); 			// wooden frame
 		
