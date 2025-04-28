@@ -28,6 +28,8 @@ public class Rectangle implements DrawingObject {
 		stroke = s;
 		color = c;
 	}
+
+
 	
 	@Override
 	public void draw(Graphics2D g2d) {

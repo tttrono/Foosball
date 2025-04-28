@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import Foosball.*;
+import Foosball.Teams.*;
 import Shapes.DrawingObject;
+import java.time.temporal.TemporalAccessor;
 
 public class GameCanvas extends JComponent {
 
@@ -18,6 +20,10 @@ public class GameCanvas extends JComponent {
 	GameTable board;
 	SoccerBall ball;
 	ScoreDials dials;
+	BlueTeam_Rod_5 Rod5;
+	BlueTeam_Rod_3 Rod3;
+	BlueTeam_Rod_2 Rod2;
+	BlueTeam_Rod_1 Rod1;
 	
 	public GameCanvas() {
 		
@@ -26,6 +32,10 @@ public class GameCanvas extends JComponent {
 		board = new GameTable();
 		ball = new SoccerBall();
 		dials = new ScoreDials();
+		Rod5 = new BlueTeam_Rod_5();
+		Rod3 = new BlueTeam_Rod_3();
+		Rod2 = new BlueTeam_Rod_2();
+		Rod1 = new BlueTeam_Rod_1();
 		
 	}
 	
@@ -51,6 +61,10 @@ public class GameCanvas extends JComponent {
 		board.draw(g2d);
 		me.draw(g2d);
 		opponent.draw(g2d);
+		Rod5.draw(g2d);
+		Rod3.draw(g2d);
+		Rod2.draw(g2d);
+		Rod1.draw(g2d);
 		dials.draw(g2d);
 		
 //		for (DrawingObject object: objects) {
