@@ -21,7 +21,7 @@ public class HorizontalIsoTrapezoid implements DrawingObject {
 	private Color color;	
 
 	/** Initiates the isosceles trapezoid from a centerpoint input (x,y), 
-	 *  length 1, length 2, a height, and rotation value.  */
+	 *  length 1, length 2, and a height.  */
 	public HorizontalIsoTrapezoid(double x, double y, double length_1, double length_2, 
 			double h, float s, Color c) {
 		

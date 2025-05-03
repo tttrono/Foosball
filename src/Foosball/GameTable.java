@@ -69,7 +69,7 @@ public class GameTable {
 		goal.add(new HorizontalIsoTrapezoid(x-432, y, 190, 158, 21, 0, Color.BLACK));	// goal left
 		goal.add(new HorizontalIsoTrapezoid(x+433, y, 158, 190, 21, 0, Color.BLACK)); 	// goal right
 		
-		goal.add(new Rectangle(x, y, 904, 489, 20, Colors.DARKER_WOOD)); 			// wooden frame
+		goal.add(new Rectangle(x, y, 904, 489, 20, Colors.DARKER_WOOD)); 				// wooden frame
 		
 		for (DrawingObject object: goal) {
 			object.draw(g2d);
