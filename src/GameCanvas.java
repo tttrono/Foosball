@@ -15,17 +15,17 @@ public class GameCanvas extends JComponent {
 	private Player me;
 	private Player opponent;
 	
-	GameTable board;
+	DigitalBoard digitalboard;
 	SoccerBall ball;
-	ScoreDials dials;
+	ScoreBoard scoreboard;
 	
 	public GameCanvas() {
 		
 		objects = new ArrayList<DrawingObject>();
 		
-		board = new GameTable();
+		digitalboard = new DigitalBoard();
 		ball = new SoccerBall();
-		dials = new ScoreDials();
+		scoreboard = new ScoreBoard();
 		
 	}
 	
@@ -48,10 +48,11 @@ public class GameCanvas extends JComponent {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
 		
-		board.draw(g2d);
+		digitalboard.draw(g2d);
 		me.draw(g2d);
 		opponent.draw(g2d);
-		dials.draw(g2d);
+		ball.draw(g2d);
+		scoreboard.draw(g2d);
 		
 //		for (DrawingObject object: objects) {
 //			object.draw(g2d);
@@ -67,7 +68,7 @@ public class GameCanvas extends JComponent {
 		return opponent;
 	}
 	
-	public GameTable getBoard() {
-		return board;
+	public DigitalBoard getBoard() {
+		return digitalboard;
 	}
 }
