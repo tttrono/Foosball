@@ -1,19 +1,31 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import java.net.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class GameFrame extends JFrame {
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
+import java.net.Socket;
+import java.util.Timer;
+
+import javax.swing.JFrame;
+
+import Foosball.Config;
+
+public class GameFrame implements KeyListener {
+	
+	private JFrame frame;
 	private int width, height;
-	private Container contentPane;
 	private GameCanvas canvas;
 	
 	private Player me;
 	private Player opponent;
 	private Timer animationTimer;
-	private boolean up, down, left, right;
+	//private boolean up, down, left, right;
 	
 	private Socket socket;
 	private int playerID;
@@ -25,12 +37,10 @@ public class GameFrame extends JFrame {
 	 */
 	public GameFrame(int w, int h) {
 		
+		frame = new JFrame();
+		
 		width = w;
 		height = h;
-		up = false;
-		down = false;
-		left = false;
-		right = false;
 
 	}
 	
@@ -44,94 +54,70 @@ public class GameFrame extends JFrame {
 		me 		 = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
 		
-		contentPane = this.getContentPane();
+		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
-		this.setTitle("Foosball - Player #" + playerID);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setLocationRelativeTo(null);
-		this.pack();
-		this.setResizable(false);
-		this.setVisible(true);
+		frame.setTitle("Foosball - Player #" + playerID);
+		
+		//canvas.addMouseListener(this);
+		canvas.addKeyListener(this);
 		
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		setUpAnimationTimer();
-		setUpKeyListener();
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.pack();
+		frame.setVisible(true);
 		
+		//setUpAnimationTimer();
+		
+//		this.showControls();
 	}
 	
-	private void setUpAnimationTimer() {
-		int interval = 10;
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				double speed = 5;
-				if (up) {
-					me.moveV(-speed); // move up
-				} else if (down) {
-					me.moveV(speed);
-				} else if (left) {
-					me.moveH(-speed);
-				} else if (right) {
-					me.moveH(speed);
-				}
+//	public void showControls() {
+//		
+//		System.out.println(""); 	// Display text instructions to the user/s
+//		System.out.println("");
+//		System.out.println("");
+//	}
+	
+//	private void setUpAnimationTimer() {
+//		int interval = 10;
+//		ActionListener al = new ActionListener() {
+//			public void actionPerformed(ActionEvent ae) {
+//				double speed = 5;
+//				if (up) {
+//					me.moveV(-speed); // move up
+//				} else if (down) {
+//					me.moveV(speed);
+//				} 
+//				canvas.repaint();
+//			}
+//		};
+//		animationTimer = new Timer(interval, al); 
+//		animationTimer.start();
+//	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				me.moveV(-Config.PLAYER_SPEED);
 				canvas.repaint();
-			}
-		};
-		animationTimer = new Timer(interval, al); 
-		animationTimer.start();
+				break;
+			case KeyEvent.VK_DOWN:
+				me.moveV(Config.PLAYER_SPEED);
+				canvas.repaint();
+				break;
+		}
 	}
 	
-	private void setUpKeyListener() {
-		KeyListener kl = new KeyListener() {
-			public void keyTyped(KeyEvent ke) { 
-				
-			}
-			
-			public void keyPressed(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = true;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = true;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = true;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = true;
-						break;
-				}
-			}
-			
-			public void keyReleased(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = false;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = false;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = false;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = false;
-						break;
-				}
-			}
-		};
-		contentPane.addKeyListener(kl);
-		contentPane.setFocusable(true);
-		contentPane.requestFocus();
-	}
+	public void keyReleased(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {}
 	
 	public void connectToServer() {
 		try {

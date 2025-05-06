@@ -20,7 +20,8 @@ public class GameServer {
 	private WriteToClient p1WriteRunnable;
 	private WriteToClient p2WriteRunnable;
 	
-	private double p1x, p1y, p2x, p2y;
+	private double p1x, p2x;
+	private double p1y, p2y;
 	
 	/**
 	 * 
