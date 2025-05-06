@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
+
 import javax.swing.JComponent;
 
 import Foosball.*;
@@ -24,18 +25,18 @@ public class GameCanvas extends JComponent {
 		objects = new ArrayList<DrawingObject>();
 		
 		board = new GameTable();
-		ball = new SoccerBall();
+		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
 		dials = new ScoreDials();
 		
 	}
 	
 	public void createPlayers(int playerID) {
 		if (playerID == 1) {
-			me = new Player(150, 400, 50, Color.BLUE);
-			opponent = new Player(490, 400, 50, Color.RED);
+			me = new Player(Config.PLAYER1_INITIAL_X, Config.PLAYER1_INITIAL_Y, 50, Color.BLUE);
+			opponent = new Player(Config.PLAYER2_INITIAL_X, Config.PLAYER2_INITIAL_Y, 50, Color.RED);
 		} else {
-			opponent = new Player(150, 400, 50, Color.BLUE);
-			me = new Player(490, 400, 50, Color.RED);
+			opponent = new Player(Config.PLAYER1_INITIAL_X, Config.PLAYER1_INITIAL_Y, 50, Color.BLUE);
+			me = new Player(Config.PLAYER2_INITIAL_X, Config.PLAYER2_INITIAL_Y, 50, Color.RED);
 		}
 	}
 	
@@ -49,6 +50,7 @@ public class GameCanvas extends JComponent {
 		g2d.setRenderingHints(rh);
 		
 		board.draw(g2d);
+		ball.draw(g2d);
 		me.draw(g2d);
 		opponent.draw(g2d);
 		dials.draw(g2d);
@@ -69,5 +71,9 @@ public class GameCanvas extends JComponent {
 	
 	public GameTable getBoard() {
 		return board;
+	}
+	
+	public SoccerBall getBall() {
+		return ball;
 	}
 }

@@ -15,11 +15,13 @@ public class Config {
 	
 	/*--------------------------------------------------*/
 	
-	public static final double PLAYER_SPEED = 5;
+	public static final double PLAYER_SPEED = 7;
 	
 	public static final double PLAYER1_INITIAL_X = 100;
 	public static final double PLAYER1_INITIAL_Y = 400;
 	public static final double PLAYER2_INITIAL_X = 490;
 	public static final double PLAYER2_INITIAL_Y = 400;
-
+	
+	public static final double BALL_INITIAL_X = 405;
+	public static final double BALL_INITIAL_Y = 300;
 }

@@ -2,19 +2,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 import java.net.Socket;
-import java.util.Timer;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import Foosball.Config;
+import Foosball.SoccerBall;
 
 public class GameFrame implements KeyListener {
 	
@@ -24,8 +27,7 @@ public class GameFrame implements KeyListener {
 	
 	private Player me;
 	private Player opponent;
-	private Timer animationTimer;
-	//private boolean up, down, left, right;
+	//private SoccerBall ball;
 	
 	private Socket socket;
 	private int playerID;
@@ -53,6 +55,7 @@ public class GameFrame implements KeyListener {
 		
 		me 		 = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
+		//ball	 = canvas.getBall();
 		
 		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
@@ -68,37 +71,33 @@ public class GameFrame implements KeyListener {
 		
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.pack();
 		frame.setVisible(true);
 		
-		//setUpAnimationTimer();
-		
-//		this.showControls();
+		//this.showControls();
+		this.startAnimation();
 	}
 	
 //	public void showControls() {
-//		
-//		System.out.println(""); 	// Display text instructions to the user/s
+//		/* Display text instructions to the user/s */
+//		System.out.println(""); 	
 //		System.out.println("");
 //		System.out.println("");
 //	}
 	
-//	private void setUpAnimationTimer() {
-//		ActionListener al = new ActionListener() {
-//			public void actionPerformed(ActionEvent ae) {
-//				double speed = 5;
-//				if (up) {
-//					me.moveV(-speed); // move up
-//				} else if (down) {
-//					me.moveV(speed);
-//				} 
-//				canvas.repaint();
-//			}
-//		};
-//		animationTimer = new Timer(Config.TIMER_INTERVAL, al); 
-//		animationTimer.start();
-//	}
+	public void startAnimation() {
+		Timer animationTimer = new Timer(Config.TIMER_INTERVAL, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	        	/* Place ball movements here */
+	        	
+	        	// ball.checkBoundaries();
+	        	// ball.move();
+				canvas.repaint();
+	        }
+	    });
+		animationTimer.start();
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -121,8 +120,10 @@ public class GameFrame implements KeyListener {
 	public void connectToServer() {
 		try {
 			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
-			DataInputStream in = new DataInputStream(socket.getInputStream());
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+			DataInputStream in = new DataInputStream(bis);
+			BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
 			
@@ -152,6 +153,7 @@ public class GameFrame implements KeyListener {
 			try {
 				while(true) {
 					
+					System.out.println(opponent);
 					if (opponent != null) {
 						
 						double x = dataIn.readDouble();
