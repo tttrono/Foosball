@@ -1,8 +1,12 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import Foosball.Config;
 
 /**
  * 
@@ -31,13 +35,13 @@ public class GameServer {
 		numPlayers = 0;
 		maxPlayers = 2;
 		
-		p1x = 100;
-		p1y = 400;
-		p2x = 490;
-		p2y = 400;
+		p1x = Config.PLAYER1_INITIAL_X;
+		p1y = Config.PLAYER1_INITIAL_Y;
+		p2x = Config.PLAYER2_INITIAL_X;
+		p2y = Config.PLAYER2_INITIAL_Y;
 		
 		try {
-			ss = new ServerSocket(45371);
+			ss = new ServerSocket(Config.SERVER_SOCKET);
 		} catch (IOException ex) {
 			System.out.println("IOException from GameServer constructor");
 		}
@@ -47,10 +51,12 @@ public class GameServer {
 		try {
 			System.out.println("Waiting for connections... ");
 			
-			while (numPlayers < maxPlayers) {
+			while (numPlayers < Config.MAX_PLAYERS) {
 				Socket s = ss.accept();
-				DataInputStream in = new DataInputStream(s.getInputStream());
-				DataOutputStream out = new DataOutputStream(s.getOutputStream());
+				BufferedInputStream bis = new BufferedInputStream(s.getInputStream());
+				DataInputStream in = new DataInputStream(bis);
+				BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream());
+				DataOutputStream out = new DataOutputStream(bos);
 				
 				numPlayers++;
 				out.writeInt(numPlayers);
@@ -147,7 +153,7 @@ public class GameServer {
 					}
 					
 					try {
-						Thread.sleep(25);
+						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {
 						System.out.println("InterruptedException from WTC run()");
 					}

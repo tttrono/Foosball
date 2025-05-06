@@ -85,7 +85,6 @@ public class GameFrame implements KeyListener {
 //	}
 	
 //	private void setUpAnimationTimer() {
-//		int interval = 10;
 //		ActionListener al = new ActionListener() {
 //			public void actionPerformed(ActionEvent ae) {
 //				double speed = 5;
@@ -97,7 +96,7 @@ public class GameFrame implements KeyListener {
 //				canvas.repaint();
 //			}
 //		};
-//		animationTimer = new Timer(interval, al); 
+//		animationTimer = new Timer(Config.TIMER_INTERVAL, al); 
 //		animationTimer.start();
 //	}
 	
@@ -121,7 +120,7 @@ public class GameFrame implements KeyListener {
 	
 	public void connectToServer() {
 		try {
-			socket = new Socket("localhost", 45371);
+			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
 			DataInputStream in = new DataInputStream(socket.getInputStream());
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			playerID = in.readInt();
@@ -152,9 +151,15 @@ public class GameFrame implements KeyListener {
 		public void run() {
 			try {
 				while(true) {
+					
 					if (opponent != null) {
-						opponent.setX(dataIn.readDouble());
-						opponent.setY(dataIn.readDouble());
+						
+						double x = dataIn.readDouble();
+						double y = dataIn.readDouble();
+						
+						//System.out.println(x + "\t" + y);
+						opponent.setX(x);
+						opponent.setY(y);
 					}
 				}
 			} catch (IOException ex) {
@@ -191,13 +196,14 @@ public class GameFrame implements KeyListener {
 			try {
 				while(true) {
 					if (me != null) {
+						//System.out.println(me.getX() + "\t" + me.getY());
 						dataOut.writeDouble(me.getX());
 						dataOut.writeDouble(me.getY());
 						dataOut.flush();
 					}
 					
 					try {
-						Thread.sleep(25);
+						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {
 						System.out.println("InterruptedException from WTS run()");
 					}
