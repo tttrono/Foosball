@@ -18,6 +18,7 @@ import javax.swing.Timer;
 
 import Foosball.Config;
 import Foosball.SoccerBall;
+import Shapes.Colors;
 
 public class GameFrame implements KeyListener {
 	
@@ -50,7 +51,6 @@ public class GameFrame implements KeyListener {
 		
 		canvas = new GameCanvas();
 		canvas.setDoubleBuffered(true);
-		canvas.setBackground(Color.BLACK);
 		canvas.createPlayers(playerID);
 		
 		me 		 = canvas.getMePlayer();
@@ -59,6 +59,7 @@ public class GameFrame implements KeyListener {
 		
 		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
+		contentPane.setBackground(Colors.DARK_TEAL);
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
 		frame.setTitle("Foosball - Player #" + playerID);
@@ -91,7 +92,7 @@ public class GameFrame implements KeyListener {
 	        public void actionPerformed(ActionEvent ae) {
 	        	/* Place ball movements here */
 	        	
-	        	// ball.checkBoundaries();
+	        	// ball.checkBoundariesAndCollisions()
 	        	// ball.move();
 				canvas.repaint();
 	        }
@@ -157,7 +158,7 @@ public class GameFrame implements KeyListener {
 			try {
 				while(true) {
 					
-					System.out.println(opponent);
+					System.out.println();
 					if (opponent != null) {
 						
 						double x = dataIn.readDouble();
