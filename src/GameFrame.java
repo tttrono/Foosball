@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -19,7 +21,7 @@ import javax.swing.Timer;
 import Foosball.Config;
 import Foosball.SoccerBall;
 
-public class GameFrame implements KeyListener {
+public class GameFrame implements KeyListener, MouseWheelListener {
 	
 	private JFrame frame;
 	private int width, height;
@@ -63,7 +65,7 @@ public class GameFrame implements KeyListener {
 		
 		frame.setTitle("Foosball - Player #" + playerID);
 		
-		//canvas.addMouseListener(this);
+		canvas.addMouseWheelListener(this);
 		canvas.addKeyListener(this);
 		
 		canvas.setFocusable(true);
@@ -100,11 +102,22 @@ public class GameFrame implements KeyListener {
 	}
 	
 	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int scroll = e.getWheelRotation();
+        
+    	if (scroll < 0) {
+    		me.moveV(-Config.PLAYER_SPEED);
+    	} else {
+    		me.moveV(Config.PLAYER_SPEED); 
+        }
+	}
+	
+	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				/* Spawn ball here */
+				/* Spawn the ball here */
 				// ball.move(intial angle, initial_speed);
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
