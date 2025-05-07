@@ -138,12 +138,10 @@ public class GameServer {
 			try {
 				while(true) {
 					if (playerID == 1) {
-						//System.out.println(p2x + "\t" + p2y);
 						dataOut.writeDouble(p2x);
 						dataOut.writeDouble(p2y);
 						dataOut.flush();
 					} else {
-						//System.out.println(p1x + "\t" + p1y);
 						dataOut.writeDouble(p1x);
 						dataOut.writeDouble(p1y);
 						dataOut.flush();

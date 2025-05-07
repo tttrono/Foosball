@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import Shapes.Colors;
+
 import java.io.*;
 import java.net.*;
 
@@ -46,6 +49,7 @@ public class GameFrame extends JFrame {
 		
 		contentPane = this.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
+		contentPane.setBackground(Colors.DARK_TEAL);
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
 		this.setTitle("Foosball - Player #" + playerID);
@@ -115,15 +119,27 @@ public class GameFrame extends JFrame {
 				switch (keyCode) {
 					case KeyEvent.VK_UP:
 						up = true;
+						down = false;
+	 					left = false;
+	 					right = false;
 						break;
 					case KeyEvent.VK_DOWN:
 						down = true;
+						up = false;
+	 					left = false;
+	 					right = false;
 						break;
 					case KeyEvent.VK_LEFT:
 						left = true;
+						up = false;
+	 					down = false;
+	 					right = false;
 						break;
 					case KeyEvent.VK_RIGHT:
 						right = true;
+						up = false;
+	 					down = false;
+	 					left = false;
 						break;
 				}
 			}
