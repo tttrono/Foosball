@@ -103,6 +103,10 @@ public class GameFrame implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				/* Spawn ball here */
+				// ball.move(intial angle, initial_speed);
+				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
 				me.moveV(-Config.PLAYER_SPEED);
 				canvas.repaint();
