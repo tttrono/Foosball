@@ -1,22 +1,34 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
+import javax.swing.JFrame;
+import javax.swing.Timer;
+
+import Foosball.Config;
+import Foosball.SoccerBall;
 import Shapes.Colors;
 
-import java.io.*;
-import java.net.*;
-
-public class GameFrame extends JFrame {
-
+public class GameFrame implements KeyListener {
+	
+	private JFrame frame;
 	private int width, height;
-	private Container contentPane;
 	private GameCanvas canvas;
 	
 	private Player me;
 	private Player opponent;
-	private Timer animationTimer;
-	private boolean up, down, left, right;
+	//private SoccerBall ball;
 	
 	private Socket socket;
 	private int playerID;
@@ -28,12 +40,10 @@ public class GameFrame extends JFrame {
 	 */
 	public GameFrame(int w, int h) {
 		
+		frame = new JFrame();
+		
 		width = w;
 		height = h;
-		up = false;
-		down = false;
-		left = false;
-		right = false;
 
 	}
 	
@@ -41,118 +51,84 @@ public class GameFrame extends JFrame {
 		
 		canvas = new GameCanvas();
 		canvas.setDoubleBuffered(true);
-		canvas.setBackground(Color.BLACK);
 		canvas.createPlayers(playerID);
 		
 		me 		 = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
+		//ball	 = canvas.getBall();
 		
-		contentPane = this.getContentPane();
+		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
 		contentPane.setBackground(Colors.DARK_TEAL);
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
-		this.setTitle("Foosball - Player #" + playerID);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.pack();
-		this.setResizable(false);
-		this.setVisible(true);
+		frame.setTitle("Foosball - Player #" + playerID);
+		
+		//canvas.addMouseListener(this);
+		canvas.addKeyListener(this);
 		
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		setUpAnimationTimer();
-		setUpKeyListener();
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 		
+		//this.showControls();
+		this.startAnimation();
 	}
 	
-	private void setUpAnimationTimer() {
-		int interval = 10;
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				double speed = 5;
-				if (up) {
-					me.moveV(-speed); // move up
-				} else if (down) {
-					me.moveV(speed);
-				} else if (left) {
-					me.moveH(-speed);
-				} else if (right) {
-					me.moveH(speed);
-				}
+//	public void showControls() {
+//		/* Display text instructions to the user/s */
+//		System.out.println(""); 	
+//		System.out.println("");
+//		System.out.println("");
+//	}
+	
+	public void startAnimation() {
+		Timer animationTimer = new Timer(Config.TIMER_INTERVAL, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	        	/* Place ball movements here */
+	        	
+	        	// ball.checkBoundariesAndCollisions()
+	        	// ball.move();
 				canvas.repaint();
-			}
-		};
-		animationTimer = new Timer(interval, al); 
+	        }
+	    });
 		animationTimer.start();
 	}
 	
-	private void setUpKeyListener() {
-		KeyListener kl = new KeyListener() {
-			public void keyTyped(KeyEvent ke) { 
-				
-			}
-			
-			public void keyPressed(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = true;
-						down = false;
-	 					left = false;
-	 					right = false;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = true;
-						up = false;
-	 					left = false;
-	 					right = false;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = true;
-						up = false;
-	 					down = false;
-	 					right = false;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = true;
-						up = false;
-	 					down = false;
-	 					left = false;
-						break;
-				}
-			}
-			
-			public void keyReleased(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = false;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = false;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = false;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = false;
-						break;
-				}
-			}
-		};
-		contentPane.addKeyListener(kl);
-		contentPane.setFocusable(true);
-		contentPane.requestFocus();
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				/* Spawn ball here */
+				// ball.move(intial angle, initial_speed);
+				// TODO: Add restrictions for only when the ball is out
+			case KeyEvent.VK_UP:
+				me.moveV(-Config.PLAYER_SPEED);
+				canvas.repaint();
+				break;
+			case KeyEvent.VK_DOWN:
+				me.moveV(Config.PLAYER_SPEED);
+				canvas.repaint();
+				break;
+		}
 	}
+	
+	public void keyReleased(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {}
 	
 	public void connectToServer() {
 		try {
-			socket = new Socket("localhost", 45371);
-			DataInputStream in = new DataInputStream(socket.getInputStream());
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
+			BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+			DataInputStream in = new DataInputStream(bis);
+			BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
 			
@@ -181,9 +157,16 @@ public class GameFrame extends JFrame {
 		public void run() {
 			try {
 				while(true) {
+					
+					System.out.println();
 					if (opponent != null) {
-						opponent.setX(dataIn.readDouble());
-						opponent.setY(dataIn.readDouble());
+						
+						double x = dataIn.readDouble();
+						double y = dataIn.readDouble();
+						
+						//System.out.println(x + "\t" + y);
+						opponent.setX(x);
+						opponent.setY(y);
 					}
 				}
 			} catch (IOException ex) {
@@ -220,13 +203,14 @@ public class GameFrame extends JFrame {
 			try {
 				while(true) {
 					if (me != null) {
+						//System.out.println(me.getX() + "\t" + me.getY());
 						dataOut.writeDouble(me.getX());
 						dataOut.writeDouble(me.getY());
 						dataOut.flush();
 					}
 					
 					try {
-						Thread.sleep(25);
+						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {
 						System.out.println("InterruptedException from WTS run()");
 					}
