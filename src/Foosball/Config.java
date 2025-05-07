@@ -26,3 +26,4 @@ public class Config {
 	public static final double BALL_INITIAL_Y = 300;
 
 }
+

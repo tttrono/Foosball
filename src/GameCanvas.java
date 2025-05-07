@@ -82,3 +82,4 @@ public class GameCanvas extends JComponent {
 		return ball;
 	}
 }
+
