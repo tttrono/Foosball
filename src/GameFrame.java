@@ -20,6 +20,8 @@ import javax.swing.Timer;
 
 import Foosball.Config;
 import Foosball.SoccerBall;
+import Shapes.Colors;
+
 
 public class GameFrame implements KeyListener, MouseWheelListener {
 	
@@ -52,7 +54,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		canvas = new GameCanvas();
 		canvas.setDoubleBuffered(true);
-		canvas.setBackground(Color.BLACK);
 		canvas.createPlayers(playerID);
 		
 		me 		 = canvas.getMePlayer();
@@ -61,6 +62,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
+		contentPane.setBackground(Colors.DARK_TEAL);
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
 		frame.setTitle("Foosball - Player #" + playerID);
@@ -92,8 +94,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	        @Override
 	        public void actionPerformed(ActionEvent ae) {
 	        	/* Place ball movements here */
-	        	
-	        	// ball.checkBoundaries();
+	        	// ball.checkBoundariesAndCollisions()
 	        	// ball.move();
 				canvas.repaint();
 	        }
@@ -118,7 +119,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
 				/* Spawn the ball here */
-				// ball.move(intial angle, initial_speed);
+				// ball.move(initial angle, initial_speed);
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
 				me.moveV(-Config.PLAYER_SPEED);
@@ -170,7 +171,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			try {
 				while(true) {
 					
-					System.out.println(opponent);
+					System.out.println();
 					if (opponent != null) {
 						
 						double x = dataIn.readDouble();

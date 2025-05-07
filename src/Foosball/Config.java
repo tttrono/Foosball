@@ -8,7 +8,7 @@ public class Config {
 	public static final int MAX_PLAYERS = 2;
 
 	public static final int SCREEN_WIDTH = 1024;
-	public static final int SCREEN_HEIGHT = 510;
+	public static final int SCREEN_HEIGHT = 650; 
 	
 	public static final int TIMER_INTERVAL = 10;
 	public static final int THREAD_SLEEP = 25;
@@ -24,4 +24,6 @@ public class Config {
 	
 	public static final double BALL_INITIAL_X = 405;
 	public static final double BALL_INITIAL_Y = 300;
+
 }
+
