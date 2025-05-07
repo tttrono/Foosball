@@ -10,13 +10,14 @@ public class SoccerBall {
 	
 	private double x, y;
 
-	public SoccerBall() {
-		// TODO Auto-generated constructor stub
+	public SoccerBall(double x, double y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	public void draw(Graphics2D g2d) {
 		
-		Circle ball = new Circle(405, 300, 12, 0, Color.WHITE);
+		Circle ball = new Circle(x, y, 12, 0, Color.WHITE);
 		ball.draw(g2d);
 		
 	}
