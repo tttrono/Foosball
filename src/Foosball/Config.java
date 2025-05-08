@@ -24,5 +24,8 @@ public class Config {
 	
 	public static final double BALL_INITIAL_X = 405;
 	public static final double BALL_INITIAL_Y = 300;
+	
+	public static int BLUE_SCORE = 3;
+	public static int RED_SCORE = 2;
 
 }
