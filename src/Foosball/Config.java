@@ -6,6 +6,7 @@ public class Config {
 	public static final int SERVER_SOCKET = 45371;
 	
 	public static final int MAX_PLAYERS = 2;
+	public static final int MAX_SCORE = 5;
 
 	public static final int SCREEN_WIDTH = 1024;
 	public static final int SCREEN_HEIGHT = 650; 
@@ -24,8 +25,5 @@ public class Config {
 	
 	public static final double BALL_INITIAL_X = 405;
 	public static final double BALL_INITIAL_Y = 300;
-	
-	public static int BLUE_SCORE = 3;
-	public static int RED_SCORE = 2;
 
 }
