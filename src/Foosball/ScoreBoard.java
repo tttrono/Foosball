@@ -2,14 +2,13 @@ package Foosball;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 
 import Shapes.Circle;
@@ -25,6 +24,9 @@ public class ScoreBoard {
 	int RED_SCORE = 0;
 	
 	ArrayList<DrawingObject> scoreboard;
+	
+	File twcen_file, segoeui_file;
+	Font twcen_font, segoeui_font;
 
 	public ScoreBoard() {
 		
@@ -35,18 +37,24 @@ public class ScoreBoard {
 		
 		x = Config.SCREEN_WIDTH/2;
 		y = Config.SCREEN_HEIGHT/2;
+
+		try {
+            twcen_file = new File("Shapes/Fonts/TCB_____.TTF");
+            segoeui_file = new File("Shapes/Fonts/SEGOEUIB.TTF");
+            
+            twcen_font = Font.createFont(Font.TRUETYPE_FONT, twcen_file);
+            segoeui_font = Font.createFont(Font.TRUETYPE_FONT, segoeui_file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (FontFormatException ex) {
+            ex.printStackTrace();
+        }
 		
-		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Font[] fonts = e.getAllFonts();
-		
-		String countrycode_font = "Tw Cen MT";
-		String score_font = "Segoe UI"; // fonts[10].getName();
-		
-		// 3 - Arial
-		// 5 - Arial Bold
+		String countrycode_font = twcen_font.getFontName();
+		String score_font = segoeui_font.getFontName();
 		
 		// BACKBOARD
-		Rectangle2D.Double backboard = new Rectangle2D.Double(x-423, 30, 845, 136);		
+		Rectangle2D.Double backboard = new Rectangle2D.Double(0, 0, 1024, 167);		
 		g2d.setColor(Colors.DARKER_TEAL);	
 		g2d.fill(backboard);
 		
@@ -66,27 +74,17 @@ public class ScoreBoard {
 			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/UK-flag.png"));
 			g2d.drawImage(img, (int) x-413, 40, 140, 140/2, null);
 		} catch (Exception ex) {
-			
 			ex.printStackTrace();
 		}
 
-		ArrayList<DrawingObject> fills_blue = new ArrayList<DrawingObject>();
-		ArrayList<DrawingObject> dots_blue = new ArrayList<DrawingObject>();
-
-		for (int x_pos = 165; x_pos < (165+(BLUE_SCORE*30)); x_pos += 30) {
-			fills_blue.add(new Circle(x_pos, 135, 10, 0, Color.BLUE));
-		}
-		
-		for(DrawingObject fills: fills_blue) {
-			fills.draw(g2d);		
-		}
-		
+		// blue score dots
 		for (int x_pos = 165; x_pos < 165+(Config.MAX_SCORE*30); x_pos += 30) {
-			dots_blue.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
+			scoreboard.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
 		
-		for(DrawingObject dots: dots_blue) {
-			dots.draw(g2d);
+		// blue score fills
+		for (int x_pos = 165; x_pos < (165+(BLUE_SCORE*30)); x_pos += 30) {
+			scoreboard.add(new Circle(x_pos, 135, 10, 0, Color.BLUE));
 		}
 		
 		// RED TEAM
@@ -98,27 +96,17 @@ public class ScoreBoard {
 			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/CA-flag.png"));
 			g2d.drawImage(img, (int) x+270, 40, 140, 140/2, null);
 		} catch (Exception ex) {
-			
 			ex.printStackTrace();
 		}
 		
-		ArrayList<DrawingObject> fills_red = new ArrayList<DrawingObject>();
-		ArrayList<DrawingObject> dots_red = new ArrayList<DrawingObject>();
-		
-		for (int x_pos = 735; x_pos < (735+(RED_SCORE*30)); x_pos += 30) {
-			fills_red.add(new Circle(x_pos, 135, 10, 0, Color.RED));
-		}
-		
-		for(DrawingObject fills: fills_red) {
-			fills.draw(g2d);		
-		}
-		
+		// red score dots
 		for (int x_pos = 735; x_pos < 735+(Config.MAX_SCORE*30); x_pos += 30) {
-			dots_red.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
+			scoreboard.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
 		
-		for(DrawingObject dots: dots_red) {
-			dots.draw(g2d);
+		// red score fills
+		for (int x_pos = 735; x_pos < (735+(RED_SCORE*30)); x_pos += 30) {
+			scoreboard.add(new Circle(x_pos, 135, 10, 0, Color.RED));
 		}
 		
 		for(DrawingObject object: scoreboard) {
