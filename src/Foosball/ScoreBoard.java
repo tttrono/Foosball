@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
+import Foosball.Teams.Country;
 import Shapes.Circle;
 import Shapes.Colors;
 import Shapes.DrawingObject;
@@ -22,6 +23,8 @@ public class ScoreBoard {
 	
 	int BLUE_SCORE = 0;
 	int RED_SCORE = 0;
+	
+	Country COUNTRY1, COUNTRY2;
 	
 	ArrayList<DrawingObject> scoreboard;
 	
@@ -37,6 +40,9 @@ public class ScoreBoard {
 		
 		x = Config.SCREEN_WIDTH/2;
 		y = Config.SCREEN_HEIGHT/2;
+		
+		COUNTRY1 = Country.UK;
+		COUNTRY2 = Country.CA;
 
 		try {
             twcen_file = new File("Shapes/Fonts/TCB_____.TTF");
@@ -66,12 +72,12 @@ public class ScoreBoard {
 		g2d.drawString(tally, 407, 135);
 		
 		// BLUE TEAM
-		g2d.setColor(Color.BLUE);
+		g2d.setColor(COUNTRY1.getColor());
 		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
-		g2d.drawString("UK", 250, 100);
+		g2d.drawString(COUNTRY1.getCode(), 250, 100);
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/UK-flag.png"));
+			BufferedImage img = ImageIO.read(new File(String.format("./Foosball/Flags/%s-flag.png", COUNTRY1.getCode())));
 			g2d.drawImage(img, (int) x-413, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -88,12 +94,12 @@ public class ScoreBoard {
 		}
 		
 		// RED TEAM
-		g2d.setColor(Color.RED);
+		g2d.setColor(COUNTRY2.getColor());
 		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
-		g2d.drawString("CA", 670, 100);	
+		g2d.drawString(COUNTRY2.getCode(), 670, 100);	
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/CA-flag.png"));
+			BufferedImage img = ImageIO.read(new File(String.format("./Foosball/Flags/%s-flag.png", COUNTRY2.getCode())));
 			g2d.drawImage(img, (int) x+270, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
