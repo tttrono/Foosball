@@ -21,8 +21,8 @@ public class ScoreBoard {
 	double x;
 	double y;
 	
-	int BLUE_SCORE = 2;
-	int RED_SCORE = 3;
+	int BLUE_SCORE = 0;
+	int RED_SCORE = 0;
 	
 	ArrayList<DrawingObject> scoreboard;
 
@@ -38,7 +38,9 @@ public class ScoreBoard {
 		
 		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Font[] fonts = e.getAllFonts();
-		String font = "Segoe UI"; // fonts[10].getName();
+		
+		String countrycode_font = "Tw Cen MT";
+		String score_font = "Segoe UI"; // fonts[10].getName();
 		
 		// 3 - Arial
 		// 5 - Arial Bold
@@ -52,19 +54,27 @@ public class ScoreBoard {
 		String tally = String.format("%d - %d", BLUE_SCORE, RED_SCORE);
 		
 		g2d.setColor(Color.WHITE);
-		g2d.setFont(new Font(font, Font.BOLD, 100));
+		g2d.setFont(new Font(score_font, Font.BOLD, 100));
 		g2d.drawString(tally, 407, 135);
 		
 		// BLUE TEAM
-		g2d.setColor(Color.CYAN);
-		g2d.setFont(new Font(font, Font.BOLD, 75));
-		g2d.drawString("HOME", 89, 90);
+		g2d.setColor(Color.BLUE);
+		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
+		g2d.drawString("UK", 250, 100);
+		
+		try {
+			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/UK-flag.png"));
+			g2d.drawImage(img, (int) x-413, 40, 140, 140/2, null);
+		} catch (Exception ex) {
+			
+			ex.printStackTrace();
+		}
 
 		ArrayList<DrawingObject> fills_blue = new ArrayList<DrawingObject>();
 		ArrayList<DrawingObject> dots_blue = new ArrayList<DrawingObject>();
 
 		for (int x_pos = 165; x_pos < (165+(BLUE_SCORE*30)); x_pos += 30) {
-			fills_blue.add(new Circle(x_pos, 120, 10, 0, Color.CYAN));
+			fills_blue.add(new Circle(x_pos, 135, 10, 0, Color.BLUE));
 		}
 		
 		for(DrawingObject fills: fills_blue) {
@@ -72,7 +82,7 @@ public class ScoreBoard {
 		}
 		
 		for (int x_pos = 165; x_pos < 165+(Config.MAX_SCORE*30); x_pos += 30) {
-			dots_blue.add(new Circle(x_pos, 120, 10, 2, Color.WHITE));
+			dots_blue.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
 		
 		for(DrawingObject dots: dots_blue) {
@@ -80,15 +90,23 @@ public class ScoreBoard {
 		}
 		
 		// RED TEAM
-		g2d.setColor(Colors.FUSCHIA);
-		g2d.setFont(new Font(font, Font.BOLD, 75));
-		g2d.drawString("GUEST", 670, 90);	
+		g2d.setColor(Color.RED);
+		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
+		g2d.drawString("CA", 670, 100);	
+		
+		try {
+			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/CA-flag.png"));
+			g2d.drawImage(img, (int) x+270, 40, 140, 140/2, null);
+		} catch (Exception ex) {
+			
+			ex.printStackTrace();
+		}
 		
 		ArrayList<DrawingObject> fills_red = new ArrayList<DrawingObject>();
 		ArrayList<DrawingObject> dots_red = new ArrayList<DrawingObject>();
 		
 		for (int x_pos = 735; x_pos < (735+(RED_SCORE*30)); x_pos += 30) {
-			fills_red.add(new Circle(x_pos, 120, 10, 0, Colors.FUSCHIA));
+			fills_red.add(new Circle(x_pos, 135, 10, 0, Color.RED));
 		}
 		
 		for(DrawingObject fills: fills_red) {
@@ -96,7 +114,7 @@ public class ScoreBoard {
 		}
 		
 		for (int x_pos = 735; x_pos < 735+(Config.MAX_SCORE*30); x_pos += 30) {
-			dots_red.add(new Circle(x_pos, 120, 10, 2, Color.WHITE));
+			dots_red.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
 		
 		for(DrawingObject dots: dots_red) {
