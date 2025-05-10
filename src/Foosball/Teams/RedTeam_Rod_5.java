@@ -6,26 +6,23 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-
 /** Draws the playing rod with 5 stick players.
  * 
  */
-public class BlueTeam_Rod_5 implements DrawingObject {
+public class RedTeam_Rod_5 implements DrawingObject {
 	ArrayList<DrawingObject> Rod_5;
+	
 	private double y;
 
-	public BlueTeam_Rod_5() {
-
-		// TODO Auto-generated constructor stub
-
+	public RedTeam_Rod_5() {
 		Rod_5 = new ArrayList<DrawingObject>();
-		Rod_5.add(new Rectangle(436.5, 255, 3, 405, 0, Color.BLUE));
-
+		Rod_5.add(new Rectangle(587.5, 255, 3, 405, 0, Color.RED));
 	}
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		// TODO 
+			for (DrawingObject object: Rod_5) 
+			object.draw(g2d);
 	}
 	
 	public void moveV(double n) {

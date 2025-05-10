@@ -1,3 +1,6 @@
+import Foosball.*;
+import Foosball.Teams.*;
+import Shapes.DrawingObject;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,35 +17,59 @@ public class GameCanvas extends JComponent {
 	private ArrayList<DrawingObject> objects;
 	
 	private Player me;
-	private Player opponent;
+	private Player2 opponent;
 	
 	DigitalBoard digitalboard;
 	SoccerBall ball;
+
 	ScoreBoard scoreboard;
+
+	ScoreDials dials;
+	BlueTeam_Rod_5 BlueRod5;
+	BlueTeam_Rod_3 BlueRod3;
+	BlueTeam_Rod_2 BlueRod2;
+	BlueTeam_Rod_1 BlueRod1;
+	RedTeam_Rod_5 RedRod5;
+	RedTeam_Rod_3 RedRod3;
+	RedTeam_Rod_2 RedRod2;
+	RedTeam_Rod_1 RedRod1;
+
 	
 	public GameCanvas() {
 		
 		objects = new ArrayList<DrawingObject>();
 		
+
 		digitalboard = new DigitalBoard();
 		scoreboard = new ScoreBoard();
 		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
 		
+	
+
+		board = new GameTable();
+		ball = new SoccerBall();
+		dials = new ScoreDials();
+		BlueRod5 = new BlueTeam_Rod_5();
+		BlueRod3 = new BlueTeam_Rod_3();
+		BlueRod2 = new BlueTeam_Rod_2();
+		BlueRod1 = new BlueTeam_Rod_1();
+		RedRod5 = new RedTeam_Rod_5();
+		RedRod3 = new RedTeam_Rod_3();
+		RedRod2 = new RedTeam_Rod_2();
+		RedRod1 = new RedTeam_Rod_1();
+		
 	}
 	
-	public void createPlayers(int playerID) {
-		if (playerID == 1) {
-			me = new Player(Config.PLAYER1_INITIAL_X, 
-							Config.PLAYER1_INITIAL_Y, 50, Color.BLUE);
-			opponent = new Player(Config.PLAYER2_INITIAL_X, 
-								  Config.PLAYER2_INITIAL_Y, 50, Color.RED);
-		} else {
-			opponent = new Player(Config.PLAYER1_INITIAL_X, 
-								  Config.PLAYER1_INITIAL_Y, 50, Color.BLUE);
-			me = new Player(Config.PLAYER2_INITIAL_X, 
-							Config.PLAYER2_INITIAL_Y, 50, Color.RED);
-		}
-	}
+	public void createPlayers(int playerID) { // this will be error for now since no sprite image yet
+	     if (playerID == 1) {
+            me = new Player();
+            opponent = new Player2();
+        } else if (playerID == 2) {
+            me = new Player2();
+            opponent = new Player();
+        }
+    }
+
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -58,7 +85,19 @@ public class GameCanvas extends JComponent {
 
 		me.draw(g2d);
 		opponent.draw(g2d);
+
 		scoreboard.draw(g2d);
+
+		BlueRod5.draw(g2d);
+		BlueRod3.draw(g2d);
+		BlueRod2.draw(g2d);
+		BlueRod1.draw(g2d);
+		RedRod5.draw(g2d);
+		RedRod3.draw(g2d);
+		RedRod2.draw(g2d);
+		RedRod1.draw(g2d);
+		dials.draw(g2d);
+
 		
 //		for (DrawingObject object: objects) {
 //			object.draw(g2d);
@@ -70,7 +109,7 @@ public class GameCanvas extends JComponent {
 		return me;
 	}
 	
-	public Player getOpponentPlayer() {
+	public Player2 getOpponentPlayer() {
 		return opponent;
 	}
 	

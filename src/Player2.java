@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player {
+public class Player2 {
     private ArrayList<BufferedImage> rod5Sprites;
     private ArrayList<Point> rod5Positions; 
 
@@ -19,9 +19,9 @@ public class Player {
 
 
 
-    public Player(String spritePath) {
+    public Player2(String spritePath) {
 
-        
+      
         rod5Sprites = new ArrayList<>();
         rod5Positions = new ArrayList<>();
 
@@ -35,20 +35,20 @@ public class Player {
         rod1Positions = new ArrayList<>();
 
         
-        loadSpritesAndPositions(rod5Sprites, rod5Positions, spritePath, 5, 436.5, 255); // Rod 5
-        loadSpritesAndPositions(rod3Sprites, rod3Positions, spritePath, 3, 381, 255);  // Rod 3
-        loadSpritesAndPositions(rod2Sprites, rod2Positions, spritePath, 2, 325.5, 255); // Rod 2
-        loadSpritesAndPositions(rod1Sprites, rod1Positions, spritePath, 1, 270, 255); // Rod 1
+        loadSpritesAndPositions(rod5Sprites, rod5Positions, spritePath, 5, 587.5, 255); 
+        loadSpritesAndPositions(rod3Sprites, rod3Positions, spritePath, 3, 643, 255);  
+        loadSpritesAndPositions(rod2Sprites, rod2Positions, spritePath, 2, 698.5, 255); 
+        loadSpritesAndPositions(rod1Sprites, rod1Positions, spritePath, 1, 754, 255); 
     }
 
     private void loadSpritesAndPositions(ArrayList<BufferedImage> rodSprites, ArrayList<Point> rodPositions,
-                                        String spritePath, int numSprites, double startX, double startY) {
+                                         String spritePath, int numSprites, double startX, double startY) {
         BufferedImage sprite = SpriteLoader.loadSprite(spritePath);
 		double totalAvailableSpace = 255; 
     	double spacing = totalAvailableSpace / (numSprites - 1);
         for (int i = 0; i < numSprites; i++) {
             rodSprites.add(sprite); 
-            rodPositions.add(new Point((int) startX, (int) (startY + i * spacing))); // Assign a unique position
+            rodPositions.add(new Point((int) startX, (int) (startY + i * spacing))); 
         }
     }
 
@@ -88,21 +88,6 @@ public class Player {
 
     public void moveRod5(double dx, double dy) {
         moveRod(rod5Positions, dx, dy);
-    }
-    public ArrayList<Point> getRod1Positions() {
-        return new ArrayList<>(rod1Positions); 
-    }
-
-    public ArrayList<Point> getRod2Positions() {
-        return new ArrayList<>(rod2Positions); 
-    }   
-
-    public ArrayList<Point> getRod3Positions() {
-        return new ArrayList<>(rod3Positions); 
-    }
-
-    public ArrayList<Point> getRod5Positions() {
-        return new ArrayList<>(rod5Positions); 
     }
     public void setRod1Positions(ArrayList<Point> positions) {
         rod1Positions = new ArrayList<>(positions);

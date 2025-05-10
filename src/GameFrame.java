@@ -21,8 +21,8 @@ import javax.swing.Timer;
 import Foosball.Config;
 import Foosball.SoccerBall;
 import Shapes.Colors;
-
-
+import java.util.ArrayList;
+import java.awt.Point;
 public class GameFrame implements KeyListener, MouseWheelListener {
 	
 	private JFrame frame;
@@ -30,8 +30,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private GameCanvas canvas;
 	
 	private Player me;
+
 	private Player opponent;
 	//private SoccerBall ball;
+
+	private Player2 opponent;
+	private Timer animationTimer;
+	private boolean up, down, left, right;
+
 	
 	private Socket socket;
 	private int playerID;
@@ -79,26 +85,44 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		frame.setVisible(true);
 		
 		//this.showControls();
-		this.startAnimation();
+	
 	}
 	
-//	public void showControls() {
-//		/* Display text instructions to the user/s */
-//		System.out.println(""); 	
-//		System.out.println("");
-//		System.out.println("");
-//	}
-	
-	public void startAnimation() {
-		Timer animationTimer = new Timer(Config.TIMER_INTERVAL, new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent ae) {
-	        	/* Place ball movements here */
-	        	// ball.checkBoundariesAndCollisions()
-	        	// ball.move();
+	private void setUpAnimationTimer() {
+		int interval = 10;
+		ActionListener al = new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				double speed = 5;
+				// edited for moving the rods, this can be edited to accomodate multi player
+            if (playerID == 1) { 
+                if (up) {
+                    me.moveRod1(0, -speed);
+					me.moveRod2(0, -speed);
+					me.moveRod3(0, -speed);
+					me.moveRod5(0, -speed);
+				
+                } else if (down) {
+                    me.moveRod1(0, speed);
+					me.moveRod2(0, speed);
+					me.moveRod3(0, speed);
+					me.moveRod5(0, speed); 
+                }
+            } else if (playerID == 2) { 
+                if (up) {
+                    me.moveRod1(0, speed);
+					me.moveRod2(0, speed);
+					me.moveRod3(0, speed);
+					me.moveRod5(0, speed); 
+                } else if (down) {
+                    me.moveRod1(0, speed);
+					me.moveRod2(0, speed);
+					me.moveRod3(0, speed);
+					me.moveRod5(0, speed); 
+                }
+            }
 				canvas.repaint();
 	        }
-	    });
+	    };
 		animationTimer.start();
 	}
 	
@@ -144,10 +168,11 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
-			
+
 			if (playerID == 1) {
 				System.out.println("Waiting for Player #2 to connect...");
-			}
+			}	
+		
 			
 			rfsRunnable = new ReadFromServer(in);
 			wtsRunnable = new WriteToServer(out); 
@@ -162,7 +187,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		private DataInputStream dataIn;
 		
-		public ReadFromServer(DataInputStream in) {
+		public ReadFromServer(DataInputStream in) { // this is still testing but should work
 			dataIn = in;
 			System.out.println("RFS Runnable created.");
 		}
@@ -173,19 +198,27 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					
 					System.out.println();
 					if (opponent != null) {
-						
-						double x = dataIn.readDouble();
-						double y = dataIn.readDouble();
-						
-						//System.out.println(x + "\t" + y);
-						opponent.setX(x);
-						opponent.setY(y);
+						opponent.setRod1Positions(readRodPositions());
+                    	opponent.setRod2Positions(readRodPositions());
+                    	opponent.setRod3Positions(readRodPositions());
+                    	opponent.setRod5Positions(readRodPositions());
 					}
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
 			}
 		}
+		private ArrayList<Point> readRodPositions() throws IOException {
+        int numSprites = dataIn.readInt(); 
+        ArrayList<Point> rodPositions = new ArrayList<>();
+        for (int i = 0; i < numSprites; i++) {
+            double x = dataIn.readDouble(); 
+            double y = dataIn.readDouble(); 
+            rodPositions.add(new Point((int) x, (int) y));
+        }
+        return rodPositions;
+		}
+	
 		
 		public void waitForStartMsg() {
 			try {
@@ -212,25 +245,35 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			System.out.println("WTS Runnable created.");
 		}
 		
-		public void run() {
-			try {
-				while(true) {
-					if (me != null) {
-						//System.out.println(me.getX() + "\t" + me.getY());
-						dataOut.writeDouble(me.getX());
-						dataOut.writeDouble(me.getY());
-						dataOut.flush();
-					}
-					
-					try {
-						Thread.sleep(Config.THREAD_SLEEP);
-					} catch (InterruptedException ex) {
-						System.out.println("InterruptedException from WTS run()");
-					}
-				}
-			} catch (IOException ex) {
-				System.out.println("IOException at WTS run()");
-			}
-		}
+	 public void run() {
+        try {
+            while (true) {
+                if (me != null) {
+                   
+                    sendRodPositions(me.getRod1Positions());
+                    sendRodPositions(me.getRod2Positions());
+                    sendRodPositions(me.getRod3Positions());
+                    sendRodPositions(me.getRod5Positions());
+
+                }
+
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException ex) {
+                    System.out.println("InterruptedException from WTS run()");
+                }
+            }
+        } catch (IOException ex) {
+            System.out.println("IOException at WTS run()");
+        }
+    }
+	private void sendRodPositions(ArrayList<Point> rodPositions) throws IOException {
+
+    dataOut.writeInt(rodPositions.size());
+    for (Point position : rodPositions) {
+        dataOut.writeDouble(position.x); 
+        dataOut.writeDouble(position.y); 
+    }
+}
 	}
 }

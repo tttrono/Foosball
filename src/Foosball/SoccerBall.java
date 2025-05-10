@@ -1,10 +1,8 @@
 package Foosball;
 
+import Shapes.Circle;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import Shapes.Circle;
-import Shapes.DrawingObject;
 
 public class SoccerBall {
 	
