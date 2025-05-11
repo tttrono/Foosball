@@ -1,8 +1,10 @@
 package Foosball;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 
 public class SoccerBall {
@@ -23,15 +25,27 @@ public class SoccerBall {
         
 
     
-
+	    try {
+            sprite = ImageIO.read(new File("assets/soccerball.png")); 
+        } catch (IOException e) {
+            System.err.println("Error loading sprite: ");
+            sprite = null; 
+        }
+    
   
  
     }
 
     public void draw(Graphics2D g2d) {
 	
-        g2d.setColor(Color.BLACK); // Ball color
-        g2d.fillOval((int) x, (int) y, diameter, diameter); // Draw the ball as a circle
+   		if (sprite != null) {
+       
+            g2d.drawImage(sprite, (int) x, (int) y, diameter, diameter, null);
+        } else {
+        
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.fillOval((int) x, (int) y, diameter, diameter);
+        }
     }
 
     public void update() {
