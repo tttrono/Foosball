@@ -17,14 +17,13 @@ public class GameCanvas extends JComponent {
 	private ArrayList<DrawingObject> objects;
 	
 	private Player me;
-	private Player2 opponent;
+	private Player opponent;
 	
 	DigitalBoard digitalboard;
 	SoccerBall ball;
 
 	ScoreBoard scoreboard;
 
-	ScoreDials dials;
 	BlueTeam_Rod_5 BlueRod5;
 	BlueTeam_Rod_3 BlueRod3;
 	BlueTeam_Rod_2 BlueRod2;
@@ -46,9 +45,8 @@ public class GameCanvas extends JComponent {
 		
 	
 
-		board = new GameTable();
-		ball = new SoccerBall();
-		dials = new ScoreDials();
+		//ball = new SoccerBall();
+
 		BlueRod5 = new BlueTeam_Rod_5();
 		BlueRod3 = new BlueTeam_Rod_3();
 		BlueRod2 = new BlueTeam_Rod_2();
@@ -62,11 +60,11 @@ public class GameCanvas extends JComponent {
 	
 	public void createPlayers(int playerID) { // this will be error for now since no sprite image yet
 	     if (playerID == 1) {
-            me = new Player();
-            opponent = new Player2();
+            me = new Player(playerID);
+            opponent = new Player(playerID);
         } else if (playerID == 2) {
-            me = new Player2();
-            opponent = new Player();
+            me = new Player(playerID);
+            opponent = new Player(playerID);
         }
     }
 
@@ -83,8 +81,8 @@ public class GameCanvas extends JComponent {
 		digitalboard.draw(g2d);
 		ball.draw(g2d);
 
-		me.draw(g2d);
-		opponent.draw(g2d);
+		//me.draw(g2d);
+		//opponent.draw(g2d);
 
 		scoreboard.draw(g2d);
 
@@ -96,7 +94,6 @@ public class GameCanvas extends JComponent {
 		RedRod3.draw(g2d);
 		RedRod2.draw(g2d);
 		RedRod1.draw(g2d);
-		dials.draw(g2d);
 
 		
 //		for (DrawingObject object: objects) {
@@ -109,7 +106,7 @@ public class GameCanvas extends JComponent {
 		return me;
 	}
 	
-	public Player2 getOpponentPlayer() {
+	public Player getOpponentPlayer() {
 		return opponent;
 	}
 	

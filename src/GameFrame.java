@@ -34,7 +34,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Player opponent;
 	//private SoccerBall ball;
 
-	private Player2 opponent;
+	//private Player2 opponent;
 	private Timer animationTimer;
 	private boolean up, down, left, right;
 
@@ -131,9 +131,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		int scroll = e.getWheelRotation();
         
     	if (scroll < 0) {
-    		me.moveV(-Config.PLAYER_SPEED);
+    		//me.moveV(-Config.PLAYER_SPEED);
     	} else {
-    		me.moveV(Config.PLAYER_SPEED); 
+    		//me.moveV(Config.PLAYER_SPEED); 
         }
 	}
 	
@@ -146,12 +146,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 				// ball.move(initial angle, initial_speed);
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
-				me.moveV(-Config.PLAYER_SPEED);
-				canvas.repaint();
+				//me.moveV(-Config.PLAYER_SPEED);
+				//canvas.repaint();
 				break;
 			case KeyEvent.VK_DOWN:
-				me.moveV(Config.PLAYER_SPEED);
-				canvas.repaint();
+				//me.moveV(Config.PLAYER_SPEED);
+				//canvas.repaint();
 				break;
 		}
 	}

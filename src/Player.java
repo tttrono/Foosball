@@ -17,28 +17,43 @@ public class Player {
     private ArrayList<BufferedImage> rod1Sprites;
     private ArrayList<Point> rod1Positions; 
 
+    int playerID;
+    String spritePath;
 
+    public Player(int playerID) {
 
-    public Player(String spritePath) {
-
+    	this.playerID = playerID; 
         
-        rod5Sprites = new ArrayList<>();
-        rod5Positions = new ArrayList<>();
+        rod5Sprites = new ArrayList<BufferedImage>();
+        rod5Positions = new ArrayList<Point>();
 
-        rod3Sprites = new ArrayList<>();
-        rod3Positions = new ArrayList<>();
+        rod3Sprites = new ArrayList<BufferedImage>();
+        rod3Positions = new ArrayList<Point>();
 
-        rod2Sprites = new ArrayList<>();
-        rod2Positions = new ArrayList<>();
+        rod2Sprites = new ArrayList<BufferedImage>();
+        rod2Positions = new ArrayList<Point>();
 
-        rod1Sprites = new ArrayList<>();
-        rod1Positions = new ArrayList<>();
+        rod1Sprites = new ArrayList<BufferedImage>();
+        rod1Positions = new ArrayList<Point>();
 
-        
-        loadSpritesAndPositions(rod5Sprites, rod5Positions, spritePath, 5, 436.5, 255); // Rod 5
-        loadSpritesAndPositions(rod3Sprites, rod3Positions, spritePath, 3, 381, 255);  // Rod 3
-        loadSpritesAndPositions(rod2Sprites, rod2Positions, spritePath, 2, 325.5, 255); // Rod 2
-        loadSpritesAndPositions(rod1Sprites, rod1Positions, spritePath, 1, 270, 255); // Rod 1
+        if (playerID == 1) {
+        	
+        	spritePath = "";
+        	
+	        loadSpritesAndPositions(rod5Sprites, rod5Positions, spritePath, 5, 436.5, 255); // Rod 5
+	        loadSpritesAndPositions(rod3Sprites, rod3Positions, spritePath, 3, 381, 255);  // Rod 3
+	        loadSpritesAndPositions(rod2Sprites, rod2Positions, spritePath, 2, 325.5, 255); // Rod 2
+	        loadSpritesAndPositions(rod1Sprites, rod1Positions, spritePath, 1, 270, 255); // Rod 1
+	        
+        } else if (playerID == 2) {
+        	
+        	spritePath = "";
+        	
+        	loadSpritesAndPositions(rod5Sprites, rod5Positions, spritePath, 5, 587.5, 255); 
+            loadSpritesAndPositions(rod3Sprites, rod3Positions, spritePath, 3, 643, 255);  
+            loadSpritesAndPositions(rod2Sprites, rod2Positions, spritePath, 2, 698.5, 255); 
+            loadSpritesAndPositions(rod1Sprites, rod1Positions, spritePath, 1, 754, 255); 
+        }
     }
 
     private void loadSpritesAndPositions(ArrayList<BufferedImage> rodSprites, ArrayList<Point> rodPositions,
