@@ -19,13 +19,14 @@ public class BlueTeam_Rod_5 implements DrawingObject {
 		// TODO Auto-generated constructor stub
 
 		Rod_5 = new ArrayList<DrawingObject>();
-		Rod_5.add(new Rectangle(436.5, 255, 3, 405, 0, Color.BLUE));
+		Rod_5.add(new Rectangle(436.5, 599 - 204, 3, 405, 0, Color.BLUE));
 
 	}
 	
 	@Override
 	public void draw(Graphics2D g2d) {
-		// TODO 
+		for (DrawingObject object: Rod_5) 
+			object.draw(g2d);
 	}
 	
 	public void moveV(double n) {

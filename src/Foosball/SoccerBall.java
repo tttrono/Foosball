@@ -14,15 +14,18 @@ public class SoccerBall {
     private int width, height; 
     private BufferedImage sprite; 
     private int boardWidth, boardHeight; 
-	private int diameter;
+	private int  diameterSprite, diameter;
+	int boardTopLeftX = 100; 
+    int boardTopLeftY = 191;
+    int boardBottomRightX = 924; 
+    int boardBottomRightY = 599;
 
     public SoccerBall(double x, double y) {
         this.x = x;
         this.y = y;
         this.dx = 0; 
         this.dy = 0; 
-		this.diameter = 20;
-        
+        this.diameter = 20;
 
     
 	    try {
@@ -32,8 +35,10 @@ public class SoccerBall {
             sprite = null; 
         }
     
-  
- 
+		diameterSprite = sprite.getWidth();
+
+
+
     }
 
     public void draw(Graphics2D g2d) {
@@ -59,12 +64,12 @@ public class SoccerBall {
 
 	public void checkBoundaries() {
     
-    if (x + diameter >= Config.SCREEN_WIDTH || x <= 0) {
+    if (x <= boardTopLeftX || x + diameter >= boardBottomRightX) {
         dx *= -1; 
     }
 
 
-    if (y + diameter >= Config.SCREEN_HEIGHT || y <= 0) {
+    if (y <= boardTopLeftY || y + diameter >= boardBottomRightY) {
         dy *= -1; 
     }
 }
@@ -88,4 +93,8 @@ public class SoccerBall {
     public void setY(double y) {
         this.y = y;
     }
+	public int getDiameter (){
+		return diameterSprite;
+
+}
 }

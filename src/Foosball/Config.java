@@ -22,8 +22,8 @@ public class Config {
 	public static final double PLAYER2_INITIAL_X = 490;
 	public static final double PLAYER2_INITIAL_Y = 400;
 	
-	public static final double BALL_INITIAL_X = 405;
-	public static final double BALL_INITIAL_Y = 300;
+	public static final double BALL_INITIAL_X = 512;
+	public static final double BALL_INITIAL_Y = 395;
 
 }
 

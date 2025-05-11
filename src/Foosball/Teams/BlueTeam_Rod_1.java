@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+
 /** Draws the playing rod with 5 stick players.
  * 
  */
@@ -16,7 +17,7 @@ public class BlueTeam_Rod_1 implements DrawingObject {
 
 	public BlueTeam_Rod_1() {
 		Rod_1 = new ArrayList<DrawingObject>();
-		Rod_1.add(new Rectangle(270, 255, 3, 405, 0, Color.BLUE));
+		Rod_1.add(new Rectangle(270, 599 - 204, 3, 405, 0, Color.BLUE));
 	}
 	
 	@Override

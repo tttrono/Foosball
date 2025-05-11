@@ -88,15 +88,20 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	 private void setUpAnimationTimer() {
         int interval = 10; 
         Timer animationTimer = new Timer(interval, e -> {
-			double BalloldX = canvas.getBall().getX();
-			double BalloldY = canvas.getBall().getY();
+			double balloldX = canvas.getBall().getX();
+			double balloldY = canvas.getBall().getY();
                if (ballActive) {
             canvas.getBall().update();
         }
 
-			double BallnewX = canvas.getBall().getX();
-        	double BallnewY = canvas.getBall().getY();
-            canvas.repaint(); 
+			double ballnewX = canvas.getBall().getX();
+        	double ballnewY = canvas.getBall().getY();
+
+			int diameter = canvas.getBall().getDiameter();
+        	java.awt.Rectangle oldBounds = new java.awt.Rectangle((int) balloldX, (int) balloldY, diameter, diameter);
+        	java.awt.Rectangle newBounds = new java.awt.Rectangle((int) ballnewX, (int) ballnewY, diameter, diameter);
+        	java.awt.Rectangle dirtyRegion = oldBounds.union(newBounds);
+            canvas.repaint(dirtyRegion); 
         });
         animationTimer.start();
     }
@@ -178,25 +183,25 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					
 					System.out.println();
 					if (opponent != null) {
-						opponent.setRod1Positions(readRodPositions());
-                    	opponent.setRod2Positions(readRodPositions());
-                    	opponent.setRod3Positions(readRodPositions());
-                    	opponent.setRod5Positions(readRodPositions());
+						ArrayList<Point> spritePositions = readSpritePositions();
+
+                    
+                    	opponent.setSpritePositions(spritePositions);
 					}
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
 			}
 		}
-		private ArrayList<Point> readRodPositions() throws IOException {
+		private ArrayList<Point> readSpritePositions() throws IOException {
         int numSprites = dataIn.readInt(); 
-        ArrayList<Point> rodPositions = new ArrayList<>();
+        ArrayList<Point> spritePositions = new ArrayList<>();
         for (int i = 0; i < numSprites; i++) {
             double x = dataIn.readDouble(); 
             double y = dataIn.readDouble(); 
-            rodPositions.add(new Point((int) x, (int) y));
+            spritePositions.add(new Point((int) x, (int) y));
         }
-        return rodPositions;
+        return spritePositions;
 		}
 	
 		
@@ -230,10 +235,10 @@ public class GameFrame implements KeyListener, MouseWheelListener {
             while (true) {
                 if (me != null) {
                    
-                    sendRodPositions(me.getRod1Positions());
-                    sendRodPositions(me.getRod2Positions());
-                    sendRodPositions(me.getRod3Positions());
-                    sendRodPositions(me.getRod5Positions());
+                    ArrayList<Point> spritePositions = me.getSpritePositions();
+
+                   
+                    sendSpritePositions(spritePositions);
 
                 }
 
@@ -247,13 +252,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
             System.out.println("IOException at WTS run()");
         }
     }
-	private void sendRodPositions(ArrayList<Point> rodPositions) throws IOException {
+	private void sendSpritePositions(ArrayList<Point> spritePositions) throws IOException {
 
-    dataOut.writeInt(rodPositions.size());
-    for (Point position : rodPositions) {
+    dataOut.writeInt(spritePositions.size());
+    for (Point position : spritePositions) {
         dataOut.writeDouble(position.x); 
         dataOut.writeDouble(position.y); 
     }
+	dataOut.flush();
 }
 	}
 }
