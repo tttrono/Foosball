@@ -19,8 +19,8 @@ public class SoccerBall {
     public SoccerBall(double x, double y) {
         this.x = x;
         this.y = y;
-        this.dx = 5; 
-        this.dy = -2; 
+        this.dx = 0; 
+        this.dy = 0; 
 		this.diameter = 20;
         
 

@@ -32,6 +32,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Timer animationTimer;
 	private boolean up, down, left, right;
 
+	private boolean ballActive = false;
+
 	
 	private Socket socket;
 	private int playerID;
@@ -86,7 +88,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	 private void setUpAnimationTimer() {
         int interval = 10; 
         Timer animationTimer = new Timer(interval, e -> {
-            canvas.getBall().update(); 
+			double BalloldX = canvas.getBall().getX();
+			double BalloldY = canvas.getBall().getY();
+               if (ballActive) {
+            canvas.getBall().update();
+        }
+
+			double BallnewX = canvas.getBall().getX();
+        	double BallnewY = canvas.getBall().getY();
             canvas.repaint(); 
         });
         animationTimer.start();
@@ -109,8 +118,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				/* Spawn the ball here */
-				// ball.move(initial angle, initial_speed);
+				if (!ballActive) {
+                ballActive = true; 
+				canvas.setBallActive(true);
+                canvas.getBall().setVelocity(5, -2);
+				}
+				break;
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
 				//me.moveV(-Config.PLAYER_SPEED);

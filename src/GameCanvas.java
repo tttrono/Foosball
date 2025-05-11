@@ -27,6 +27,7 @@ public class GameCanvas extends JComponent {
 	RedTeam_Rod_3 RedRod3;
 	RedTeam_Rod_2 RedRod2;
 	RedTeam_Rod_1 RedRod1;
+	private boolean ballActive = false;
 
 	
 	public GameCanvas() {
@@ -77,7 +78,9 @@ public class GameCanvas extends JComponent {
 		g2d.setRenderingHints(rh);
 		
 		digitalboard.draw(g2d);
+		if (ballActive){
 		ball.draw(g2d);
+		}
 
 		//me.draw(g2d);
 		//opponent.draw(g2d);
@@ -115,5 +118,8 @@ public class GameCanvas extends JComponent {
 	public SoccerBall getBall() {
 		return ball;
 	}
+	public void setBallActive(boolean ballActive) {
+    this.ballActive = ballActive;
+}
 }
 
