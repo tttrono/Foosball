@@ -111,11 +111,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int scroll = e.getWheelRotation();
         
-    	if (scroll < 0) {
-    		//me.moveV(-Config.PLAYER_SPEED);
-    	} else {
-    		//me.moveV(Config.PLAYER_SPEED); 
+    	if (scroll < 0 ) {
+    		me.moveSprites(0, -Config.PLAYER_SPEED);
+		
+
+    	} else if (scroll >0) {
+    		me.moveSprites(0, Config.PLAYER_SPEED);
         }
+		canvas.repaint();
 	}
 	
 	@Override

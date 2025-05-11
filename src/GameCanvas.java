@@ -28,6 +28,7 @@ public class GameCanvas extends JComponent {
 	RedTeam_Rod_2 RedRod2;
 	RedTeam_Rod_1 RedRod1;
 	private boolean ballActive = false;
+	
 
 	
 	public GameCanvas() {
@@ -52,20 +53,14 @@ public class GameCanvas extends JComponent {
 		RedRod3 = new RedTeam_Rod_3();
 		RedRod2 = new RedTeam_Rod_2();
 		RedRod1 = new RedTeam_Rod_1();
+		me = new Player(1); 
+   		opponent = new Player(2); 
 		
 	}
 
 	
 	
-	public void createPlayers(int playerID) { 
-	     if (playerID == 1) {
-            me = new Player(playerID);
-            opponent = new Player(playerID);
-        } else if (playerID == 2) {
-            me = new Player(playerID);
-            opponent = new Player(playerID);
-        }
-    }
+	
 
 	
 	@Override
@@ -82,9 +77,13 @@ public class GameCanvas extends JComponent {
 		ball.draw(g2d);
 		}
 
-		//me.draw(g2d);
-		//opponent.draw(g2d);
-
+		
+		if (me != null) {
+            me.draw(g2d);
+        }
+        if (opponent != null) {
+            opponent.draw(g2d);
+        }
 		scoreboard.draw(g2d);
 
 		BlueRod5.draw(g2d);
@@ -102,7 +101,15 @@ public class GameCanvas extends JComponent {
 //		}
 		
 	}
-	
+	public void createPlayers(int playerID) { 
+	     if (playerID == 1) {
+            me = new Player(playerID);
+            opponent = new Player(2);
+        } else if (playerID == 2) {
+            me = new Player(playerID);
+            opponent = new Player(1);
+        }
+    }
 	public Player getMePlayer() {
 		return me;
 	}

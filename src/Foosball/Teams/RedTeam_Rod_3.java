@@ -16,7 +16,7 @@ public class RedTeam_Rod_3 implements DrawingObject {
 
 	public RedTeam_Rod_3() {
 		Rod_3 = new ArrayList<DrawingObject>();
-		Rod_3.add(new Rectangle(643, 599 - 204, 3, 408, 0, Color.RED));
+		Rod_3.add(new Rectangle(642, 599 - 204, 3, 405, 0, Color.RED));
 	}
 	
 	@Override

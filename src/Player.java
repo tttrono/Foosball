@@ -10,6 +10,9 @@ public class Player {
 
     int playerID;
     String spritePath;
+    private int spriteHeight;
+    private int spriteWidth;
+    
 
     public Player(int playerID) {
         this.playerID = playerID;
@@ -17,27 +20,35 @@ public class Player {
         spritePositions = new ArrayList<>();
 
         if (playerID == 1) {
-            spritePath = ""; // Set the sprite path for Player 1
-            loadSpritesForRows(spritePath, new int[]{5, 3, 2, 1}, 436, 200, 100); // Example: Load sprites for 4 rows
+            spritePath = "assets/Player1.png"; 
+            loadSpritesPerRow(spritePath, new int[]{1, 2, 3, 5}, 270, 194, 56); //see loadSpritesPerRow method to understand parametrs
         } else if (playerID == 2) {
-            spritePath = ""; // Set the sprite path for Player 2
-            loadSpritesForRows(spritePath, new int[]{5, 3, 2, 1}, 587, 200, 100); // Example: Load sprites for 4 rows
+            spritePath = "assets/Player2.png"; 
+            loadSpritesPerRow(spritePath, new int[]{5, 3, 2, 1}, 586, 194, 56); 
         }
     }
 
-    private void loadSpritesForRows(String spritePath, int[] rowCounts, int startX, int startY, int rowSpacing) {
+    private void loadSpritesPerRow(String spritePath, int[] rowCounts, int startX, int startY, int rowSpacing) {
         BufferedImage sprite = SpriteLoader.loadSprite(spritePath);
+        if (sprite == null) {
+        System.out.println("Failed to load sprite from path: " + spritePath);
+        } else {
+            System.out.println("Sprite loaded successfully.");
+        }
+
+        spriteWidth = sprite.getWidth(); 
+        spriteHeight = sprite.getHeight();
 
         for (int row = 0; row < rowCounts.length; row++) {
             int numSprites = rowCounts[row];
-            int rowY = startY + row * rowSpacing; // Calculate Y position for the row
-            int totalRowWidth = 200; // Example: Total width available for the row
-            int spacing = totalRowWidth / (numSprites - 1); // Spacing between sprites in the row
+            int rowX = startX + row * rowSpacing -(spriteWidth/2); //sets the x values of the sprites
+            int totalRowWidth = 405; // how much space is available in the row
+            int spacing = totalRowWidth / (numSprites + 1); // space between sprites
 
             for (int i = 0; i < numSprites; i++) {
-                int spriteX = startX + i * spacing; // Calculate X position for each sprite
-                sprites.add(sprite); // Add the sprite to the list
-                spritePositions.add(new Point(spriteX, rowY)); // Assign the position
+                int spriteY = startY + (i + 1)* spacing- (spriteHeight / 2); //determines the y value of sprite
+                sprites.add(sprite); // adds the sprite
+                spritePositions.add(new Point(rowX, spriteY));
             }
         }
     }
@@ -51,11 +62,24 @@ public class Player {
     }
 
     public void moveSprites(double dx, double dy) {
-        for (Point position : spritePositions) {
-            position.x += dx;
-            position.y += dy;
+         for (Point position : spritePositions) {
+        if ((dy < 0 && position.y <= 194) || (dy > 0 && position.y >= 599 - spriteHeight)) { /**working collision code but does not address 
+                                                                                                that each row has different times of collision*/
+        
+            return;
         }
     }
+
+    for (Point position : spritePositions) {
+        position.x += dx;
+        position.y += dy;
+    }
+    }
+    
+
+    
+    
+    
 
     public ArrayList<Point> getSpritePositions() {
         return new ArrayList<>(spritePositions);
@@ -64,4 +88,5 @@ public class Player {
     public void setSpritePositions(ArrayList<Point> positions) {
         spritePositions = new ArrayList<>(positions);
     }
+  
 }
