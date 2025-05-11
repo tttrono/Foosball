@@ -1,9 +1,9 @@
+import Foosball.Config;
+import Shapes.Colors;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
@@ -14,15 +14,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
-import Foosball.Config;
-import Foosball.SoccerBall;
-import Shapes.Colors;
-import java.util.ArrayList;
-import java.awt.Point;
 public class GameFrame implements KeyListener, MouseWheelListener {
 	
 	private JFrame frame;
@@ -85,46 +79,19 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		frame.setVisible(true);
 		
 		//this.showControls();
+		 setUpAnimationTimer();
 	
 	}
 	
-	private void setUpAnimationTimer() {
-		int interval = 10;
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				double speed = 5;
-				// edited for moving the rods, this can be edited to accomodate multi player
-            if (playerID == 1) { 
-                if (up) {
-                    me.moveRod1(0, -speed);
-					me.moveRod2(0, -speed);
-					me.moveRod3(0, -speed);
-					me.moveRod5(0, -speed);
-				
-                } else if (down) {
-                    me.moveRod1(0, speed);
-					me.moveRod2(0, speed);
-					me.moveRod3(0, speed);
-					me.moveRod5(0, speed); 
-                }
-            } else if (playerID == 2) { 
-                if (up) {
-                    me.moveRod1(0, speed);
-					me.moveRod2(0, speed);
-					me.moveRod3(0, speed);
-					me.moveRod5(0, speed); 
-                } else if (down) {
-                    me.moveRod1(0, speed);
-					me.moveRod2(0, speed);
-					me.moveRod3(0, speed);
-					me.moveRod5(0, speed); 
-                }
-            }
-				canvas.repaint();
-	        }
-	    };
-		animationTimer.start();
-	}
+	 private void setUpAnimationTimer() {
+        int interval = 10; 
+        Timer animationTimer = new Timer(interval, e -> {
+            canvas.getBall().update(); 
+            canvas.repaint(); 
+        });
+        animationTimer.start();
+    }
+
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {

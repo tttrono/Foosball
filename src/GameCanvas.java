@@ -1,16 +1,11 @@
 import Foosball.*;
 import Foosball.Teams.*;
 import Shapes.DrawingObject;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
-
 import javax.swing.JComponent;
-
-import Foosball.*;
-import Shapes.DrawingObject;
 
 public class GameCanvas extends JComponent {
 
@@ -43,7 +38,8 @@ public class GameCanvas extends JComponent {
 		scoreboard = new ScoreBoard();
 		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
 		
-	
+		
+    
 
 		//ball = new SoccerBall();
 
@@ -57,8 +53,10 @@ public class GameCanvas extends JComponent {
 		RedRod1 = new RedTeam_Rod_1();
 		
 	}
+
 	
-	public void createPlayers(int playerID) { // this will be error for now since no sprite image yet
+	
+	public void createPlayers(int playerID) { 
 	     if (playerID == 1) {
             me = new Player(playerID);
             opponent = new Player(playerID);
