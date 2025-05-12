@@ -171,10 +171,16 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 				break;
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
+				up = true;
+				me.moveSprites(0, -Config.PLAYER_SPEED);
+				canvas.repaint();
 				//me.moveV(-Config.PLAYER_SPEED);
 				//canvas.repaint();
 				break;
 			case KeyEvent.VK_DOWN:
+				down = true;
+				me.moveSprites(0, Config.PLAYER_SPEED);
+				canvas.repaint();
 				//me.moveV(Config.PLAYER_SPEED);
 				//canvas.repaint();
 				break;
