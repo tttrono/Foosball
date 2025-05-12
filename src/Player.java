@@ -127,7 +127,7 @@ public class Player {
         spritePositions = new ArrayList<>(positions);
     }
     
-    public boolean checkCollisionWithBall(SoccerBall ball) {
+    public boolean checkCollisionWithBall(SoccerBall ball) { //collision detection with the ball and each sprite
         java.awt.Rectangle ballBounds = ball.getBoundingBox();
 
        

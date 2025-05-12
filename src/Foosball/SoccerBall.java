@@ -61,7 +61,7 @@ public class SoccerBall {
         this.dx = dx;
         this.dy = dy;
     }
-    public void update() {
+    public void update() { // update based on if it is hit by a character or if it is not (friction)
         
        if (Hit){
         tempDx = dx;
@@ -93,7 +93,7 @@ public class SoccerBall {
 }
     
 
-    public void adjustVelocity(int playerID) {
+    public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character
     
         if (playerID == 1) {
        
@@ -108,7 +108,7 @@ public class SoccerBall {
         }
 
     
-        dy += (Math.random() - 0.5) * 2;
+        dy += (Math.random() - 0.5) * 3; //random y value for when  it is kicked by player
 
         Hit = true;
     }
@@ -130,7 +130,7 @@ public class SoccerBall {
     public int getDiameter(){
         return diameter;
     }
-	public java.awt.Rectangle getBoundingBox() {
+	public java.awt.Rectangle getBoundingBox() { // to encapsulate the sprite ball
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
 

@@ -85,7 +85,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		 setUpAnimationTimer();
 	
 	}
-	private void handleCollision(Player player) {
+	private void handleCollision(Player player) { // calls function of soccerball if it collides
     	SoccerBall ball = canvas.getBall();
 
     	
@@ -96,7 +96,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 
     	System.out.println("Collision detected with Player " + playerID);
 		}
-	private void checkCollisions() {
+	private void checkCollisions() { // checks which player it hit and moves ball forward in respect of the player
     	SoccerBall ball = canvas.getBall();
 
     
@@ -115,7 +115,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			double balloldX = canvas.getBall().getX();
 			double balloldY = canvas.getBall().getY();
 
-			if (up) {
+			if (up) {  //arrow keys
             me.moveSprites(0, -Config.PLAYER_SPEED);
         	}
         	if (down) {
