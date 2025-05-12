@@ -133,6 +133,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         	java.awt.Rectangle newBounds = new java.awt.Rectangle((int) ballnewX, (int) ballnewY, diameter, diameter);
         	java.awt.Rectangle dirtyRegion = oldBounds.union(newBounds);
             canvas.repaint(dirtyRegion); 
+			//canvas.repaint();
         });
         animationTimer.start();
     }

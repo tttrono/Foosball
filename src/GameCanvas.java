@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import java.awt.image.BufferedImage;
 
 public class GameCanvas extends JComponent {
 
@@ -28,6 +29,8 @@ public class GameCanvas extends JComponent {
 	RedTeam_Rod_2 RedRod2;
 	RedTeam_Rod_1 RedRod1;
 	private boolean ballActive = false;
+
+	private BufferedImage backgroundImage;
 	
 
 	
@@ -55,12 +58,40 @@ public class GameCanvas extends JComponent {
 		RedRod1 = new RedTeam_Rod_1();
 		me = new Player(1); 
    		opponent = new Player(2); 
+
+		renderBackground();
 		
 	}
 
 	
 	
-	
+	private void renderBackground() {
+        int width = Config.SCREEN_WIDTH;
+        int height = Config.SCREEN_HEIGHT;
+
+        
+        backgroundImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = backgroundImage.createGraphics();
+
+        
+        RenderingHints rh = new RenderingHints(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON);
+    	g2d.setRenderingHints(rh);
+
+        
+        digitalboard.draw(g2d);
+        BlueRod3.draw(g2d);
+        BlueRod2.draw(g2d);
+        BlueRod1.draw(g2d);
+        RedRod3.draw(g2d);
+        RedRod2.draw(g2d);
+        RedRod1.draw(g2d);
+        scoreboard.draw(g2d);
+
+        
+        g2d.dispose();
+    }
 
 	
 	@Override
@@ -72,7 +103,8 @@ public class GameCanvas extends JComponent {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
 		
-		digitalboard.draw(g2d);
+		g2d.drawImage(backgroundImage, 0, 0, null);
+		
 		if (ballActive){
 		ball.draw(g2d);
 		}
@@ -80,15 +112,7 @@ public class GameCanvas extends JComponent {
 		
 	
 
-		//BlueRod5.draw(g2d);
-		BlueRod3.draw(g2d);
-		BlueRod2.draw(g2d);
-		BlueRod1.draw(g2d);
-		//RedRod5.draw(g2d);
-		RedRod3.draw(g2d);
-		RedRod2.draw(g2d);
-		RedRod1.draw(g2d);
-		
+	
 		if (me != null) {
             me.draw(g2d);
         }
