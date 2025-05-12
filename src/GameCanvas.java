@@ -78,13 +78,7 @@ public class GameCanvas extends JComponent {
 		}
 
 		
-		if (me != null) {
-            me.draw(g2d);
-        }
-        if (opponent != null) {
-            opponent.draw(g2d);
-        }
-		scoreboard.draw(g2d);
+	
 
 		BlueRod5.draw(g2d);
 		BlueRod3.draw(g2d);
@@ -94,6 +88,14 @@ public class GameCanvas extends JComponent {
 		RedRod3.draw(g2d);
 		RedRod2.draw(g2d);
 		RedRod1.draw(g2d);
+		
+		if (me != null) {
+            me.draw(g2d);
+        }
+        if (opponent != null) {
+            opponent.draw(g2d);
+        }
+		scoreboard.draw(g2d);
 
 		
 //		for (DrawingObject object: objects) {

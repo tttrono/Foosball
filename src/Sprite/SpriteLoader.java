@@ -13,7 +13,7 @@ public class SpriteLoader{
        
         
         } catch (IOException e) {
-            System.out.println("Error loading sprite: " + e.getMessage());
+            System.out.println("Error loading sprite: ");
             return null;
         }
     }

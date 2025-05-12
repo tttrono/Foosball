@@ -11,7 +11,10 @@ public class SoccerBall {
 
     private double x, y;
     private double dx, dy; 
+    private double tempDx, tempDy;
     private int width, height; 
+    private static final double friction = 0.99;
+    private boolean Hit;
     private BufferedImage sprite; 
     private int boardWidth, boardHeight; 
 	private int  diameterSprite, diameter;
@@ -25,8 +28,10 @@ public class SoccerBall {
         this.y = y;
         this.dx = 0; 
         this.dy = 0; 
+        this.tempDx = dx;
+        this.tempDy = dy;
         this.diameter = 20;
-
+        this.Hit = true;
     
 	    try {
             sprite = ImageIO.read(new File("assets/soccerball.png")); 
@@ -52,32 +57,61 @@ public class SoccerBall {
             g2d.fillOval((int) x, (int) y, diameter, diameter);
         }
     }
-
+     public void setVelocity(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
     public void update() {
         
-        x = x +dx;
-        y = y+ dy;
-
+       if (Hit){
+        tempDx = dx;
+        tempDy = dy;
+        Hit = false;
+        } else {
+            tempDx *= friction;
+            tempDy *= friction;
+        }
+    
+        x = x + tempDx;
+        y = y + tempDy;
         checkBoundaries();
       
     }
 
-	public void checkBoundaries() {
+	public void checkBoundaries() 
+    {
     
     if (x <= boardTopLeftX || x + diameter >= boardBottomRightX) {
-        dx *= -1; 
+        tempDx *= -1; 
     }
 
 
     if (y <= boardTopLeftY || y + diameter >= boardBottomRightY) {
-        dy *= -1; 
+        tempDy*= -1; 
+        dy *= -1;
     }
 }
-    public void setVelocity(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
-    }
+    
 
+    public void adjustVelocity(int playerID) {
+    
+        if (playerID == 1) {
+       
+            if (dx <= 0) {
+                dx = Math.abs(dx); 
+            }
+        } else if (playerID == 2) {
+        
+            if (dx >= 0) {
+                dx = -Math.abs(dx); 
+            }
+        }
+
+    
+        dy += (Math.random() - 0.5) * 2;
+
+        Hit = true;
+    }
     public double getX() {
         return x;
     }
@@ -93,8 +127,11 @@ public class SoccerBall {
     public void setY(double y) {
         this.y = y;
     }
-	public int getDiameter (){
-		return diameterSprite;
+    public int getDiameter(){
+        return diameter;
+    }
+	public java.awt.Rectangle getBoundingBox() {
+        return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
+    }
 
-}
 }

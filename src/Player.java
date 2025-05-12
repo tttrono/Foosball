@@ -1,3 +1,4 @@
+import Foosball.SoccerBall;
 import Sprite.SpriteLoader;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -21,19 +22,19 @@ public class Player {
 
         if (playerID == 1) {
             spritePath = "assets/Player1.png"; 
-            loadSpritesPerRow(spritePath, new int[]{1, 2, 3, 5}, 270, 194, 56); //see loadSpritesPerRow method to understand parametrs
+            loadSpritesPerRow(spritePath, new int[]{1, 2, 3, 5}, 150, 194, 103); //see loadSpritesPerRow method to understand parametrs
         } else if (playerID == 2) {
             spritePath = "assets/Player2.png"; 
-            loadSpritesPerRow(spritePath, new int[]{5, 3, 2, 1}, 586, 194, 56); 
+            loadSpritesPerRow(spritePath, new int[]{5, 3, 2, 1}, 564, 194, 103); 
         }
     }
 
     private void loadSpritesPerRow(String spritePath, int[] rowCounts, int startX, int startY, int rowSpacing) {
         BufferedImage sprite = SpriteLoader.loadSprite(spritePath);
         if (sprite == null) {
-        System.out.println("Failed to load sprite from path: " + spritePath);
+        System.out.println("Failed to load sprite");
         } else {
-            System.out.println("Sprite loaded successfully.");
+            System.out.println("Sprite loaded");
         }
 
         spriteWidth = sprite.getWidth(); 
@@ -61,25 +62,62 @@ public class Player {
         }
     }
 
-    public void moveSprites(double dx, double dy) {
-         for (Point position : spritePositions) {
-        if ((dy < 0 && position.y <= 194) || (dy > 0 && position.y >= 599 - spriteHeight)) { /**working collision code but does not address 
-                                                                                                that each row has different times of collision*/
+   public void moveSprites(double dx, double dy) { //fixed movement 
+    int topBoundary = 194; 
+    int bottomBoundary = 599 - spriteHeight; 
+    int[] rowCounts = new int[]{};
+
+    
+    if (playerID == 1){
+        rowCounts = new int []{1, 2 ,3 ,5}; // order of sprites depending on playerID
+    }
+    else if (playerID == 2){
+        rowCounts = new int [] {5, 3, 2, 1};
+    }
+    int spriteIndex = 0;
+
+    for (int row = 0; row < rowCounts.length; row++) {//moves sprites and checks for availability of movement per row
+        boolean canMoveRow = true;
+
         
-            return;
+        for (int i = 0; i < rowCounts[row]; i++) { //sets which row
+            Point position = spritePositions.get(spriteIndex + i);
+            if ((dy < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
+                canMoveRow = false;
+                break;
+            }
         }
+
+        
+        if (canMoveRow) {
+            for (int i = 0; i < rowCounts[row]; i++) {
+                Point position = spritePositions.get(spriteIndex + i);
+                position.y += dy;
+    
+                
+            }
+        }
+
+        
+        spriteIndex += rowCounts[row];
     }
 
-    for (Point position : spritePositions) {
-        position.x += dx;
-        position.y += dy;
-    }
+  
     }
     
 
     
-    
-    
+    public int getSpriteWidth() {
+
+    return spriteWidth;
+
+    }
+
+    public int getSpriteHeight() {
+
+    return spriteHeight;
+
+    }
 
     public ArrayList<Point> getSpritePositions() {
         return new ArrayList<>(spritePositions);
@@ -88,5 +126,23 @@ public class Player {
     public void setSpritePositions(ArrayList<Point> positions) {
         spritePositions = new ArrayList<>(positions);
     }
-  
+    
+    public boolean checkCollisionWithBall(SoccerBall ball) {
+        java.awt.Rectangle ballBounds = ball.getBoundingBox();
+
+       
+        for (Point spritePosition : spritePositions) {
+        
+            java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
+                spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
+            );
+
+        
+            if (ballBounds.intersects(spriteBounds)) {
+                return true; 
+            }
+        }
+
+        return false; 
+    }
 }

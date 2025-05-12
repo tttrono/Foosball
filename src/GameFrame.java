@@ -1,4 +1,5 @@
 import Foosball.Config;
+import Foosball.SoccerBall;
 import Shapes.Colors;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -84,16 +85,46 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		 setUpAnimationTimer();
 	
 	}
-	
-	 private void setUpAnimationTimer() {
-        int interval = 10; 
+	private void handleCollision(Player player) {
+    	SoccerBall ball = canvas.getBall();
+
+    	
+    	int playerID = player == me ? 1 : 2;
+
+    	
+    	ball.adjustVelocity(playerID);
+
+    	System.out.println("Collision detected with Player " + playerID);
+		}
+	private void checkCollisions() {
+    	SoccerBall ball = canvas.getBall();
+
+    
+    	if (me.checkCollisionWithBall(ball)) {
+        	handleCollision(me); 
+    	}
+
+    
+    	if (opponent.checkCollisionWithBall(ball)) {
+        	handleCollision(opponent); 
+		}
+	}
+	private void setUpAnimationTimer() {
+    	int interval = 16; 
         Timer animationTimer = new Timer(interval, e -> {
 			double balloldX = canvas.getBall().getX();
 			double balloldY = canvas.getBall().getY();
+
+			if (up) {
+            me.moveSprites(0, -Config.PLAYER_SPEED);
+        	}
+        	if (down) {
+            me.moveSprites(0, Config.PLAYER_SPEED);
+        	}
                if (ballActive) {
             canvas.getBall().update();
-        }
-
+        	}
+			checkCollisions();
 			double ballnewX = canvas.getBall().getX();
         	double ballnewY = canvas.getBall().getY();
 
@@ -106,17 +137,23 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         animationTimer.start();
     }
 
+
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int scroll = e.getWheelRotation();
-        
+
     	if (scroll < 0 ) {
+			
     		me.moveSprites(0, -Config.PLAYER_SPEED);
+			
+			
 		
 
     	} else if (scroll >0) {
+			
     		me.moveSprites(0, Config.PLAYER_SPEED);
+			
         }
 		canvas.repaint();
 	}
@@ -129,7 +166,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 				if (!ballActive) {
                 ballActive = true; 
 				canvas.setBallActive(true);
-                canvas.getBall().setVelocity(5, -2);
+                canvas.getBall().setVelocity(9, -2);
 				}
 				break;
 				// TODO: Add restrictions for only when the ball is out
