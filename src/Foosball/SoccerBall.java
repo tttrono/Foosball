@@ -108,7 +108,7 @@ public class SoccerBall {
         }
 
     
-        dy += (Math.random() - 0.5) * 3; //random y value for when  it is kicked by player
+        dy += (Math.random() - 0.5) * 4; //random y value for when  it is kicked by player
 
         Hit = true;
     }

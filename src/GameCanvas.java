@@ -45,11 +45,11 @@ public class GameCanvas extends JComponent {
 
 		//ball = new SoccerBall();
 
-		BlueRod5 = new BlueTeam_Rod_5();
+		//BlueRod5 = new BlueTeam_Rod_5();
 		BlueRod3 = new BlueTeam_Rod_3();
 		BlueRod2 = new BlueTeam_Rod_2();
 		BlueRod1 = new BlueTeam_Rod_1();
-		RedRod5 = new RedTeam_Rod_5();
+		//RedRod5 = new RedTeam_Rod_5();
 		RedRod3 = new RedTeam_Rod_3();
 		RedRod2 = new RedTeam_Rod_2();
 		RedRod1 = new RedTeam_Rod_1();
@@ -80,11 +80,11 @@ public class GameCanvas extends JComponent {
 		
 	
 
-		BlueRod5.draw(g2d);
+		//BlueRod5.draw(g2d);
 		BlueRod3.draw(g2d);
 		BlueRod2.draw(g2d);
 		BlueRod1.draw(g2d);
-		RedRod5.draw(g2d);
+		//RedRod5.draw(g2d);
 		RedRod3.draw(g2d);
 		RedRod2.draw(g2d);
 		RedRod1.draw(g2d);

@@ -22,10 +22,10 @@ public class Player {
 
         if (playerID == 1) {
             spritePath = "assets/Player1.png"; 
-            loadSpritesPerRow(spritePath, new int[]{1, 2, 3, 5}, 150, 194, 103); //see loadSpritesPerRow method to understand parametrs
+            loadSpritesPerRow(spritePath, new int[]{1, 2, 3}, 150, 194, 155); //see loadSpritesPerRow method to understand parametrs
         } else if (playerID == 2) {
             spritePath = "assets/Player2.png"; 
-            loadSpritesPerRow(spritePath, new int[]{5, 3, 2, 1}, 564, 194, 103); 
+            loadSpritesPerRow(spritePath, new int[]{3, 2, 1}, 564, 194, 155); 
         }
     }
 
@@ -69,10 +69,10 @@ public class Player {
 
     
     if (playerID == 1){
-        rowCounts = new int []{1, 2 ,3 ,5}; // order of sprites depending on playerID
+        rowCounts = new int []{1, 2 ,3}; // order of sprites depending on playerID
     }
     else if (playerID == 2){
-        rowCounts = new int [] {5, 3, 2, 1};
+        rowCounts = new int [] {3, 2, 1};
     }
     int spriteIndex = 0;
 
