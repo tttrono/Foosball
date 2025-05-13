@@ -5,9 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 
-import Shapes.*;
+import Shapes.Colors;
+import Shapes.CenteredLine;
+import Shapes.Circle;
+import Shapes.DrawingObject;
+import Shapes.Rectangle;
 
 /*
  * 
@@ -37,15 +42,10 @@ public class DigitalBoard {
 		
 		board.add(new CenteredLine(x, y, 418, 90, lineWidths, Color.WHITE));	// white middle line
 		board.add(new Circle(x, y, 60, lineWidths, Color.WHITE));				// center circle
-		
-		board.add(new Circle(x-307, y, 60, lineWidths, Color.WHITE));			// left circle
-		board.add(new Rectangle(x-356, y, 119, 220, 0, Colors.DARK_TEAL));
-		board.add(new Rectangle(x-381, y, 75, 162, lineWidths, Color.WHITE));
+			
+		board.add(new Rectangle(x-381, y, 75, 162, lineWidths, Color.WHITE));	// left goal
 		board.add(new Rectangle(x-356, y, 119, 220, lineWidths, Color.WHITE));
-		
-		board.add(new Circle(x+305, y, 60, lineWidths, Color.WHITE));			// right circle
-		board.add(new Rectangle(x+354, y, 119, 220, 0, Colors.DARK_TEAL));
-		board.add(new Rectangle(x+381, y, 75, 162, lineWidths, Color.WHITE));
+		board.add(new Rectangle(x+381, y, 75, 162, lineWidths, Color.WHITE));	// right goal
 		board.add(new Rectangle(x+354, y, 119, 220, lineWidths, Color.WHITE));
 		
 		board.add(new Rectangle(x, y, 833, 833/2, 10, Color.WHITE));			// large white rectangle
@@ -53,7 +53,12 @@ public class DigitalBoard {
 		for (DrawingObject object: board) {
 			object.draw(g2d);
 		}
-
+		
+		g2d.setStroke(new BasicStroke(lineWidths));
+		g2d.setColor(Color.WHITE);
+		g2d.draw(new Arc2D.Double(x-366, y-60, 120, 120, -80, 160, Arc2D.OPEN)); // left arc
+		g2d.draw(new Arc2D.Double(x+244, y-60, 120, 120, 100, 160, Arc2D.OPEN)); // right arc
+		
 		// Adding invisible wall bounds for collisions
 		upperbounds = new Rectangle2D.Double(x-412, y-203, 823, 125);		
 		g2d.setColor(Color.BLACK);	// Colors.INVISIBLE
