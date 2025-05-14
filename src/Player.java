@@ -47,7 +47,7 @@ public class Player {
             int spacing = totalRowWidth / (numSprites + 1); // space between sprites
 
             for (int i = 0; i < numSprites; i++) {
-                int spriteY = startY + (i + 1)* spacing- (spriteHeight / 2); //determines the y value of sprite
+                int spriteY = startY + (i + 1)* spacing; //determines the y value of sprite
                 sprites.add(sprite); // adds the sprite
                 spritePositions.add(new Point(rowX, spriteY));
             }
@@ -73,33 +73,42 @@ public class Player {
     }
     else if (playerID == 2){
         rowCount = new int [] {3, 2, 1};
+        
     }
     int spriteIndex = 0;
 
     for (int row = 0; row < rowCount.length; row++) {//moves sprites and checks for availability of movement per row
         boolean canMoveRow = true;
-
         
-        for (int i = 0; i < rowCount[row]; i++) { //sets which row
+        double multiplier = 1;
+        if (rowCount [row] == 1) {
+            multiplier = 1.5;
+        }
+        else if (rowCount[row] == 2) {
+            multiplier = 1.25;
+        }
+            for (int i = 0; i < rowCount[row]; i++) { //sets which row
             Point position = spritePositions.get(spriteIndex + i);
-            if ((dy < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
+            if ((dy  < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
                 canMoveRow = false;
                 break;
             }
         }
-
-        
-        if (canMoveRow) {
+         if (canMoveRow) {
             for (int i = 0; i < rowCount[row]; i++) {
                 Point position = spritePositions.get(spriteIndex + i);
-                position.y += dy;
+                position.y += dy * multiplier;
     
                 
             }
+            spriteIndex += rowCount[row];
         }
-
+   
+     
+    
         
-        spriteIndex += rowCount[row];
+      
+        
     }
 
   

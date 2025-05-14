@@ -165,9 +165,10 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
 				if (!ballActive) {
+				canvas.getBall().setVelocity(9, -2);
                 ballActive = true; 
 				canvas.setBallActive(true);
-                canvas.getBall().setVelocity(9, -2);
+                //canvas.getBall().setVelocity(9, -2);
 				}
 				break;
 				// TODO: Add restrictions for only when the ball is out
