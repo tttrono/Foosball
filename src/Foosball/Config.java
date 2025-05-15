@@ -2,7 +2,7 @@ package Foosball;
 
 public class Config {
 	
-	public static final String SERVER_IP = "localhost"; 
+	public static final String SERVER_IP = "192.168.100.3"; 
 	public static final int SERVER_SOCKET = 45371;
 	
 	public static final int MAX_PLAYERS = 2;
