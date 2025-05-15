@@ -1,4 +1,4 @@
-package Src;
+package Main;
 import Foosball.*;
 import Foosball.Teams.*;
 import Shapes.DrawingObject;
