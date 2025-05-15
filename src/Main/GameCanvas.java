@@ -1,3 +1,4 @@
+package Src;
 import Foosball.*;
 import Foosball.Teams.*;
 import Shapes.DrawingObject;
@@ -7,6 +8,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.awt.image.BufferedImage;
+
 
 public class GameCanvas extends JComponent {
 

@@ -6,6 +6,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import Foosball.SoccerBall;
+import Src.GameCanvas;
 
 /**
  * 
@@ -26,6 +28,7 @@ public class GameServer {
 	private double p1x, p2x;
 	private double p1y, p2y;
 	
+	private SoccerBall ball;
 	/**
 	 * 
 	 */
@@ -38,6 +41,9 @@ public class GameServer {
 		p1y = Config.PLAYER1_INITIAL_Y;
 		p2x = Config.PLAYER2_INITIAL_X;
 		p2y = Config.PLAYER2_INITIAL_Y;
+
+		ball = new SoccerBall(512, 395); 
+    	ball.setVelocity(9, -2); 
 		
 		try {
 			ss = new ServerSocket(Config.SERVER_SOCKET);
@@ -93,6 +99,10 @@ public class GameServer {
 			System.out.println("IOException from acceptConnections()");
 		}
 	}
+
+	private void updateBallPosition() {
+    ball.update(); 
+}
 	
 	private class ReadFromClient implements Runnable {
 		
@@ -111,11 +121,17 @@ public class GameServer {
 					if (playerID == 1) {
 						p1x = dataIn.readDouble();
 						p1y = dataIn.readDouble();
+						double ballX = dataIn.readDouble();
+            			double ballY = dataIn.readDouble();
+						
 						//System.out.println(p1x + "\t" + p1y);
 					} else {
 						p2x = dataIn.readDouble();
-						p2y = dataIn.readDouble(); 
+						p2y = dataIn.readDouble();
+						double ballX = dataIn.readDouble();
+            			double ballY = dataIn.readDouble(); 
 						//System.out.println(p2x + "\t" + p2y);
+						canvas.repaint();
 					}
 					
 				}
@@ -139,13 +155,18 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
+					updateBallPosition();
 					if (playerID == 1) {
 						dataOut.writeDouble(p2x);
 						dataOut.writeDouble(p2y);
-						dataOut.flush();
+						dataOut.writeDouble(ball.getX());
+                		dataOut.writeDouble(ball.getY());
+                		dataOut.flush();
 					} else {
 						dataOut.writeDouble(p1x);
 						dataOut.writeDouble(p1y);
+						dataOut.writeDouble(ball.getX());
+               	 		dataOut.writeDouble(ball.getY());
 						dataOut.flush();
 					}
 					
