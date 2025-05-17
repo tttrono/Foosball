@@ -12,9 +12,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -100,6 +104,26 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	        }
 	    });
 		animationTimer.start();
+	}
+	
+	/*  Plays an audio/sound file.
+	 *  A new thread is instantiated for a new audio stream per function call. */
+	public void playSound(String path) {
+		
+		new Thread(new Runnable() {
+			Clip sound;
+			
+		    public void run() {
+		    	try {
+		    		sound = AudioSystem.getClip();
+			        AudioInputStream audio = AudioSystem.getAudioInputStream(new File(path).getAbsoluteFile());
+			        sound.open(audio);
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+		    	sound.start(); 
+		    }
+		  }).start();
 	}
 	
 	@Override
