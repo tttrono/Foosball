@@ -1,4 +1,3 @@
-package Main;
 import Foosball.*;
 import Foosball.Teams.*;
 import Shapes.DrawingObject;
@@ -8,7 +7,6 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.awt.image.BufferedImage;
-
 
 public class GameCanvas extends JComponent {
 
@@ -107,7 +105,7 @@ public class GameCanvas extends JComponent {
 		
 		g2d.drawImage(backgroundImage, 0, 0, null);
 		
-		if (ballActive){
+		if (ball != null){
 		ball.draw(g2d);
 		}
 
@@ -155,6 +153,9 @@ public class GameCanvas extends JComponent {
 	}
 	public void setBallActive(boolean ballActive) {
     this.ballActive = ballActive;
-}
+	}
+	public void setBall(SoccerBall ball) {
+    	this.ball = ball;
+	}
 }
 

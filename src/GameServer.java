@@ -1,4 +1,6 @@
 import Foosball.Config;
+import Foosball.SoccerBall;
+import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -6,8 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import Foosball.SoccerBall;
-import Src.GameCanvas;
+import java.util.ArrayList;
 
 /**
  * 
@@ -27,8 +28,15 @@ public class GameServer {
 	
 	private double p1x, p2x;
 	private double p1y, p2y;
+
+	private ArrayList<Point> p1Sprites = new ArrayList<>();
+    private ArrayList<Point> p2Sprites = new ArrayList<>();
 	
 	private SoccerBall ball;
+
+	private GameCanvas canvas;
+
+	private volatile boolean ballActive;
 	/**
 	 * 
 	 */
@@ -41,14 +49,14 @@ public class GameServer {
 		p1y = Config.PLAYER1_INITIAL_Y;
 		p2x = Config.PLAYER2_INITIAL_X;
 		p2y = Config.PLAYER2_INITIAL_Y;
-
-		ball = new SoccerBall(512, 395); 
-    	ball.setVelocity(9, -2); 
+		ballActive = false;
 		
+		canvas = new GameCanvas();
 		try {
 			ss = new ServerSocket(Config.SERVER_SOCKET);
 		} catch (IOException ex) {
 			System.out.println("IOException from GameServer constructor");
+			ex.printStackTrace();
 		}
 	}
 	
@@ -62,9 +70,11 @@ public class GameServer {
 				DataInputStream in = new DataInputStream(bis);
 				BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream());
 				DataOutputStream out = new DataOutputStream(bos);
-				
+
 				numPlayers++;
-				out.writeInt(numPlayers);
+				int playerID = numPlayers;
+			
+				out.writeInt(playerID);
 				System.out.println("Player #" + numPlayers + " has connected.");
 				
 				ReadFromClient rfc = new ReadFromClient(numPlayers, in);
@@ -101,9 +111,49 @@ public class GameServer {
 	}
 
 	private void updateBallPosition() {
-    ball.update(); 
-}
-	
+	if (ballActive){
+		checkCollisions();
+		ball.update(); 
+	}
+    
+	}
+	private void checkCollisions() {
+	if (ball == null || !ballActive) {
+		return; 
+	}
+    
+
+   
+    if (checkCollisionWithSprites(ball, p1Sprites)) {
+        ball.adjustVelocity(1);
+        System.out.println("Collision detected with Player 1");
+		System.out.println("Ball speed after Player 1 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+       
+    }
+    if (checkCollisionWithSprites(ball, p2Sprites)) {
+        ball.adjustVelocity(2);
+        System.out.println("Collision detected with Player 2");
+		System.out.println("Ball speed after Player 2 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+      
+       
+    }
+
+	}
+	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
+    java.awt.Rectangle ballBounds = ball.getBoundingBox();
+    int spriteWidth = Config.SPRITE_WIDTH;
+    int spriteHeight = Config.SPRITE_HEIGHT;
+
+    for (Point spritePosition : spritePositions) {
+        java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
+            spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
+        );
+        if (ballBounds.intersects(spriteBounds)) {
+            return true;
+        }
+    }
+    return false;
+	}
 	private class ReadFromClient implements Runnable {
 		
 		private int playerID;
@@ -118,20 +168,35 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
-					if (playerID == 1) {
-						p1x = dataIn.readDouble();
-						p1y = dataIn.readDouble();
-						double ballX = dataIn.readDouble();
-            			double ballY = dataIn.readDouble();
+				
+                	String command = dataIn.readUTF();
+                	if ("START_BALL".equals(command)) {
+						System.out.println("Received START_BALL command from player " + playerID);
+						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
+						ball.setVelocity(3, -1);
+                    	ballActive = true;
+                    	System.out.println("Ball activated by player " + playerID);
+                    	
+                	}else if ("SPRITES".equals(command)){
+            		
+					int numSprites = dataIn.readInt();
+            		ArrayList<Point> spritePositions = new ArrayList<>();
+					for (int i = 0; i < numSprites; i++) {
+               			double sx = dataIn.readDouble();
+                		double sy = dataIn.readDouble();
+                		spritePositions.add(new Point((int) sx, (int) sy));
+            			}
+					
 						
-						//System.out.println(p1x + "\t" + p1y);
-					} else {
-						p2x = dataIn.readDouble();
-						p2y = dataIn.readDouble();
-						double ballX = dataIn.readDouble();
-            			double ballY = dataIn.readDouble(); 
-						//System.out.println(p2x + "\t" + p2y);
-						canvas.repaint();
+						
+					if (playerID == 1) {
+                		p1Sprites = spritePositions;
+                		
+            		} else {
+                		p2Sprites = spritePositions;
+                		
+            		}			
+						
 					}
 					
 				}
@@ -155,21 +220,36 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
-					updateBallPosition();
-					if (playerID == 1) {
-						dataOut.writeDouble(p2x);
-						dataOut.writeDouble(p2y);
-						dataOut.writeDouble(ball.getX());
-                		dataOut.writeDouble(ball.getY());
-                		dataOut.flush();
-					} else {
-						dataOut.writeDouble(p1x);
-						dataOut.writeDouble(p1y);
-						dataOut.writeDouble(ball.getX());
-               	 		dataOut.writeDouble(ball.getY());
-						dataOut.flush();
+					if (ballActive && ball != null) {
+                		
+						checkCollisions();
+						ball.update();
 					}
 					
+					if (ballActive && ball != null) {
+                		dataOut.writeDouble(ball.getX());
+                		dataOut.writeDouble(ball.getY());
+            		} else {
+                		dataOut.writeDouble(-1);
+                		dataOut.writeDouble(-1);
+            		}
+                
+				 
+
+                    ArrayList<Point> opponentSprites;
+            		if (playerID == 1) {
+                		opponentSprites = p2Sprites;
+            		} else {
+                		opponentSprites = p1Sprites;
+            		}
+            		dataOut.writeInt(opponentSprites.size());
+            		for (Point pos : opponentSprites) {
+                		dataOut.writeDouble(pos.x);
+                		dataOut.writeDouble(pos.y);
+            		}
+					
+
+					dataOut.flush();
 					try {
 						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {

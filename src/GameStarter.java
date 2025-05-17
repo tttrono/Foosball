@@ -1,4 +1,4 @@
-import Foosball.Config;
+import Foosball.Config; 
 
 public class GameStarter {
 
@@ -11,6 +11,8 @@ public class GameStarter {
 		
 		playerFrame.connectToServer();
 		playerFrame.setupGUI();
+
+		System.out.println("You are Player #" + playerFrame.getPlayerID());
 	}
 
 }

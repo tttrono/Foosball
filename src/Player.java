@@ -101,12 +101,12 @@ public class Player {
     
                 
             }
-            spriteIndex += rowCount[row];
+            
         }
    
      
     
-        
+        spriteIndex += rowCount[row];
       
         
     }
@@ -133,7 +133,8 @@ public class Player {
     }
 
     public void setSpritePositions(ArrayList<Point> positions) {
-        spritePositions = new ArrayList<>(positions);
+        this.spritePositions = positions;
+       
     }
     
     public boolean checkCollisionWithBall(SoccerBall ball) { //collision detection with the ball and each sprite

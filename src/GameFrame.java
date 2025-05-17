@@ -50,6 +50,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		width = w;
 		height = h;
+		me = new Player(1);
+		opponent = new Player(2);
+		canvas = new GameCanvas();
 
 	}
 	
@@ -85,35 +88,11 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		 setUpAnimationTimer();
 	
 	}
-	private void handleCollision(Player player) { // calls function of soccerball if it collides
-    	SoccerBall ball = canvas.getBall();
-
-    	
-    	int playerID = player == me ? 1 : 2;
-
-    	
-    	ball.adjustVelocity(playerID);
-
-    	System.out.println("Collision detected with Player " + playerID);
-		}
-	private void checkCollisions() { // checks which player it hit and moves ball forward in respect of the player
-    	SoccerBall ball = canvas.getBall();
-
-    
-    	if (me.checkCollisionWithBall(ball)) {
-        	handleCollision(me); 
-    	}
-
-    
-    	if (opponent.checkCollisionWithBall(ball)) {
-        	handleCollision(opponent); 
-		}
-	}
+	
 	private void setUpAnimationTimer() {
     	int interval = 16; 
         Timer animationTimer = new Timer(interval, e -> {
-			double balloldX = canvas.getBall().getX();
-			double balloldY = canvas.getBall().getY();
+		
 
 			if (up) {  //arrow keys
             me.moveSprites(0, -Config.PLAYER_SPEED);
@@ -121,18 +100,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         	if (down) {
             me.moveSprites(0, Config.PLAYER_SPEED);
         	}
-               if (ballActive) {
-            canvas.getBall().update();
-        	}
-			checkCollisions();
-			double ballnewX = canvas.getBall().getX();
-        	double ballnewY = canvas.getBall().getY();
-
-			int diameter = canvas.getBall().getDiameter();
-        	java.awt.Rectangle oldBounds = new java.awt.Rectangle((int) balloldX, (int) balloldY, diameter, diameter);
-        	java.awt.Rectangle newBounds = new java.awt.Rectangle((int) ballnewX, (int) ballnewY, diameter, diameter);
-        	java.awt.Rectangle dirtyRegion = oldBounds.union(newBounds);
-            canvas.repaint(dirtyRegion); 
+             
+			
+            canvas.repaint(); 
 			//canvas.repaint();
         });
         animationTimer.start();
@@ -164,13 +134,10 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				if (!ballActive) {
-				canvas.getBall().setVelocity(9, -2);
-                ballActive = true; 
-				canvas.setBallActive(true);
-                //canvas.getBall().setVelocity(9, -2);
-				}
+				sendStartBallCommand();
 				break;
+                //canvas.getBall().setVelocity(9, -2);
+				
 				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
 				up = true;
@@ -201,19 +168,37 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
-
-			if (playerID == 1) {
-				System.out.println("Waiting for Player #2 to connect...");
-			}	
+			
 		
 			
 			rfsRunnable = new ReadFromServer(in);
 			wtsRunnable = new WriteToServer(out); 
-			rfsRunnable.waitForStartMsg();
 			
+			String startMsg = in.readUTF();
+        	System.out.println("Message from server: " + startMsg);
+
+			new Thread(rfsRunnable).start();
+        	new Thread(wtsRunnable).start();
 		} catch (IOException ex) {
 			System.out.println("IOException from connectToServer()");
+			ex.printStackTrace();
 		}
+	}
+	public int getPlayerID() {
+        return playerID;
+    }
+
+	private void sendStartBallCommand() {
+    if (wtsRunnable != null && wtsRunnable.dataOut != null) {
+        try {
+            wtsRunnable.dataOut.writeUTF("START_BALL");
+            wtsRunnable.dataOut.flush();
+			System.out.println("Sent START_BALL command to server");
+        	} catch (IOException ex) {
+            System.out.println("Failed to send START_BALL command");
+            ex.printStackTrace();
+        	}
+    	}
 	}
 
 	private class ReadFromServer implements Runnable {
@@ -226,16 +211,37 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 		
 		public void run() {
+			System.out.println("ReadFromServer thread started!");
 			try {
 				while(true) {
-					
-					System.out.println();
-					if (opponent != null) {
-						ArrayList<Point> spritePositions = readSpritePositions();
+					 
 
+					double ballX = dataIn.readDouble();
+                	double ballY = dataIn.readDouble();
+					
+					
+					ArrayList<Point> spritePositions = readSpritePositions();
+					
                     
-                    	opponent.setSpritePositions(spritePositions);
+                    opponent.setSpritePositions(spritePositions);
+				
+					SoccerBall ball = canvas.getBall();
+					if (ballX >= 0 && ballY >= 0) {
+    					if (ball == null) {
+        					ball = new SoccerBall(ballX, ballY);
+        					canvas.setBall(ball);
+    					} else {
+        					ball.setX(ballX);
+        					ball.setY(ballY);
+    					}
+					} else {
+    			
+    					if (ball != null) {
+        				canvas.setBall(null);
+    					}
 					}
+                
+				canvas.repaint();
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
@@ -281,14 +287,19 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	 public void run() {
         try {
             while (true) {
-                if (me != null) {
+                
                    
                     ArrayList<Point> spritePositions = me.getSpritePositions();
 
-                   
-                    sendSpritePositions(spritePositions);
-
-                }
+                   	dataOut.writeUTF("SPRITES");
+                    dataOut.writeInt(spritePositions.size());
+					for (Point pos : spritePositions) {
+						
+                		dataOut.writeDouble(pos.x);
+                		dataOut.writeDouble(pos.y);
+            		}
+            		dataOut.flush();
+              
 
                 try {
                     Thread.sleep(25);

@@ -95,23 +95,30 @@ public class SoccerBall {
       
     }
 
-	public void checkBoundaries() 
-    {
+	public void checkBoundaries()  {
     
-    if (x <= boardTopLeftX || x + diameter >= boardBottomRightX) {
-        tempDx *= -1; 
-    }
+        if (x <= boardTopLeftX) {
+            x = boardTopLeftX;
+            tempDx *= -1;
+        }else if(x + diameter >= boardBottomRightX) {
+            x = boardBottomRightX - diameter;
+            tempDx *= -1; 
+        
+        }
 
 
-    if (y <= boardTopLeftY || y + diameter >= boardBottomRightY) {
-        tempDy*= -1; 
-        dy *= -1;
+        if (y <= boardTopLeftY) {
+            y = boardTopLeftY;
+            tempDy *= -1;
+        } else if (y + diameter >= boardBottomRightY) {
+            y = boardBottomRightY - diameter;
+            tempDy *= -1;
+        }
     }
-}
     
 
     public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character
-    
+        //double speed = 2.0; 
         if (playerID == 1) {
        
             if (dx <= 0) {
@@ -124,7 +131,7 @@ public class SoccerBall {
             }
         }
 
-        dy += (Math.random() - 0.5) * 2; //random y value for when  it is kicked by player
+        dy = (Math.random() - 0.5) * 2; //random y value for when  it is kicked by player
 
         Hit = true;
     }
@@ -149,5 +156,10 @@ public class SoccerBall {
 	public java.awt.Rectangle getBoundingBox() { // to encapsulate the sprite ball
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
-
+   public double getDx(){
+    return dx;
+   }
+   public double getDy(){
+    return dy;
+   }
 }
