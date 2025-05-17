@@ -77,7 +77,7 @@ public class ScoreBoard {
 		g2d.drawString(COUNTRY1.getCode(), 250, 100);
 		
 		try {
-			BufferedImage img = ImageIO.read(new File(String.format("./Foosball/Flags/%s-flag.png", COUNTRY1.getCode())));
+			BufferedImage img = ImageIO.read(new File(String.format("./Shapes/Images/flags/%s-flag.png", COUNTRY1.getCode())));
 			g2d.drawImage(img, (int) x-413, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -99,7 +99,7 @@ public class ScoreBoard {
 		g2d.drawString(COUNTRY2.getCode(), 670, 100);	
 		
 		try {
-			BufferedImage img = ImageIO.read(new File(String.format("./Foosball/Flags/%s-flag.png", COUNTRY2.getCode())));
+			BufferedImage img = ImageIO.read(new File(String.format("./Shapes/Images/flags/%s-flag.png", COUNTRY2.getCode())));
 			g2d.drawImage(img, (int) x+270, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -7,7 +7,14 @@ import Shapes.Colors;
 public enum Country {
 	
 	UK("UK", "United Kingdom", Color.BLUE),
-	CA("CA", "Canada", Color.RED);
+	AU("AU", "Australia", Color.BLUE),
+	US("US", "United States", Color.BLUE),
+	RU("RU", "Russia", Color.BLUE),
+	
+	CA("CA", "Canada", Color.RED),
+	FR("FR", "France", Color.RED),
+	IT("IT", "Italy", Color.RED),
+	KR("KR", "South Korea", Color.RED);
 	
 	private final String name;
 	private final String country_code;
