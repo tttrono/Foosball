@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import Foosball.Teams.Country;
+import Shapes.Banner;
 import Shapes.Circle;
 import Shapes.Colors;
 import Shapes.DrawingObject;
@@ -96,7 +98,7 @@ public class ScoreBoard {
 		// RED TEAM
 		g2d.setColor(COUNTRY2.getColor());
 		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
-		g2d.drawString(COUNTRY2.getCode(), 670, 100);	
+		g2d.drawString(COUNTRY2.getCode(), 673, 100);	
 		
 		try {
 			BufferedImage img = ImageIO.read(new File(String.format("./Shapes/Images/flags/%s-flag.png", COUNTRY2.getCode())));
@@ -117,6 +119,33 @@ public class ScoreBoard {
 		
 		for(DrawingObject object: scoreboard) {
 			object.draw(g2d);
+		}
+		
+		if (BLUE_SCORE == 5) {
+			
+			Banner banner_blue = new Banner(355, 0, 40, 290, Color.WHITE);  
+			banner_blue.draw(g2d);
+			
+			AffineTransform reset = g2d.getTransform();
+			g2d.rotate(Math.toRadians(270), 385, 145);
+			g2d.setColor(Color.BLUE);
+			g2d.setFont(new Font(score_font, Font.BOLD, 30));
+			g2d.drawString("WINNER", 375, 145);
+			g2d.setTransform(reset);
+		
+		} 
+		
+		if (RED_SCORE == 5) {
+			
+			Banner banner_red = new Banner(625, 0, 40, 290, Color.WHITE);  
+			banner_red.draw(g2d);
+			
+			AffineTransform reset = g2d.getTransform();
+			g2d.rotate(Math.toRadians(90), 635, 35);
+			g2d.setColor(Color.RED);
+			g2d.setFont(new Font(score_font, Font.BOLD, 30));
+			g2d.drawString("WINNER", 635, 35);
+			g2d.setTransform(reset);
 		}
 	}
 	
