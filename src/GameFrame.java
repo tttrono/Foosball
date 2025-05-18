@@ -215,7 +215,7 @@ public class GameFrame implements KeyListener {
 						opponent.setY(y);
 					}
 					
-					if (other_country == null && other_country_int != 0) {
+					if (other_country_int != 0 && other_country == null) {
 						if (playerID == 1) {
 							other_country = scoreboard.findCountry(2, other_country_int);
 							scoreboard.setRedCountry(other_country);
