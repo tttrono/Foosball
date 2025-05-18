@@ -81,4 +81,8 @@ public class GameCanvas extends JComponent {
 	public SoccerBall getBall() {
 		return ball;
 	}
+	
+	public ScoreBoard getScoreBoard() {
+		return scoreboard;
+	}
 }

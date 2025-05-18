@@ -14,7 +14,9 @@ public enum Country {
 	CA("CA", "Canada", Color.RED),
 	FR("FR", "France", Color.RED),
 	IT("IT", "Italy", Color.RED),
-	KR("KR", "South Korea", Color.RED);
+	KR("KR", "South Korea", Color.RED),
+	
+	DF("DF", "", Colors.INVISIBLE); //default
 	
 	private final String name;
 	private final String country_code;
