@@ -26,6 +26,7 @@ public class GameServer {
 	
 	private double p1x, p2x;
 	private double p1y, p2y;
+	private Integer country1, country2 = 0;
 	
 	/**
 	 * 
@@ -39,6 +40,9 @@ public class GameServer {
 		p1y = Config.PLAYER1_INITIAL_Y;
 		p2x = Config.PLAYER2_INITIAL_X;
 		p2y = Config.PLAYER2_INITIAL_Y;
+		
+		country1 = 0; 
+		country2 = 0;
 		
 		try {
 			ss = new ServerSocket(Config.SERVER_SOCKET);
@@ -103,17 +107,19 @@ public class GameServer {
 		public ReadFromClient(int pid, DataInputStream in) {
 			playerID = pid;
 			dataIn = in;
-			System.out.println("RFC" + playerID + "Runnable created.");  
+			//System.out.println("RFC" + playerID + "Runnable created.");  
 		}
 		
 		public void run() {
 			try {
 				while(true) {
 					if (playerID == 1) {
+						country1 = dataIn.readInt();
 						p1x = dataIn.readDouble();
 						p1y = dataIn.readDouble();
 						//System.out.println(p1x + "\t" + p1y);
 					} else {
+						country2 = dataIn.readInt();
 						p2x = dataIn.readDouble();
 						p2y = dataIn.readDouble(); 
 						//System.out.println(p2x + "\t" + p2y);
@@ -121,7 +127,7 @@ public class GameServer {
 					
 				}
 			} catch (IOException ex) {
-				System.out.println("IOException from RFC run()");
+				//System.out.println("IOException from RFC run()");
 			}
 		}
 	}
@@ -134,17 +140,19 @@ public class GameServer {
 		public WriteToClient(int pid, DataOutputStream out) {
 			playerID = pid;
 			dataOut = out;
-			System.out.println("WTC" + playerID + "Runnable created.");  
+			//System.out.println("WTC" + playerID + "Runnable created.");  
 		}
 		
 		public void run() {
 			try {
 				while(true) {
 					if (playerID == 1) {
+						dataOut.writeInt(country2); 
 						dataOut.writeDouble(p2x);
 						dataOut.writeDouble(p2y);
 						dataOut.flush();
 					} else {
+						dataOut.writeInt(country1);
 						dataOut.writeDouble(p1x);
 						dataOut.writeDouble(p1y);
 						dataOut.flush();
@@ -157,7 +165,7 @@ public class GameServer {
 					}
 				}
 			} catch (IOException ex) {
-				System.out.println("IOException from WTC run()");
+				//System.out.println("IOException from WTC run()");
 			}
 		}
 		

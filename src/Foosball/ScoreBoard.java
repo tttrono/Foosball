@@ -26,25 +26,41 @@ public class ScoreBoard {
 	int BLUE_SCORE = 0;
 	int RED_SCORE = 0;
 	
-	Country COUNTRY1, COUNTRY2;
+	Country COUNTRY1 = Country.DF; // default
+	Country COUNTRY2 = Country.DF; // default
+	
+	public ArrayList<Country> blueCountries;
+	public ArrayList<Country> redCountries;
 	
 	ArrayList<DrawingObject> scoreboard;
-	
+
 	File twcen_file, segoeui_file;
 	Font twcen_font, segoeui_font;
 
 	public ScoreBoard() {
 		
 		scoreboard = new ArrayList<DrawingObject>();
+		blueCountries = new ArrayList<Country>();
+		redCountries = new ArrayList<Country>();
+		
+		blueCountries.add(Country.DF);
+		blueCountries.add(Country.UK);
+		blueCountries.add(Country.AU);
+		blueCountries.add(Country.US);
+		blueCountries.add(Country.RU);
+		
+		redCountries.add(Country.DF);
+		redCountries.add(Country.CA);
+		redCountries.add(Country.FR);
+		redCountries.add(Country.IT);
+		redCountries.add(Country.KR);
+		
 	}
 	
 	public void draw(Graphics2D g2d) {
 		
 		x = Config.SCREEN_WIDTH/2;
 		y = Config.SCREEN_HEIGHT/2;
-		
-		COUNTRY1 = Country.UK;
-		COUNTRY2 = Country.CA;
 
 		try {
             twcen_file = new File("Shapes/Fonts/TCB_____.TTF");
@@ -149,6 +165,23 @@ public class ScoreBoard {
 		}
 	}
 	
+	public Country findCountry(int playerID, int countryNum) {
+		
+		if (playerID == 1) {
+			return blueCountries.get(countryNum);
+		} else {
+			return redCountries.get(countryNum);
+		}
+	}
+	
+	public void setBlueCountry(Country country) {
+		COUNTRY1 = country;
+	}
+	
+	public void setRedCountry(Country country) {
+		COUNTRY2 = country;
+	}
+	
 	public int get_bluescore() {
 		return BLUE_SCORE;
 	}
@@ -164,5 +197,7 @@ public class ScoreBoard {
 	public void add_red_score() {
 		RED_SCORE += 1;
 	}
+	
+	
 
 }
