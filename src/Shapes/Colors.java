@@ -33,4 +33,7 @@ public class Colors {
 	public static final Color RED_DARK 		= new Color(228, 31, 28);
 	public static final Color RED_BLOOD 	= new Color(143, 29, 29); 
 	
+	public static final Color CYAN 			= new Color(124, 232, 244);
+	public static final Color FUSCHIA 		= new Color(223, 40, 92);
+	
 }

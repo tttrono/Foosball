@@ -6,15 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
-<<<<<<< HEAD
-
-import Foosball.*;
-import Foosball.Teams.*;
-import Shapes.DrawingObject;
-import java.time.temporal.TemporalAccessor;
-=======
 import java.awt.image.BufferedImage;
->>>>>>> Justin
 
 public class GameCanvas extends JComponent {
 
@@ -25,13 +17,6 @@ public class GameCanvas extends JComponent {
 	
 	DigitalBoard digitalboard;
 	SoccerBall ball;
-<<<<<<< HEAD
-	ScoreDials dials;
-	BlueTeam_Rod_5 Rod5;
-	BlueTeam_Rod_3 Rod3;
-	BlueTeam_Rod_2 Rod2;
-	BlueTeam_Rod_1 Rod1;
-=======
 
 	ScoreBoard scoreboard;
 
@@ -47,21 +32,11 @@ public class GameCanvas extends JComponent {
 	private BufferedImage backgroundImage;
 	
 
->>>>>>> Justin
 	
 	public GameCanvas() {
 		
 		objects = new ArrayList<DrawingObject>();
 		
-<<<<<<< HEAD
-		board = new GameTable();
-		ball = new SoccerBall();
-		dials = new ScoreDials();
-		Rod5 = new BlueTeam_Rod_5();
-		Rod3 = new BlueTeam_Rod_3();
-		Rod2 = new BlueTeam_Rod_2();
-		Rod1 = new BlueTeam_Rod_1();
-=======
 
 		digitalboard = new DigitalBoard();
 		scoreboard = new ScoreBoard();
@@ -84,7 +59,6 @@ public class GameCanvas extends JComponent {
    		opponent = new Player(2); 
 
 		renderBackground();
->>>>>>> Justin
 		
 	}
 
@@ -128,16 +102,6 @@ public class GameCanvas extends JComponent {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
 		
-<<<<<<< HEAD
-		board.draw(g2d);
-		me.draw(g2d);
-		opponent.draw(g2d);
-		Rod5.draw(g2d);
-		Rod3.draw(g2d);
-		Rod2.draw(g2d);
-		Rod1.draw(g2d);
-		dials.draw(g2d);
-=======
 		g2d.drawImage(backgroundImage, 0, 0, null);
 		
 		if (ball != null){
@@ -154,9 +118,8 @@ public class GameCanvas extends JComponent {
         if (opponent != null) {
             opponent.draw(g2d);
         }
-		scoreboard.draw(g2d);
+	
 
->>>>>>> Justin
 		
 //		for (DrawingObject object: objects) {
 //			object.draw(g2d);

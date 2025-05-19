@@ -10,6 +10,7 @@ public class Config {
 	public static final int SERVER_SOCKET = 54321;
 	
 	public static final int MAX_PLAYERS = 2;
+	public static final int MAX_SCORE = 5;
 
 	public static final int SCREEN_WIDTH = 1024;
 	public static final int SCREEN_HEIGHT = 650; 

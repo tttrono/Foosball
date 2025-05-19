@@ -177,8 +177,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			String startMsg = in.readUTF();
         	System.out.println("Message from server: " + startMsg);
 
-			//new Thread(rfsRunnable).start();
-        	//new Thread(wtsRunnable).start();
+			new Thread(rfsRunnable).start();
+        	new Thread(wtsRunnable).start();
 		} catch (IOException ex) {
 			System.out.println("IOException from connectToServer()");
 			ex.printStackTrace();
@@ -246,6 +246,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 				System.out.println("IOException from RFS run()");
 			}
 		}
+	
 		private ArrayList<Point> readSpritePositions() throws IOException {
         int numSprites = dataIn.readInt(); 
         ArrayList<Point> spritePositions = new ArrayList<>();
