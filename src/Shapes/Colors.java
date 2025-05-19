@@ -27,6 +27,9 @@ public class Colors {
 	public static final Color GREEN			= new Color(47, 148, 80);
 	public static final Color FOREST_GREEN	= new Color(33, 113, 18);
 	
+	public static final Color DARK_TEAL		= new Color(39, 53, 71);
+	public static final Color DARKER_TEAL 	= new Color(33, 46, 62);
+	
 	public static final Color RED_DARK 		= new Color(228, 31, 28);
 	public static final Color RED_BLOOD 	= new Color(143, 29, 29); 
 	

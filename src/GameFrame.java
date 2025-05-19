@@ -1,19 +1,40 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import java.net.*;
-
-public class GameFrame extends JFrame {
-
+import Foosball.Config;
+import Foosball.SoccerBall;
+import Shapes.Colors;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+public class GameFrame implements KeyListener, MouseWheelListener {
+	
+	private JFrame frame;
 	private int width, height;
-	private Container contentPane;
 	private GameCanvas canvas;
 	
 	private Player me;
+
 	private Player opponent;
+	//private SoccerBall ball;
+
+	//private Player2 opponent;
 	private Timer animationTimer;
 	private boolean up, down, left, right;
+
+	private boolean ballActive = false;
+
 	
 	private Socket socket;
 	private int playerID;
@@ -25,12 +46,13 @@ public class GameFrame extends JFrame {
 	 */
 	public GameFrame(int w, int h) {
 		
+		frame = new JFrame();
+		
 		width = w;
 		height = h;
-		up = false;
-		down = false;
-		left = false;
-		right = false;
+		me = new Player(1);
+		opponent = new Player(2);
+		canvas = new GameCanvas();
 
 	}
 	
@@ -38,163 +60,203 @@ public class GameFrame extends JFrame {
 		
 		canvas = new GameCanvas();
 		canvas.setDoubleBuffered(true);
-		canvas.setBackground(Color.BLACK);
 		canvas.createPlayers(playerID);
 		
 		me 		 = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
+		//ball	 = canvas.getBall();
 		
-		contentPane = this.getContentPane();
+		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
+		contentPane.setBackground(Colors.DARK_TEAL);
 		contentPane.add(canvas, BorderLayout.CENTER);
 		
-		this.setTitle("Foosball - Player #" + playerID);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.pack();
-		this.setResizable(false);
-		this.setVisible(true);
+		frame.setTitle("Foosball - Player #" + playerID);
+		
+		canvas.addMouseWheelListener(this);
+		canvas.addKeyListener(this);
 		
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		setUpAnimationTimer();
-		setUpKeyListener();
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 		
+		//this.showControls();
+		setUpAnimationTimer();
+	
 	}
 	
 	private void setUpAnimationTimer() {
-		int interval = 10;
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				double speed = 5;
-				if (up) {
-					me.moveV(-speed); // move up
-					
-					down = false;
-					left = false;
-					right = false;
-					
-				} else if (down) {
-					me.moveV(speed);
-					
-					up = false;
-					left = false;
-					right = false;
-					
-				} else if (left) {
-					me.moveH(-speed);
-					
-					up = false;
-					down = false;
-					right = false;
-					
-				} else if (right) {
-					me.moveH(speed);
-					
-					up = false;
-					down = false;
-					left = false;
-				}
-				canvas.repaint();
-			}
-		};
+    	int interval = 16; 
+        Timer animationTimer = new Timer(interval, e -> {
 		
-		animationTimer = new Timer(interval, al); 
-		animationTimer.start();
+
+			if (up) {  //arrow keys
+            me.moveSprites(0, -Config.PLAYER_SPEED);
+        	}
+        	if (down) {
+            me.moveSprites(0, Config.PLAYER_SPEED);
+        	}
+             
+			
+            canvas.repaint(); 
+			//canvas.repaint();
+        });
+        animationTimer.start();
+    }
+
+
+	
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int scroll = e.getWheelRotation();
+
+    	if (scroll < 0 ) {
+			
+    		me.moveSprites(0, -Config.PLAYER_SPEED);
+			
+			
+		
+
+    	} else if (scroll >0) {
+			
+    		me.moveSprites(0, Config.PLAYER_SPEED);
+			
+        }
+		canvas.repaint();
 	}
 	
-	private void setUpKeyListener() {
-		KeyListener kl = new KeyListener() {
-			public void keyTyped(KeyEvent ke) { 
-				
-			}
-			
-			public void keyPressed(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = true;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = true;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = true;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = true;
-						break;
-				}
-			}
-			
-			public void keyReleased(KeyEvent ke) {
-				int keyCode = ke.getKeyCode();
-				
-				switch (keyCode) {
-					case KeyEvent.VK_UP:
-						up = false;
-						break;
-					case KeyEvent.VK_DOWN:
-						down = false;
-						break;
-					case KeyEvent.VK_LEFT:
-						left = false;
-						break;
-					case KeyEvent.VK_RIGHT:
-						right = false;
-						break;
-				}
-			}
-		};
+	@Override
+	public void keyPressed(KeyEvent e) {
 		
-		contentPane.addKeyListener(kl);
-		contentPane.setFocusable(true);
-		contentPane.requestFocus();
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SPACE:
+				sendStartBallCommand();
+				break;
+                //canvas.getBall().setVelocity(9, -2);
+				
+				// TODO: Add restrictions for only when the ball is out
+			case KeyEvent.VK_UP:
+				up = true;
+				me.moveSprites(0, -Config.PLAYER_SPEED);
+				canvas.repaint();
+				//me.moveV(-Config.PLAYER_SPEED);
+				//canvas.repaint();
+				break;
+			case KeyEvent.VK_DOWN:
+				down = true;
+				me.moveSprites(0, Config.PLAYER_SPEED);
+				canvas.repaint();
+				//me.moveV(Config.PLAYER_SPEED);
+				//canvas.repaint();
+				break;
+		}
 	}
+	
+	public void keyReleased(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {}
 	
 	public void connectToServer() {
 		try {
-			socket = new Socket("localhost", 45371);
-			DataInputStream in = new DataInputStream(socket.getInputStream());
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
+			BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+			DataInputStream in = new DataInputStream(bis);
+			BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
 			
-			if (playerID == 1) {
-				System.out.println("Waiting for Player #2 to connect...");
-			}
+		
 			
 			rfsRunnable = new ReadFromServer(in);
 			wtsRunnable = new WriteToServer(out); 
-			rfsRunnable.waitForStartMsg();
 			
+			String startMsg = in.readUTF();
+        	System.out.println("Message from server: " + startMsg);
+
+			//new Thread(rfsRunnable).start();
+        	//new Thread(wtsRunnable).start();
 		} catch (IOException ex) {
 			System.out.println("IOException from connectToServer()");
+			ex.printStackTrace();
 		}
+	}
+	public int getPlayerID() {
+        return playerID;
+    }
+
+	private void sendStartBallCommand() {
+    if (wtsRunnable != null && wtsRunnable.dataOut != null) {
+        try {
+            wtsRunnable.dataOut.writeUTF("START_BALL");
+            wtsRunnable.dataOut.flush();
+	
+        	} catch (IOException ex) {
+            ex.printStackTrace();
+        	}
+    	}
 	}
 
 	private class ReadFromServer implements Runnable {
 		
 		private DataInputStream dataIn;
 		
-		public ReadFromServer(DataInputStream in) {
+		public ReadFromServer(DataInputStream in) { // this is still testing but should work
 			dataIn = in;
 			System.out.println("RFS Runnable created.");
 		}
 		
 		public void run() {
+			System.out.println("ReadFromServer thread started!");
 			try {
 				while(true) {
-					if (opponent != null) {
-						opponent.setX(dataIn.readDouble());
-						opponent.setY(dataIn.readDouble());
+					 
+
+					double ballX = dataIn.readDouble();
+                	double ballY = dataIn.readDouble();
+					
+					
+					ArrayList<Point> spritePositions = readSpritePositions();
+					
+                    
+                    opponent.setSpritePositions(spritePositions);
+				
+					SoccerBall ball = canvas.getBall();
+					if (ballX >= 0 && ballY >= 0) {
+    					if (ball == null) {
+        					ball = new SoccerBall(ballX, ballY);
+        					canvas.setBall(ball);
+    					} else {
+        					ball.setX(ballX);
+        					ball.setY(ballY);
+    					}
+					} else {
+    			
+    					if (ball != null) {
+        				canvas.setBall(null);
+    					}
 					}
+                
+				canvas.repaint();
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
 			}
 		}
+		private ArrayList<Point> readSpritePositions() throws IOException {
+        int numSprites = dataIn.readInt(); 
+        ArrayList<Point> spritePositions = new ArrayList<>();
+        for (int i = 0; i < numSprites; i++) {
+            double x = dataIn.readDouble(); 
+            double y = dataIn.readDouble(); 
+            spritePositions.add(new Point((int) x, (int) y));
+        }
+        return spritePositions;
+		}
+	
 		
 		public void waitForStartMsg() {
 			try {
@@ -212,7 +274,7 @@ public class GameFrame extends JFrame {
 		}
 	}
 	
-	private class WriteToServer implements Runnable {
+	private class WriteToServer implements Runnable {	
 		
 		private DataOutputStream dataOut;
 		
@@ -221,24 +283,33 @@ public class GameFrame extends JFrame {
 			System.out.println("WTS Runnable created.");
 		}
 		
-		public void run() {
-			try {
-				while(true) {
-					if (me != null) {
-						dataOut.writeDouble(me.getX());
-						dataOut.writeDouble(me.getY());
-						dataOut.flush();
-					}
-					
-					try {
-						Thread.sleep(25);
-					} catch (InterruptedException ex) {
-						System.out.println("InterruptedException from WTS run()");
-					}
-				}
-			} catch (IOException ex) {
-				System.out.println("IOException at WTS run()");
-			}
-		}
+	 public void run() {
+        try {
+            while (true) {
+                
+                   
+                    ArrayList<Point> spritePositions = me.getSpritePositions();
+
+                   	dataOut.writeUTF("SPRITES");
+                    dataOut.writeInt(spritePositions.size());
+					for (Point pos : spritePositions) {
+						
+                		dataOut.writeDouble(pos.x);
+                		dataOut.writeDouble(pos.y);
+            		}
+            		dataOut.flush();
+              
+
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException ex) {
+                    System.out.println("InterruptedException from WTS run()");
+                }
+            }
+        } catch (IOException ex) {
+            System.out.println("IOException at WTS run()");
+        	}
+    	}	
+
 	}
 }

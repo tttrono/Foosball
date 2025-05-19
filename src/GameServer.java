@@ -1,3 +1,6 @@
+import Foosball.Config;
+import Foosball.SoccerBall;
+import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -5,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * 
@@ -22,8 +26,16 @@ public class GameServer {
 	private WriteToClient p1WriteRunnable;
 	private WriteToClient p2WriteRunnable;
 	
-	private double p1x, p1y, p2x, p2y;
 	
+
+	private ArrayList<Point> p1Sprites = new ArrayList<>();
+    private ArrayList<Point> p2Sprites = new ArrayList<>();
+	
+	private SoccerBall ball;
+
+	private GameCanvas canvas;
+
+	private volatile boolean ballActive;
 	/**
 	 * 
 	 */
@@ -32,15 +44,15 @@ public class GameServer {
 		numPlayers = 0;
 		maxPlayers = 2;
 		
-		p1x = 100;
-		p1y = 400;
-		p2x = 490;
-		p2y = 400;
+	
+		ballActive = false;
 		
+		canvas = new GameCanvas();
 		try {
-			ss = new ServerSocket(45371);
+			ss = new ServerSocket(Config.SERVER_SOCKET);
 		} catch (IOException ex) {
 			System.out.println("IOException from GameServer constructor");
+			ex.printStackTrace();
 		}
 	}
 	
@@ -48,15 +60,17 @@ public class GameServer {
 		try {
 			System.out.println("Waiting for connections... ");
 			
-			while (numPlayers < maxPlayers) {
+			while (numPlayers < Config.MAX_PLAYERS) {
 				Socket s = ss.accept();
 				BufferedInputStream bis = new BufferedInputStream(s.getInputStream());
 				DataInputStream in = new DataInputStream(bis);
 				BufferedOutputStream bos = new BufferedOutputStream(s.getOutputStream());
 				DataOutputStream out = new DataOutputStream(bos);
-				
+
 				numPlayers++;
-				out.writeInt(numPlayers);
+				int playerID = numPlayers;
+			
+				out.writeInt(playerID);
 				System.out.println("Player #" + numPlayers + " has connected.");
 				
 				ReadFromClient rfc = new ReadFromClient(numPlayers, in);
@@ -91,7 +105,51 @@ public class GameServer {
 			System.out.println("IOException from acceptConnections()");
 		}
 	}
-	
+
+	private void updateBallPosition() {
+	if (ballActive){
+		checkCollisions();
+		ball.update(); 
+	}
+    
+	}
+	private void checkCollisions() {
+		if (ball == null || !ballActive) {
+			return; 
+	}
+    
+
+   
+    	if (checkCollisionWithSprites(ball, p1Sprites)) {
+        	ball.adjustVelocity(1);
+        	System.out.println("Collision detected with Player 1");
+			System.out.println("Ball speed after Player 1 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+       
+    	}
+    	if (checkCollisionWithSprites(ball, p2Sprites)) {
+        	ball.adjustVelocity(2);
+        	System.out.println("Collision detected with Player 2");
+			System.out.println("Ball speed after Player 2 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+      
+       
+    	}
+
+	}
+	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
+    	java.awt.Rectangle ballBounds = ball.getBoundingBox();
+    	int spriteWidth = Config.SPRITE_WIDTH/2;
+    	int spriteHeight = Config.SPRITE_HEIGHT/2;
+
+    	for (Point spritePosition : spritePositions) {
+        	java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
+            	spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
+        	);
+        	if (ballBounds.intersects(spriteBounds)) {
+            	return true;
+        	}
+    	}
+    	return false;
+	}
 	private class ReadFromClient implements Runnable {
 		
 		private int playerID;
@@ -106,14 +164,35 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
-					if (playerID == 1) {
-						p1x = dataIn.readDouble();
-						p1y = dataIn.readDouble();
-						//System.out.println(p1x + "\t" + p1y);
-					} else {
-						p2x = dataIn.readDouble();
-						p2y = dataIn.readDouble(); 
-						//System.out.println(p2x + "\t" + p2y);
+				
+                	String command = dataIn.readUTF();
+                	if ("START_BALL".equals(command)) {
+						System.out.println("Received START_BALL command from player " + playerID);
+						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
+						ball.setVelocity(4, -1);
+                    	ballActive = true;
+                    	System.out.println("Ball activated by player " + playerID);
+                    	
+                	}else if ("SPRITES".equals(command)){
+            		
+						int numSprites = dataIn.readInt();
+            			ArrayList<Point> spritePositions = new ArrayList<>();
+						for (int i = 0; i < numSprites; i++) {
+               				double sx = dataIn.readDouble();
+                			double sy = dataIn.readDouble();
+                			spritePositions.add(new Point((int) sx, (int) sy));
+            			}
+					
+						
+						
+						if (playerID == 1) {
+                			p1Sprites = spritePositions;
+                		
+            			} else {
+                			p2Sprites = spritePositions;
+                		
+            			}			
+						
 					}
 					
 				}
@@ -137,20 +216,38 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
-					if (playerID == 1) {
-						//System.out.println(p2x + "\t" + p2y);
-						dataOut.writeDouble(p2x);
-						dataOut.writeDouble(p2y);
-						dataOut.flush();
-					} else {
-						//System.out.println(p1x + "\t" + p1y);
-						dataOut.writeDouble(p1x);
-						dataOut.writeDouble(p1y);
-						dataOut.flush();
+					if (ballActive && ball != null) {
+                		
+						checkCollisions();
+						ball.update();
 					}
 					
+					if (ballActive && ball != null) {
+                		dataOut.writeDouble(ball.getX());
+                		dataOut.writeDouble(ball.getY());
+            		} else {
+                		dataOut.writeDouble(-1);
+                		dataOut.writeDouble(-1);
+            		}
+                
+				 
+
+                    ArrayList<Point> opponentSprites;
+            		if (playerID == 1) {
+                		opponentSprites = p2Sprites;
+            		} else {
+                		opponentSprites = p1Sprites;
+            		}
+            		dataOut.writeInt(opponentSprites.size());
+            		for (Point pos : opponentSprites) {
+                		dataOut.writeDouble(pos.x);
+                		dataOut.writeDouble(pos.y);
+            		}
+					
+
+					dataOut.flush();
 					try {
-						Thread.sleep(25);
+						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {
 						System.out.println("InterruptedException from WTC run()");
 					}

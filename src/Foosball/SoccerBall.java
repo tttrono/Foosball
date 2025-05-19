@@ -1,46 +1,159 @@
 package Foosball;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-import Shapes.Circle;
-import Shapes.DrawingObject;
 
 public class SoccerBall {
-	
-	private double x, y;
 
-	public SoccerBall() {
-		// TODO Auto-generated constructor stub
-	}
+    private double x, y;
+    private double dx, dy; 
+    private double tempDx, tempDy;
+    private int width, height; 
+    private static final double friction = 0.99;
+    private boolean Hit;
+    private BufferedImage sprite; 
+    private int boardWidth, boardHeight; 
+	private int  diameterSprite, diameter;
+	int boardTopLeftX = 100; 
+    int boardTopLeftY = 191;
+    int boardBottomRightX = 924; 
+    int boardBottomRightY = 599;
 
-	public void draw(Graphics2D g2d) {
-		
-		Circle ball = new Circle(405, 300, 12, 0, Color.WHITE);
-		ball.draw(g2d);
-		
-	}
+    public SoccerBall(double x, double y) {
+        this.x = x;
+        this.y = y;
+        this.dx = 0; 
+        this.dy = 0; 
+        this.tempDx = dx;
+        this.tempDy = dy;
+        this.diameter = 20;
+        this.Hit = true;
+    
+	    try {
+            sprite = ImageIO.read(new File("assets/soccerball.png")); 
+        } catch (IOException e) {
+            System.err.println("Error loading sprite: ");
+            sprite = null; 
+        }
+    
+		diameterSprite = sprite.getWidth();
+
+
+
+    }
+
+    public void draw(Graphics2D g2d) {
 	
-	public void moveH(double n) {
-		x += n;
-	}
-	
-	public void moveV(double n) {
-		y += n;
-	}
-	
-	public void setX(double n) {
-		x = n;
-	}
-	
-	public void setY(double n) {
-		y = n;
-	}
-	public double getX() {
-		return x;
-	}
-	
-	public double getY() {
-		return y;
-	}
+   		if (sprite != null) {
+       
+            g2d.drawImage(sprite, (int) x, (int) y, diameter, diameter, null);
+        } else {
+        
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.fillOval((int) x, (int) y, diameter, diameter);
+        }
+    }
+     public void setVelocity(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
+    public void update() { // update based on if it is hit by a character or if it is not (friction)
+        
+       if (Hit){
+        tempDx = dx;
+        tempDy = dy;
+        Hit = false;
+        } else {
+            tempDx *= friction;
+ 
+
+        }
+        
+        if (Math.abs(tempDx) < 2) {
+            if (tempDx < 0) {
+                tempDx = -2; 
+            } else {
+                tempDx = 2; 
+            }
+        }
+
+    
+    
+        x = x + tempDx;
+        y = y + tempDy;
+        checkBoundaries();
+      
+    }
+
+	public void checkBoundaries()  {
+    
+        if (x <= boardTopLeftX) {
+            x = boardTopLeftX;
+            tempDx *= -1;
+        }else if(x + diameter >= boardBottomRightX) {
+            x = boardBottomRightX - diameter;
+            tempDx *= -1; 
+        
+        }
+
+
+        if (y <= boardTopLeftY) {
+            y = boardTopLeftY;
+            tempDy *= -1;
+        } else if (y + diameter >= boardBottomRightY) {
+            y = boardBottomRightY - diameter;
+            tempDy *= -1;
+        }
+    }
+    
+
+    public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character
+        //double speed = 2.0; 
+        if (playerID == 1) {
+       
+            if (dx <= 0) {
+                dx = Math.abs(dx); 
+            }
+        } else if (playerID == 2) {
+        
+            if (dx >= 0) {
+                dx = -Math.abs(dx); 
+            }
+        }
+
+        dy = (Math.random() - 0.5) * 2; //random y value for when  it is kicked by player
+
+        Hit = true;
+    }
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+    public int getDiameter(){
+        return diameter;
+    }
+	public java.awt.Rectangle getBoundingBox() { // to encapsulate the sprite ball
+        return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
+    }
+   public double getDx(){
+    return dx;
+   }
+   public double getDy(){
+    return dy;
+   }
 }

@@ -16,7 +16,11 @@ public class BlueTeam_Rod_3 implements DrawingObject {
 
 	public BlueTeam_Rod_3() {
 		Rod_3 = new ArrayList<DrawingObject>();
+<<<<<<< HEAD
 		Rod_3.add(new Rectangle(381, 255, 10, 100, 0, Color.BLUE));
+=======
+		Rod_3.add(new Rectangle(460, 599 - 204, 3, 405, 0, Color.BLUE));
+>>>>>>> Justin
 	}
 	
 	@Override
