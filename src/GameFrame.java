@@ -85,7 +85,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		frame.setVisible(true);
 		
 		//this.showControls();
-		 setUpAnimationTimer();
+		setUpAnimationTimer();
 	
 	}
 	
@@ -177,8 +177,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			String startMsg = in.readUTF();
         	System.out.println("Message from server: " + startMsg);
 
-			new Thread(rfsRunnable).start();
-        	new Thread(wtsRunnable).start();
+			//new Thread(rfsRunnable).start();
+        	//new Thread(wtsRunnable).start();
 		} catch (IOException ex) {
 			System.out.println("IOException from connectToServer()");
 			ex.printStackTrace();
@@ -193,9 +193,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         try {
             wtsRunnable.dataOut.writeUTF("START_BALL");
             wtsRunnable.dataOut.flush();
-			System.out.println("Sent START_BALL command to server");
+	
         	} catch (IOException ex) {
-            System.out.println("Failed to send START_BALL command");
             ex.printStackTrace();
         	}
     	}
@@ -275,7 +274,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
-	private class WriteToServer implements Runnable {
+	private class WriteToServer implements Runnable {	
 		
 		private DataOutputStream dataOut;
 		
@@ -309,16 +308,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
             }
         } catch (IOException ex) {
             System.out.println("IOException at WTS run()");
-        }
-    }
-	private void sendSpritePositions(ArrayList<Point> spritePositions) throws IOException {
+        	}
+    	}	
 
-    dataOut.writeInt(spritePositions.size());
-    for (Point position : spritePositions) {
-        dataOut.writeDouble(position.x); 
-        dataOut.writeDouble(position.y); 
-    }
-	dataOut.flush();
-}
 	}
 }

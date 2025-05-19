@@ -26,8 +26,7 @@ public class GameServer {
 	private WriteToClient p1WriteRunnable;
 	private WriteToClient p2WriteRunnable;
 	
-	private double p1x, p2x;
-	private double p1y, p2y;
+	
 
 	private ArrayList<Point> p1Sprites = new ArrayList<>();
     private ArrayList<Point> p2Sprites = new ArrayList<>();
@@ -45,10 +44,7 @@ public class GameServer {
 		numPlayers = 0;
 		maxPlayers = 2;
 		
-		p1x = Config.PLAYER1_INITIAL_X;
-		p1y = Config.PLAYER1_INITIAL_Y;
-		p2x = Config.PLAYER2_INITIAL_X;
-		p2y = Config.PLAYER2_INITIAL_Y;
+	
 		ballActive = false;
 		
 		canvas = new GameCanvas();
@@ -118,41 +114,41 @@ public class GameServer {
     
 	}
 	private void checkCollisions() {
-	if (ball == null || !ballActive) {
-		return; 
+		if (ball == null || !ballActive) {
+			return; 
 	}
     
 
    
-    if (checkCollisionWithSprites(ball, p1Sprites)) {
-        ball.adjustVelocity(1);
-        System.out.println("Collision detected with Player 1");
-		System.out.println("Ball speed after Player 1 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+    	if (checkCollisionWithSprites(ball, p1Sprites)) {
+        	ball.adjustVelocity(1);
+        	System.out.println("Collision detected with Player 1");
+			System.out.println("Ball speed after Player 1 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
        
-    }
-    if (checkCollisionWithSprites(ball, p2Sprites)) {
-        ball.adjustVelocity(2);
-        System.out.println("Collision detected with Player 2");
-		System.out.println("Ball speed after Player 2 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+    	}
+    	if (checkCollisionWithSprites(ball, p2Sprites)) {
+        	ball.adjustVelocity(2);
+        	System.out.println("Collision detected with Player 2");
+			System.out.println("Ball speed after Player 2 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
       
        
-    }
+    	}
 
 	}
 	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
-    java.awt.Rectangle ballBounds = ball.getBoundingBox();
-    int spriteWidth = Config.SPRITE_WIDTH;
-    int spriteHeight = Config.SPRITE_HEIGHT;
+    	java.awt.Rectangle ballBounds = ball.getBoundingBox();
+    	int spriteWidth = Config.SPRITE_WIDTH/2;
+    	int spriteHeight = Config.SPRITE_HEIGHT/2;
 
-    for (Point spritePosition : spritePositions) {
-        java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
-            spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
-        );
-        if (ballBounds.intersects(spriteBounds)) {
-            return true;
-        }
-    }
-    return false;
+    	for (Point spritePosition : spritePositions) {
+        	java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
+            	spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
+        	);
+        	if (ballBounds.intersects(spriteBounds)) {
+            	return true;
+        	}
+    	}
+    	return false;
 	}
 	private class ReadFromClient implements Runnable {
 		
@@ -173,29 +169,29 @@ public class GameServer {
                 	if ("START_BALL".equals(command)) {
 						System.out.println("Received START_BALL command from player " + playerID);
 						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
-						ball.setVelocity(3, -1);
+						ball.setVelocity(4, -1);
                     	ballActive = true;
                     	System.out.println("Ball activated by player " + playerID);
                     	
                 	}else if ("SPRITES".equals(command)){
             		
-					int numSprites = dataIn.readInt();
-            		ArrayList<Point> spritePositions = new ArrayList<>();
-					for (int i = 0; i < numSprites; i++) {
-               			double sx = dataIn.readDouble();
-                		double sy = dataIn.readDouble();
-                		spritePositions.add(new Point((int) sx, (int) sy));
+						int numSprites = dataIn.readInt();
+            			ArrayList<Point> spritePositions = new ArrayList<>();
+						for (int i = 0; i < numSprites; i++) {
+               				double sx = dataIn.readDouble();
+                			double sy = dataIn.readDouble();
+                			spritePositions.add(new Point((int) sx, (int) sy));
             			}
 					
 						
 						
-					if (playerID == 1) {
-                		p1Sprites = spritePositions;
+						if (playerID == 1) {
+                			p1Sprites = spritePositions;
                 		
-            		} else {
-                		p2Sprites = spritePositions;
+            			} else {
+                			p2Sprites = spritePositions;
                 		
-            		}			
+            			}			
 						
 					}
 					

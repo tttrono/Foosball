@@ -20,15 +20,14 @@ public class GameCanvas extends JComponent {
 
 	ScoreBoard scoreboard;
 
-	BlueTeam_Rod_5 BlueRod5;
 	BlueTeam_Rod_3 BlueRod3;
 	BlueTeam_Rod_2 BlueRod2;
 	BlueTeam_Rod_1 BlueRod1;
-	RedTeam_Rod_5 RedRod5;
+	
 	RedTeam_Rod_3 RedRod3;
 	RedTeam_Rod_2 RedRod2;
 	RedTeam_Rod_1 RedRod1;
-	private boolean ballActive = false;
+
 
 	private BufferedImage backgroundImage;
 	
@@ -151,9 +150,7 @@ public class GameCanvas extends JComponent {
 	public SoccerBall getBall() {
 		return ball;
 	}
-	public void setBallActive(boolean ballActive) {
-    this.ballActive = ballActive;
-	}
+
 	public void setBall(SoccerBall ball) {
     	this.ball = ball;
 	}

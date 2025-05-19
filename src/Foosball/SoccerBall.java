@@ -69,25 +69,19 @@ public class SoccerBall {
         Hit = false;
         } else {
             tempDx *= friction;
-            tempDy *= friction;
+ 
 
         }
         
-        if (Math.abs(tempDx) < 1) {
+        if (Math.abs(tempDx) < 2) {
             if (tempDx < 0) {
-                tempDx = -1; 
+                tempDx = -2; 
             } else {
-                tempDx = 1; 
+                tempDx = 2; 
             }
         }
 
-        if (Math.abs(tempDy) < 1) {
-            if (tempDy < 0) {
-                tempDy = -1; 
-            } else {
-                tempDy = 1; 
-            }
-        }
+    
     
         x = x + tempDx;
         y = y + tempDy;
