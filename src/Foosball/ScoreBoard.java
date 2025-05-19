@@ -1,10 +1,12 @@
 package Foosball;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,6 +16,7 @@ import javax.imageio.ImageIO;
 
 import Foosball.Teams.Country;
 import Shapes.Banner;
+import Shapes.CenteredLine;
 import Shapes.Circle;
 import Shapes.Colors;
 import Shapes.DrawingObject;
@@ -63,8 +66,8 @@ public class ScoreBoard {
 		y = Config.SCREEN_HEIGHT/2;
 
 		try {
-            twcen_file = new File("Shapes/Fonts/TCB_____.TTF");
-            segoeui_file = new File("Shapes/Fonts/SEGOEUIB.TTF");
+            twcen_file = new File("./Shapes/Fonts/TCB_____.TTF");
+            segoeui_file = new File("./Shapes/Fonts/SEGOEUIB.TTF");
             
             twcen_font = Font.createFont(Font.TRUETYPE_FONT, twcen_file);
             segoeui_font = Font.createFont(Font.TRUETYPE_FONT, segoeui_file);
@@ -136,6 +139,25 @@ public class ScoreBoard {
 		for(DrawingObject object: scoreboard) {
 			object.draw(g2d);
 		}
+		
+		// Left goal blinds
+		Rectangle2D.Double goal_blinds_1 = new Rectangle2D.Double(0, 230, 90, 330);	
+		g2d.setColor(Colors.DARK_TEAL);
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(goal_blinds_1);
+		
+		CenteredLine goal_blinds_line_1 = new CenteredLine(95, 395, 322, 90, 8, Color.WHITE);
+		goal_blinds_line_1.draw(g2d);
+		
+		// Right goal blinds
+		Rectangle2D.Double goal_blinds_2 = new Rectangle2D.Double(934, 230, 90, 330);
+		g2d.setColor(Colors.DARK_TEAL);
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(goal_blinds_2);
+		
+		CenteredLine goal_blinds_line_2 = new CenteredLine(929, 395, 322, 90, 9, Color.WHITE);
+		goal_blinds_line_2.draw(g2d);
+
 		
 		if (BLUE_SCORE == 5) {
 			

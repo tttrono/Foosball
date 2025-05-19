@@ -38,7 +38,7 @@ public class DigitalBoard {
 		x = Config.SCREEN_WIDTH/2;
 		y = Config.SCREEN_HEIGHT - 255;
 		
-		board.add(new Rectangle(x, y, 824, 408, 0, Colors.DARK_TEAL));			// base rectangular field
+		board.add(new Rectangle(x, y, 824, 408, 0, Colors.DARK_TEAL));		// base rectangular field
 		
 		board.add(new CenteredLine(x, y, 418, 90, lineWidths, Color.WHITE));	// white middle line
 		board.add(new Circle(x, y, 60, lineWidths, Color.WHITE));				// center circle
