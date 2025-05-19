@@ -1,9 +1,12 @@
 package Foosball;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
+import Foosball.Teams.Country;
+import Shapes.Banner;
+import Shapes.CenteredLine;
 import Shapes.Circle;
 import Shapes.Colors;
 import Shapes.DrawingObject;
@@ -23,6 +29,8 @@ public class ScoreBoard {
 	int BLUE_SCORE = 0;
 	int RED_SCORE = 0;
 	
+	Country COUNTRY1 = Country.UK; 
+	Country COUNTRY2 = Country.CA; 
 	ArrayList<DrawingObject> scoreboard;
 	
 	File twcen_file, segoeui_file;
@@ -39,8 +47,8 @@ public class ScoreBoard {
 		y = Config.SCREEN_HEIGHT/2;
 
 		try {
-            twcen_file = new File("Shapes/Fonts/TCB_____.TTF");
-            segoeui_file = new File("Shapes/Fonts/SEGOEUIB.TTF");
+            twcen_file = new File("./Shapes/Fonts/TCB_____.TTF");
+            segoeui_file = new File("./Shapes/Fonts/SEGOEUIB.TTF");
             
             twcen_font = Font.createFont(Font.TRUETYPE_FONT, twcen_file);
             segoeui_font = Font.createFont(Font.TRUETYPE_FONT, segoeui_file);
@@ -68,51 +76,96 @@ public class ScoreBoard {
 		g2d.drawString(tally, 407, 135);
 		
 		// BLUE TEAM
-		g2d.setColor(Color.BLUE);
+		g2d.setColor(COUNTRY1.getColor());
 		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
-		g2d.drawString("UK", 250, 100);
+		g2d.drawString(COUNTRY1.getCode(), 250, 100);
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/UK-flag.png"));
+			BufferedImage img = ImageIO.read(new File(String.format("./Shapes/Images/flags/%s-flag.png", COUNTRY1.getCode())));
 			g2d.drawImage(img, (int) x-413, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+
+		// blue score fills
+		for (int x_pos = 165; x_pos < (165+(BLUE_SCORE*30)); x_pos += 30) {
+			scoreboard.add(new Circle(x_pos, 135, 10, 0, Color.BLUE));
 		}
 
 		// blue score dots
 		for (int x_pos = 165; x_pos < 165+(Config.MAX_SCORE*30); x_pos += 30) {
 			scoreboard.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
-		
-		// blue score fills
-		for (int x_pos = 165; x_pos < (165+(BLUE_SCORE*30)); x_pos += 30) {
-			scoreboard.add(new Circle(x_pos, 135, 10, 0, Color.BLUE));
-		}
-		
+
 		// RED TEAM
-		g2d.setColor(Color.RED);
+		g2d.setColor(COUNTRY2.getColor());
 		g2d.setFont(new Font(countrycode_font, Font.BOLD, 75));
-		g2d.drawString("CA", 670, 100);	
+		g2d.drawString(COUNTRY2.getCode(), 673, 100);	
 		
 		try {
-			BufferedImage img = ImageIO.read(new File("./Foosball/Flags/CA-flag.png"));
+			BufferedImage img = ImageIO.read(new File(String.format("./Shapes/Images/flags/%s-flag.png", COUNTRY2.getCode())));
 			g2d.drawImage(img, (int) x+270, 40, 140, 140/2, null);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		}
-		
-		// red score dots
-		for (int x_pos = 735; x_pos < 735+(Config.MAX_SCORE*30); x_pos += 30) {
-			scoreboard.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
 		}
 		
 		// red score fills
 		for (int x_pos = 735; x_pos < (735+(RED_SCORE*30)); x_pos += 30) {
 			scoreboard.add(new Circle(x_pos, 135, 10, 0, Color.RED));
 		}
-		
+
+		// red score dots
+		for (int x_pos = 735; x_pos < 735+(Config.MAX_SCORE*30); x_pos += 30) {
+			scoreboard.add(new Circle(x_pos, 135, 10, 2, Color.WHITE));
+		}
+
 		for(DrawingObject object: scoreboard) {
 			object.draw(g2d);
+		}
+		// Left goal blinds
+		Rectangle2D.Double goal_blinds_1 = new Rectangle2D.Double(0, 230, 90, 330);	
+		g2d.setColor(Colors.DARK_TEAL);
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(goal_blinds_1);
+		
+		CenteredLine goal_blinds_line_1 = new CenteredLine(95, 395, 322, 90, 8, Color.WHITE);
+		goal_blinds_line_1.draw(g2d);
+		
+		// Right goal blinds
+		Rectangle2D.Double goal_blinds_2 = new Rectangle2D.Double(934, 230, 90, 330);
+		g2d.setColor(Colors.DARK_TEAL);
+		g2d.setStroke(new BasicStroke(1));
+		g2d.draw(goal_blinds_2);
+		
+		CenteredLine goal_blinds_line_2 = new CenteredLine(929, 395, 322, 90, 9, Color.WHITE);
+		goal_blinds_line_2.draw(g2d);
+
+		
+		if (BLUE_SCORE == 5) {
+			
+			Banner banner_blue = new Banner(355, 0, 40, 290, Color.WHITE);  
+			banner_blue.draw(g2d);
+			
+			AffineTransform reset = g2d.getTransform();
+			g2d.rotate(Math.toRadians(270), 385, 145);
+			g2d.setColor(Color.BLUE);
+			g2d.setFont(new Font(score_font, Font.BOLD, 30));
+			g2d.drawString("WINNER", 375, 145);
+			g2d.setTransform(reset);
+		
+		} 
+		
+		if (RED_SCORE == 5) {
+			
+			Banner banner_red = new Banner(625, 0, 40, 290, Color.WHITE);  
+			banner_red.draw(g2d);
+			
+			AffineTransform reset = g2d.getTransform();
+			g2d.rotate(Math.toRadians(90), 635, 35);
+			g2d.setColor(Color.RED);
+			g2d.setFont(new Font(score_font, Font.BOLD, 30));
+			g2d.drawString("WINNER", 635, 35);
+			g2d.setTransform(reset);
 		}
 	}
 	
