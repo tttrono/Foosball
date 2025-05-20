@@ -179,10 +179,19 @@ public class ScoreBoard {
 	
 	public void add_bluescore() {
 		BLUE_SCORE += 1;
+		System.out.println("Blue scored! New score: " + BLUE_SCORE);
 	}
 	
 	public void add_red_score() {
 		RED_SCORE += 1;
+		System.out.println("RED scored! New score: " + RED_SCORE);
+	}
+	public void setRedScore(int score) {
+    	this.RED_SCORE = score;
+	}
+
+	public void setBlueScore(int score) {
+    	this.BLUE_SCORE = score;
 	}
 
 }
