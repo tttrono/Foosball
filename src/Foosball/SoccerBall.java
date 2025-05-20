@@ -113,7 +113,7 @@ public class SoccerBall {
             tempDx *=-1;
         } else if (x >= rightGoalBoundsX && y >= boardBottomY && y <= goalBoundsLowerY){
             tempDx *=-1;
-        } else if (x <= leftGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
+        } else if (x <= rightGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
             tempDx *=-1;
         }
     }
