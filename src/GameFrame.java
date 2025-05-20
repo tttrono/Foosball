@@ -52,8 +52,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Timer animationTimer;
 
 	private boolean ballActive = false;
-	
-	private boolean up, down; 
 
 	private Socket socket;
 	private ReadFromServer rfsRunnable;
@@ -77,8 +75,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		canvas = new GameCanvas(scoreboard);
 	}
 	
+	/* Sets up the basic user interface.
+	 * Creates the player views and animation. */
 	public void setupGUI() {
-		
 		canvas.setDoubleBuffered(true);
 		canvas.createPlayers(playerID);
 		
@@ -106,6 +105,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		setUpAnimationTimer();
 	}
 	
+	/* Timer on updating graphics during gameplay.*/
 	private void setUpAnimationTimer() {
     	int interval = 16; 
         Timer animationTimer = new Timer(interval, e -> {
@@ -114,19 +114,20 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         animationTimer.start();
     }
 	
+	/* Handles the player rod movements using mouse wheel/scroll. */
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) { //method that allows players to move sprites using scroll wheel
 		int scroll = e.getWheelRotation();
 
     	if (scroll < 0 ) {		
     		me.moveSprites(0, -Config.PLAYER_SPEED);
-    		
     	} else if (scroll > 0) {
     		me.moveSprites(0, Config.PLAYER_SPEED);
         }
 		canvas.repaint();
 	}
 	
+	/* Handles the player rod movements using key press. */
 	@Override
 	public void keyPressed(KeyEvent e) {// method that allows players to move sprites using up and down arrow keys as well as spacebar to command the ball to spawn
 		
@@ -148,6 +149,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	
+	/* Responsible for connecting with the server. 
+	 * Receives playerID and sets up the I/O data streams. */
 	public void connectToServer() {
 		try {
 			Scanner scanner = new Scanner (System.in);
@@ -179,11 +182,21 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
+<<<<<<< HEAD
 	public int getPlayerID() { //getts the player ID
         return playerID;
     }
 
 	private void sendStartBallCommand() { //this method sends the start ball command to server whenever it is called
+=======
+	/* Accessor method for getting player ID.*/
+	public int getPlayerID() {
+        return playerID;
+    }
+
+	/* Spawns the ball in the center of the board for game start. */
+	private void sendStartBallCommand() {
+>>>>>>> d619c9186937f94cf40112df897e74d06bf88f1b
 		if (wtsRunnable != null && wtsRunnable.dataOut != null) {
         	try {
            		wtsRunnable.dataOut.writeUTF("BALL");// string message to signify the server what it is receiving
@@ -210,8 +223,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			System.out.println("ReadFromServer thread started!");
 			try {
 				while(true) {
-					 
-
 					double ballX = dataIn.readDouble();
                 	double ballY = dataIn.readDouble();
 					int redScore = dataIn.readInt();
@@ -221,7 +232,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					scoreboard.setRedScore(redScore);
 
 					ArrayList<Point> spritePositions = readSpritePositions();
-					
                     
                     opponent.setSpritePositions(spritePositions);
 				
@@ -240,13 +250,19 @@ public class GameFrame implements KeyListener, MouseWheelListener {
     						canvas.setBall(null);
     					}
 					}
-					if (dataIn.available() > 0) { // Check if there's a message
+					
+					/* Checks if there's a message */
+					if (dataIn.available() > 0) { 
    			 			String msg = dataIn.readUTF();
     					if (msg.startsWith("GAME_OVER")) {
         	
 							javax.swing.SwingUtilities.invokeLater(() -> {
 							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
                 			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
+<<<<<<< HEAD
+=======
+							/* Or disable controls, just choose if you want to close it entirely */
+>>>>>>> d619c9186937f94cf40112df897e74d06bf88f1b
            					System.exit(0); 
         					});
         					return; 
