@@ -33,14 +33,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Player opponent;
 
 	private Timer animationTimer;
-	private boolean up, down, left, right;
 
 	private boolean ballActive = false;
 	
 	private Socket socket;
-	private int playerID;
 	private ReadFromServer rfsRunnable;
 	private WriteToServer wtsRunnable;
+	
+	private int playerID;
 	private ScoreBoard scoreboard;
 	
 	/** Instantiates the Game frame.
