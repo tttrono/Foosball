@@ -18,12 +18,13 @@ public class SoccerBall {
     private BufferedImage sprite; 
     private int boardWidth, boardHeight; 
 	private int  diameterSprite, diameter;
-	int boardTopLeftX = 100; 
+	int boardTopLeftX = 90; 
     int boardTopLeftY = 191;
     int boardBottomRightX = 924; 
     int boardBottomRightY = 599;
+    private ScoreBoard scoreBoard;
 
-    public SoccerBall(double x, double y) {
+    public SoccerBall(double x, double y, ScoreBoard scoreBoard) {
         this.x = x;
         this.y = y;
         this.dx = 0; 
@@ -32,7 +33,8 @@ public class SoccerBall {
         this.tempDy = dy;
         this.diameter = 20;
         this.Hit = true;
-    
+        this.scoreBoard = scoreBoard;
+
 	    try {
             sprite = ImageIO.read(new File("./assets/soccerball.png")); 
         } catch (IOException e) {
@@ -92,11 +94,9 @@ public class SoccerBall {
 	public void checkBoundaries()  {
     
         if (x <= boardTopLeftX) {
-            x = boardTopLeftX;
-            tempDx *= -1;
+            scoreBoard.add_red_score();
         }else if(x + diameter >= boardBottomRightX) {
-            x = boardBottomRightX - diameter;
-            tempDx *= -1; 
+            scoreBoard.add_bluescore();
         
         }
 
@@ -147,7 +147,7 @@ public class SoccerBall {
     public int getDiameter(){
         return diameter;
     }
-	public java.awt.Rectangle getBoundingBox() { // to encapsulate the sprite ball
+	public java.awt.Rectangle getArea() { // to encapsulate the sprite ball
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
    public double getDx(){

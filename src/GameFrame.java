@@ -1,4 +1,5 @@
 import Foosball.Config;
+import Foosball.ScoreBoard;
 import Foosball.SoccerBall;
 import Shapes.Colors;
 import java.awt.BorderLayout;
@@ -40,11 +41,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private int playerID;
 	private ReadFromServer rfsRunnable;
 	private WriteToServer wtsRunnable;
+	private ScoreBoard scoreboard;
 	
 	/**
 	 * 
 	 */
-	public GameFrame(int w, int h) {
+	public GameFrame(int w, int h, ScoreBoard scoreboard) {
 		
 		frame = new JFrame();
 		
@@ -52,13 +54,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		height = h;
 		me = new Player(1);
 		opponent = new Player(2);
-		canvas = new GameCanvas();
+		this.scoreboard = scoreboard;
+		canvas = new GameCanvas(scoreboard);
 
 	}
 	
 	public void setupGUI() {
 		
-		canvas = new GameCanvas();
+		
 		canvas.setDoubleBuffered(true);
 		canvas.createPlayers(playerID);
 		
@@ -191,7 +194,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private void sendStartBallCommand() {
     if (wtsRunnable != null && wtsRunnable.dataOut != null) {
         try {
-            wtsRunnable.dataOut.writeUTF("START_BALL");
+            wtsRunnable.dataOut.writeUTF("BALL");
             wtsRunnable.dataOut.flush();
 	
         	} catch (IOException ex) {
@@ -227,7 +230,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					SoccerBall ball = canvas.getBall();
 					if (ballX >= 0 && ballY >= 0) {
     					if (ball == null) {
-        					ball = new SoccerBall(ballX, ballY);
+        					ball = new SoccerBall(ballX, ballY, scoreboard);
         					canvas.setBall(ball);
     					} else {
         					ball.setX(ballX);

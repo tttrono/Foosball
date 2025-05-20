@@ -138,7 +138,7 @@ public class Player {
     }
     
     public boolean checkCollisionWithBall(SoccerBall ball) { //collision detection with the ball and each sprite
-        java.awt.Rectangle ballBounds = ball.getBoundingBox();
+        java.awt.Rectangle ballArea = ball.getArea();
 
        
         for (Point spritePosition : spritePositions) {
@@ -148,7 +148,7 @@ public class Player {
             );
 
         
-            if (ballBounds.intersects(spriteBounds)) {
+            if (ballArea.intersects(spriteBounds)) {
                 return true; 
             }
         }

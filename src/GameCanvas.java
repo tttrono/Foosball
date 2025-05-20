@@ -33,14 +33,14 @@ public class GameCanvas extends JComponent {
 	
 
 	
-	public GameCanvas() {
+	public GameCanvas(ScoreBoard scoreboard) {
 		
 		objects = new ArrayList<DrawingObject>();
 		
 
 		digitalboard = new DigitalBoard();
-		scoreboard = new ScoreBoard();
-		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
+		this.scoreboard = scoreboard;
+		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreboard);
 		
 		
     
@@ -86,7 +86,7 @@ public class GameCanvas extends JComponent {
         RedRod3.draw(g2d);
         RedRod2.draw(g2d);
         RedRod1.draw(g2d);
-        scoreboard.draw(g2d);
+     
 
         
         g2d.dispose();
@@ -119,7 +119,7 @@ public class GameCanvas extends JComponent {
             opponent.draw(g2d);
         }
 	
-
+		scoreboard.draw(g2d);
 		
 //		for (DrawingObject object: objects) {
 //			object.draw(g2d);

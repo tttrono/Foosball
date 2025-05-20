@@ -37,7 +37,7 @@ public class Config {
         int width = 2;
 		int height = 2;
 		try {
-			BufferedImage img = ImageIO.read(new File("assets/Player1.png"));
+			BufferedImage img = ImageIO.read(new File("./assets/Player1.png"));
         	width = img.getWidth();
         	height = img.getHeight();
 			
@@ -47,7 +47,7 @@ public class Config {
 
        SPRITE_WIDTH =	width;
 	   SPRITE_HEIGHT = height;
-	   System.out.println("Sprite width: " + SPRITE_HEIGHT + ", height: " + SPRITE_WIDTH);
+
     }
 }
 

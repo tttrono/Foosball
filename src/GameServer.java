@@ -1,4 +1,5 @@
 import Foosball.Config;
+import Foosball.ScoreBoard;
 import Foosball.SoccerBall;
 import java.awt.Point;
 import java.io.BufferedInputStream;
@@ -36,6 +37,7 @@ public class GameServer {
 	private GameCanvas canvas;
 
 	private volatile boolean ballActive;
+	private ScoreBoard scoreBoard;
 	/**
 	 * 
 	 */
@@ -46,8 +48,10 @@ public class GameServer {
 		
 	
 		ballActive = false;
+		scoreBoard = new ScoreBoard();
+		canvas = new GameCanvas(scoreBoard);
 		
-		canvas = new GameCanvas();
+	
 		try {
 			ss = new ServerSocket(Config.SERVER_SOCKET);
 		} catch (IOException ex) {
@@ -106,37 +110,29 @@ public class GameServer {
 		}
 	}
 
-	private void updateBallPosition() {
-	if (ballActive){
-		checkCollisions();
-		ball.update(); 
-	}
-    
-	}
+	
 	private void checkCollisions() {
 		if (ball == null || !ballActive) {
 			return; 
-	}
+		}
     
 
    
     	if (checkCollisionWithSprites(ball, p1Sprites)) {
         	ball.adjustVelocity(1);
-        	System.out.println("Collision detected with Player 1");
-			System.out.println("Ball speed after Player 1 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+        	
        
     	}
     	if (checkCollisionWithSprites(ball, p2Sprites)) {
         	ball.adjustVelocity(2);
-        	System.out.println("Collision detected with Player 2");
-			System.out.println("Ball speed after Player 2 collision: dx=" + ball.getDx() + ", dy=" + ball.getDy() + ")");
+        	
       
        
     	}
 
 	}
 	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
-    	java.awt.Rectangle ballBounds = ball.getBoundingBox();
+    	java.awt.Rectangle ballBounds = ball.getArea();
     	int spriteWidth = Config.SPRITE_WIDTH/2;
     	int spriteHeight = Config.SPRITE_HEIGHT/2;
 
@@ -166,9 +162,8 @@ public class GameServer {
 				while(true) {
 				
                 	String command = dataIn.readUTF();
-                	if ("START_BALL".equals(command)) {
-						System.out.println("Received START_BALL command from player " + playerID);
-						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y);
+                	if ("BALL".equals(command)) {
+						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreBoard);
 						ball.setVelocity(4, -1);
                     	ballActive = true;
                     	System.out.println("Ball activated by player " + playerID);
