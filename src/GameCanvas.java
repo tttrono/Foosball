@@ -14,6 +14,7 @@ was obtained from another source, such as a textbook or website,
 that has been clearly noted with a proper citation in the comments
 of my program.
 **/
+import Foosball.SoccerBall;
 import Foosball.*;
 import Foosball.Teams.*;
 import Shapes.DrawingObject;

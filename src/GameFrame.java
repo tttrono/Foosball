@@ -48,13 +48,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Player me;
 	private Player opponent;
 
-<<<<<<< HEAD
-	//private Player2 opponent;
-=======
 	private Timer animationTimer;
 
 	private boolean ballActive = false;
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 	
 	private boolean up, down; 
 
@@ -138,25 +134,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 				// TODO: Add restrictions for only when the ball is out
 				sendStartBallCommand();
 				break;
-<<<<<<< HEAD
-               
-=======
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 			case KeyEvent.VK_UP:
 				me.moveSprites(0, -Config.PLAYER_SPEED);
-<<<<<<< HEAD
-				canvas.repaint();
-				
-=======
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 				break;
 			case KeyEvent.VK_DOWN:
 				me.moveSprites(0, Config.PLAYER_SPEED);
 				canvas.repaint();
-<<<<<<< HEAD
-			
-=======
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 				break;
 		}
 	}

@@ -33,14 +33,8 @@ public class SoccerBall {
     private boolean Hit;
     
     private BufferedImage sprite; 
-<<<<<<< HEAD
   
 	private int  diameter;
-=======
-    private int boardWidth, boardHeight; 
-	private int  diameterSprite, diameter;
-	
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 	int boardTopLeftX = 90; 
     int boardTopY = 191;
     int boardBottomRightX = 924; 
@@ -71,14 +65,10 @@ public class SoccerBall {
             sprite = null; 
         }
     
-<<<<<<< HEAD
 		diameter = sprite.getWidth();
 
 
 
-=======
-		diameterSprite = sprite.getWidth();
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
     }
 
     /* Draws the ball object. */
@@ -197,7 +187,6 @@ public class SoccerBall {
 	public java.awt.Rectangle getArea() { 
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
-<<<<<<< HEAD
    public double getDx(){
     return dx;
    }
@@ -205,23 +194,4 @@ public class SoccerBall {
     return dy;
    }
   
-=======
-	
-	public double getDx(){
-		return dx;
-	}
-   
-	public double getDy(){
-		return dy;
-	}
-   
-	private void resetBall () {
-	    this.x = Config.BALL_INITIAL_X;
-	    this.y = Config.BALL_INITIAL_Y;
-	    this.dx = 0;
-	    this.dy = 0;
-	    this.tempDx = 0;
-	    this.tempDy = 0;
-   }
->>>>>>> 610900ee50db312707c238de7831f53327c7252d
 }
