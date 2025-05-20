@@ -51,8 +51,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private Timer animationTimer;
 
 	private boolean ballActive = false;
-	
-	private boolean up, down; 
 
 	private Socket socket;
 	private ReadFromServer rfsRunnable;
@@ -76,12 +74,13 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		canvas = new GameCanvas(scoreboard);
 	}
 	
+	/* Sets up the basic user interface.
+	 * Creates the player views and animation. */
 	public void setupGUI() {
-		
 		canvas.setDoubleBuffered(true);
 		canvas.createPlayers(playerID);
 		
-		me 		 = canvas.getMePlayer();
+		me = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
 		
 		Container contentPane = frame.getContentPane();
@@ -105,6 +104,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		setUpAnimationTimer();
 	}
 	
+	/* Timer on updating graphics during gameplay.*/
 	private void setUpAnimationTimer() {
     	int interval = 16; 
         Timer animationTimer = new Timer(interval, e -> {
@@ -113,19 +113,20 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         animationTimer.start();
     }
 	
+	/* Handles the player rod movements using mouse wheel/scroll. */
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int scroll = e.getWheelRotation();
 
     	if (scroll < 0 ) {		
     		me.moveSprites(0, -Config.PLAYER_SPEED);
-    		
     	} else if (scroll > 0) {
     		me.moveSprites(0, Config.PLAYER_SPEED);
         }
 		canvas.repaint();
 	}
 	
+	/* Handles the player rod movements using key press. */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
@@ -147,6 +148,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	
+	/* Responsible for connecting with the server. 
+	 * Receives playerID and sets up the I/O data streams. */
 	public void connectToServer() {
 		try {
 			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
@@ -171,10 +174,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
+	/* Accessor method for getting player ID.*/
 	public int getPlayerID() {
         return playerID;
     }
 
+	/* Spawns the ball in the center of the board for game start. */
 	private void sendStartBallCommand() {
 		if (wtsRunnable != null && wtsRunnable.dataOut != null) {
         	try {
@@ -202,8 +207,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			System.out.println("ReadFromServer thread started!");
 			try {
 				while(true) {
-					 
-
 					double ballX = dataIn.readDouble();
                 	double ballY = dataIn.readDouble();
 					int redScore = dataIn.readInt();
@@ -213,7 +216,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					scoreboard.setRedScore(redScore);
 
 					ArrayList<Point> spritePositions = readSpritePositions();
-					
                     
                     opponent.setSpritePositions(spritePositions);
 				
@@ -232,14 +234,17 @@ public class GameFrame implements KeyListener, MouseWheelListener {
     						canvas.setBall(null);
     					}
 					}
-					if (dataIn.available() > 0) { // Check if there's a message
+					
+					/* Checks if there's a message */
+					if (dataIn.available() > 0) { 
    			 			String msg = dataIn.readUTF();
     					if (msg.startsWith("GAME_OVER")) {
         	
 							javax.swing.SwingUtilities.invokeLater(() -> {
 							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
                 			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
-           					System.exit(0); // Or disable controls just choose if u want to close it entirey
+							/* Or disable controls, just choose if you want to close it entirely */
+           					System.exit(0); 
         					});
         					return; 
     					}

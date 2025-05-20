@@ -35,7 +35,6 @@ public class GameServer {
 	private ServerSocket ss;
 	private int numPlayers;
 	
-	
 	private Socket p1socket;
 	private Socket p2socket;
 	private ReadFromClient p1ReadRunnable;
@@ -58,13 +57,10 @@ public class GameServer {
 		System.out.println("===== GAME SERVER =====");
 		numPlayers = 0;
 		
-		
-	
 		ballActive = false;
 		scoreBoard = new ScoreBoard();
 		canvas = new GameCanvas(scoreBoard);
-		
-	
+
 		try {
 			ss = new ServerSocket(Config.SERVER_SOCKET);
 		} catch (IOException ex) {
@@ -124,28 +120,24 @@ public class GameServer {
 			System.out.println("IOException from acceptConnections()");
 		}
 	}
-
 	
+	/* Checks collisions between the ball and the player rods. */
 	private void checkCollisions() {
 		if (ball == null || !ballActive) {
 			return; 
 		}
-    
-
    
     	if (checkCollisionWithSprites(ball, p1Sprites)) {
-        	ball.adjustVelocity(1);
-        	
-       
+        	ball.adjustVelocity(1); 	
     	}
+    	
     	if (checkCollisionWithSprites(ball, p2Sprites)) {
         	ball.adjustVelocity(2);
-        	
-      
-       
     	}
 
 	}
+	
+	/* Checks collisions between the ball and individual sprites. */
 	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
     	java.awt.Rectangle ballBounds = ball.getArea();
     	int spriteWidth = Config.SPRITE_WIDTH/2;
@@ -195,19 +187,14 @@ public class GameServer {
                 			double sy = dataIn.readDouble();
                 			spritePositions.add(new Point((int) sx, (int) sy));
             			}
-					
-						
 						
 						if (playerID == 1) {
                 			p1Sprites = spritePositions;
                 		
             			} else {
                 			p2Sprites = spritePositions;
-                		
             			}			
-						
 					}
-					
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFC run()");
@@ -234,13 +221,11 @@ public class GameServer {
 					if (ball != null) {
 						synchronized (ball) {
 							if (ballActive) {
-                		
 								checkCollisions();
 								boolean goalScored = ball.update();
        	 						if (goalScored) {
             						ballActive = false; // Deactivate the ball after a goal
         						}
-    
 							}
 						}
 					}
@@ -253,11 +238,10 @@ public class GameServer {
             		}
 					dataOut.writeInt(scoreBoard.get_redscore());
 					dataOut.writeInt(scoreBoard.get_bluescore());
-				 
 
                     ArrayList<Point> opponentSprites;
             		if (playerID == 1) {
-                		opponentSprites = p2Sprites;
+            			opponentSprites = p2Sprites;
             		} else {
                 		opponentSprites = p1Sprites;
             		}
@@ -285,6 +269,7 @@ public class GameServer {
 			}
 		}
 		
+		/* Sends the start message to the clients to begin. */
 		public void sendStartMsg() {
 			try {
 				dataOut.writeUTF("We now have 2 players. Start!");
@@ -298,5 +283,4 @@ public class GameServer {
 		GameServer gs = new GameServer();
 		gs.acceptConnections();
 	}
-	
 }
