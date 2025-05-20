@@ -19,6 +19,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+
+/** Creates the graphical window for Foosball. 
+ * Loads the game canvas and game controls for keys and mousewheel.
+ * Also responsible for connection to the server and sending player coordinates. */
 public class GameFrame implements KeyListener, MouseWheelListener {
 	
 	private JFrame frame;
@@ -43,9 +47,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private WriteToServer wtsRunnable;
 	private ScoreBoard scoreboard;
 	
-	/**
-	 * 
-	 */
+	/** Instantiates the Game frame.
+	 * Sets up the game objects and players. */
 	public GameFrame(int w, int h, ScoreBoard scoreboard) {
 		
 		frame = new JFrame();
@@ -204,6 +207,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
     	}
 	}
 
+	/** Runs the DataInputStream from the server.
+	 * Receives data coordinates of the ball, opponent player and running score. */
 	private class ReadFromServer implements Runnable {
 		
 		private DataInputStream dataIn;
@@ -294,6 +299,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
+	/** Runs the DataOutStream to the server.
+	 * Sends the data coordinates of the player. */
 	private class WriteToServer implements Runnable {	
 		
 		private DataOutputStream dataOut;

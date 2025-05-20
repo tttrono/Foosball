@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
 
+/** Creates a banner-shaped drawing object.
+ *  It accepts parameters length (downward), width, and color. */
 public class Banner {
 	
 	double x;
