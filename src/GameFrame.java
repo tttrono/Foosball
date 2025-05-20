@@ -30,16 +30,12 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private GameCanvas canvas;
 	
 	private Player me;
-
 	private Player opponent;
-	//private SoccerBall ball;
 
-	//private Player2 opponent;
 	private Timer animationTimer;
 	private boolean up, down, left, right;
 
 	private boolean ballActive = false;
-
 	
 	private Socket socket;
 	private int playerID;
@@ -52,25 +48,23 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public GameFrame(int w, int h, ScoreBoard scoreboard) {
 		
 		frame = new JFrame();
-		
 		width = w;
 		height = h;
+		
 		me = new Player(1);
 		opponent = new Player(2);
+		
 		this.scoreboard = scoreboard;
 		canvas = new GameCanvas(scoreboard);
-
 	}
 	
 	public void setupGUI() {
-		
 		
 		canvas.setDoubleBuffered(true);
 		canvas.createPlayers(playerID);
 		
 		me 		 = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
-		//ball	 = canvas.getBall();
 		
 		Container contentPane = frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(width, height));
@@ -90,47 +84,26 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		frame.pack();
 		frame.setVisible(true);
 		
-		//this.showControls();
 		setUpAnimationTimer();
-	
 	}
 	
 	private void setUpAnimationTimer() {
     	int interval = 16; 
         Timer animationTimer = new Timer(interval, e -> {
-		
-
-			if (up) {  //arrow keys
-            me.moveSprites(0, -Config.PLAYER_SPEED);
-        	}
-        	if (down) {
-            me.moveSprites(0, Config.PLAYER_SPEED);
-        	}
-             
-			
-            canvas.repaint(); 
-			//canvas.repaint();
+            canvas.repaint();
         });
         animationTimer.start();
     }
-
-
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int scroll = e.getWheelRotation();
 
-    	if (scroll < 0 ) {
-			
+    	if (scroll < 0 ) {		
     		me.moveSprites(0, -Config.PLAYER_SPEED);
-			
-			
-		
-
-    	} else if (scroll >0) {
-			
+    		
+    	} else if (scroll > 0) {
     		me.moveSprites(0, Config.PLAYER_SPEED);
-			
         }
 		canvas.repaint();
 	}
@@ -140,38 +113,20 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
+				// TODO: Add restrictions for only when the ball is out
 				sendStartBallCommand();
 				break;
-                //canvas.getBall().setVelocity(9, -2);
-				
-				// TODO: Add restrictions for only when the ball is out
 			case KeyEvent.VK_UP:
-				up = true;
 				me.moveSprites(0, -Config.PLAYER_SPEED);
-				canvas.repaint();
-				//me.moveV(-Config.PLAYER_SPEED);
-				//canvas.repaint();
 				break;
 			case KeyEvent.VK_DOWN:
-				down = true;
 				me.moveSprites(0, Config.PLAYER_SPEED);
 				canvas.repaint();
-				//me.moveV(Config.PLAYER_SPEED);
-				//canvas.repaint();
 				break;
 		}
 	}
 	
-	public void keyReleased(KeyEvent e) {
-		switch ((e.getKeyCode())) {
-			case KeyEvent.VK_UP:
-				up = false;
-				break;				
-			case KeyEvent.VK_DOWN:
-				down = false;
-				break;
-		}
-	}
+	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	
 	public void connectToServer() {
@@ -183,8 +138,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
 			System.out.println("You are player #" + playerID);
-			
-		
 			
 			rfsRunnable = new ReadFromServer(in);
 			wtsRunnable = new WriteToServer(out); 
@@ -199,10 +152,10 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			ex.printStackTrace();
 		}
 	}
+	
 	public int getPlayerID() {
         return playerID;
     }
-	
 
 	private void sendStartBallCommand() {
     if (wtsRunnable != null && wtsRunnable.dataOut != null) {
@@ -248,7 +201,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					SoccerBall ball = canvas.getBall();
 					if (ballX >= 0 && ballY >= 0) {
     					if (ball == null) {
-        					ball = new SoccerBall(ballX, ballY, scoreboard);
+    						ball = new SoccerBall(ballX, ballY, scoreboard);
         					canvas.setBall(ball);
     					} else {
         					ball.setX(ballX);
@@ -257,7 +210,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 					} else {
     			
     					if (ball != null) {
-        				canvas.setBall(null);
+    						canvas.setBall(null);
     					}
 					}
 					if (dataIn.available() > 0) { 
@@ -271,9 +224,8 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         					});
         					return; 
     					}
-}
-                
-					canvas.repaint();
+					}
+                	canvas.repaint();
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
@@ -281,14 +233,15 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	
 		private ArrayList<Point> readSpritePositions() throws IOException {
-        int numSprites = dataIn.readInt(); 
-        ArrayList<Point> spritePositions = new ArrayList<>();
-        for (int i = 0; i < numSprites; i++) {
-            double x = dataIn.readDouble(); 
-            double y = dataIn.readDouble(); 
-            spritePositions.add(new Point((int) x, (int) y));
-        }
-        return spritePositions;
+	        int numSprites = dataIn.readInt(); 
+	        ArrayList<Point> spritePositions = new ArrayList<>();
+	        
+	        for (int i = 0; i < numSprites; i++) {
+	            double x = dataIn.readDouble(); 
+	            double y = dataIn.readDouble(); 
+	            spritePositions.add(new Point((int) x, (int) y));
+	        }
+	        return spritePositions;
 		}
 	
 		
@@ -321,25 +274,23 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 	 public void run() {
         try {
-            while (true) {
+            while (true) {       
+                ArrayList<Point> spritePositions = me.getSpritePositions();
+
+               	dataOut.writeUTF("SPRITES");
+                dataOut.writeInt(spritePositions.size());
                 
-                   
-                    ArrayList<Point> spritePositions = me.getSpritePositions();
-
-                   	dataOut.writeUTF("SPRITES");
-                    dataOut.writeInt(spritePositions.size());
-					for (Point pos : spritePositions) {
-						
-                		dataOut.writeDouble(pos.x);
-                		dataOut.writeDouble(pos.y);
-            		}
-            		dataOut.flush();
-              
-
-                try {
-                    Thread.sleep(25);
-                } catch (InterruptedException ex) {
-                    System.out.println("InterruptedException from WTS run()");
+				for (Point pos : spritePositions) {
+					
+            		dataOut.writeDouble(pos.x);
+            		dataOut.writeDouble(pos.y);
+        		}
+        		dataOut.flush();
+        		
+            try {
+                Thread.sleep(25);
+            } catch (InterruptedException ex) {
+                System.out.println("InterruptedException from WTS run()");
                 }
             }
         } catch (IOException ex) {
