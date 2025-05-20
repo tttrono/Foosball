@@ -21,6 +21,8 @@ import Shapes.Circle;
 import Shapes.Colors;
 import Shapes.DrawingObject;
 
+/** Creates the scoreboard object.
+ * Includes the graphic components for rendering, game tally and score display update. */
 public class ScoreBoard {
 	
 	double x;

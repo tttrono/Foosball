@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.awt.image.BufferedImage;
 
+/** Create the drawing canvas for Foosball.
+ * Integrates drawing objects for game board, player rods, soccerball and scoreboard.*/
 public class GameCanvas extends JComponent {
 
 	private ArrayList<DrawingObject> objects;
@@ -28,24 +30,17 @@ public class GameCanvas extends JComponent {
 	RedTeam_Rod_2 RedRod2;
 	RedTeam_Rod_1 RedRod1;
 
-
 	private BufferedImage backgroundImage;
 	
-
-	
+	/** Instantiates the game canvas.
+	 * Set with the same scoreboard instance from game frame. */
 	public GameCanvas(ScoreBoard scoreboard) {
 		
 		objects = new ArrayList<DrawingObject>();
 		
-
 		digitalboard = new DigitalBoard();
 		this.scoreboard = scoreboard;
 		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreboard);
-		
-		
-    
-
-		//ball = new SoccerBall();
 
 		//BlueRod5 = new BlueTeam_Rod_5();
 		BlueRod3 = new BlueTeam_Rod_3();
@@ -61,24 +56,19 @@ public class GameCanvas extends JComponent {
 		renderBackground();
 		
 	}
-
-	
 	
 	private void renderBackground() {
         int width = Config.SCREEN_WIDTH;
         int height = Config.SCREEN_HEIGHT;
-
         
         backgroundImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = backgroundImage.createGraphics();
-
         
         RenderingHints rh = new RenderingHints(
             RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
     	g2d.setRenderingHints(rh);
 
-        
         digitalboard.draw(g2d);
         BlueRod3.draw(g2d);
         BlueRod2.draw(g2d);
@@ -87,12 +77,10 @@ public class GameCanvas extends JComponent {
         RedRod2.draw(g2d);
         RedRod1.draw(g2d);
      
-
-        
         g2d.dispose();
     }
 
-	
+	/** Draws all the graphic objects. */
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -108,8 +96,6 @@ public class GameCanvas extends JComponent {
 		ball.draw(g2d);
 		}
 
-		
-	
 
 	
 		if (me != null) {

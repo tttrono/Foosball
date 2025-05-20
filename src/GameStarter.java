@@ -1,6 +1,8 @@
 import Foosball.Config; 
 import Foosball.ScoreBoard;
 
+/** Foosball is a two-player network game simulation of table soccer. 
+ * It runs on a digital game board w/ basic player rods and soccer ball. */
 public class GameStarter {
 
 	public GameStarter() {
