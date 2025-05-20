@@ -21,13 +21,14 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-
+/* Loads sprite images game objects. */
 public class SpriteLoader{
+	
+	/* Accepts filepath as parameter. */
     public static BufferedImage loadSprite (String path){
         try {
             return ImageIO.read(new File(path));
-       
-        
+      
         } catch (IOException e) {
             System.out.println("Error loading sprite: ");
             return null;
