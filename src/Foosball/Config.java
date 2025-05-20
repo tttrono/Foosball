@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 
 public class Config {
 	
-	public static final String SERVER_IP = "192.168.100.3"; 
+	public static final String SERVER_IP = "192.168.254.114"; 
 	public static final int SERVER_SOCKET = 54321;
 	
 	public static final int MAX_PLAYERS = 2;
