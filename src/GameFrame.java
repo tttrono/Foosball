@@ -82,7 +82,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		canvas.setDoubleBuffered(true);
 		canvas.createPlayers(playerID);
 		
-		me 		 = canvas.getMePlayer();
+		me = canvas.getMePlayer();
 		opponent = canvas.getOpponentPlayer();
 		
 		Container contentPane = frame.getContentPane();
