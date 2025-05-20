@@ -104,22 +104,26 @@ public class SoccerBall {
         if (y <= boardTopY) {
             y = boardTopY;
             tempDy *= -1;
-        } else if (y + diameter >= boardBottomY) {
+        } 
+        if (y + diameter >= boardBottomY) {
             y = boardBottomY - diameter;
             tempDy *= -1;
-        } else if (x <= leftGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
+        } 
+        if (x <= leftGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
         
-        } else if (x >= rightGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
+        } 
+        if (x + diameter>= rightGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
      
         }
     }
+    
     public boolean goal (){
-        if (x <= leftGoalBoundsX && y >= goalBoundsLowerY && y <= goalBoundsUpperY) {
+        if (x <= leftGoalBoundsX && (y >= goalBoundsLowerY && y <= goalBoundsUpperY)) {
             scoreBoard.add_red_score();
             return true; 
-        } else if (x + diameter >= rightGoalBoundsX && y >= goalBoundsLowerY && y <= goalBoundsUpperY) {
+        } else if (x + diameter >= rightGoalBoundsX && (y >= goalBoundsLowerY && y <= goalBoundsUpperY)) {
             scoreBoard.add_bluescore();
 
             return true; 
