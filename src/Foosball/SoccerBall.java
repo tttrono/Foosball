@@ -63,7 +63,7 @@ public class SoccerBall {
         this.dx = dx;
         this.dy = dy;
     }
-    public void update() { // update based on if it is hit by a character or if it is not (friction)
+    public boolean update() { // update based on if it is hit by a character or if it is not (friction)
         
        if (Hit){
         tempDx = dx;
@@ -87,24 +87,14 @@ public class SoccerBall {
     
         x = x + tempDx;
         y = y + tempDy;
+       
         checkBoundaries();
-      
+        return goal();
+        
     }
 
 	public void checkBoundaries()  {
     
-        if (x <= boardTopLeftX) {
-            scoreBoard.add_red_score();
-            resetBall();
-            return;
-        }else if(x + diameter >= boardBottomRightX) {
-            scoreBoard.add_bluescore();
-            resetBall();
-            return;
-        
-        }
-
-
         if (y <= boardTopLeftY) {
             y = boardTopLeftY;
             tempDy *= -1;
@@ -113,6 +103,19 @@ public class SoccerBall {
             tempDy *= -1;
         }
     }
+    public boolean goal (){
+        if (x <= boardTopLeftX) {
+            scoreBoard.add_red_score();
+            
+            return true; 
+        } else if (x + diameter >= boardBottomRightX) {
+            scoreBoard.add_bluescore();
+            
+            return true; 
+        }
+        return false; 
+    }
+
     
 
     public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character

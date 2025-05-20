@@ -214,7 +214,11 @@ public class GameServer {
 					if (ballActive && ball != null) {
                 		
 						checkCollisions();
-						ball.update();
+						boolean goalScored = ball.update();
+       	 			if (goalScored) {
+            			ballActive = false; // Deactivate the ball after a goal
+        			}
+    
 					}
 					
 					if (ballActive && ball != null) {
@@ -224,7 +228,8 @@ public class GameServer {
                 		dataOut.writeDouble(-1);
                 		dataOut.writeDouble(-1);
             		}
-                
+					dataOut.writeInt(scoreBoard.get_redscore());
+					dataOut.writeInt(scoreBoard.get_bluescore());
 				 
 
                     ArrayList<Point> opponentSprites;

@@ -220,8 +220,13 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 
 					double ballX = dataIn.readDouble();
                 	double ballY = dataIn.readDouble();
+					int redScore = dataIn.readInt();
+					int blueScore = dataIn.readInt();
+					System.err.println("blue score is" + blueScore);
+					System.err.println("red score is" + redScore);
 					
-					
+					scoreboard.setBlueScore(blueScore);
+					scoreboard.setRedScore(redScore);
 					ArrayList<Point> spritePositions = readSpritePositions();
 					
                     
