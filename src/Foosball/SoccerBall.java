@@ -95,8 +95,12 @@ public class SoccerBall {
     
         if (x <= boardTopLeftX) {
             scoreBoard.add_red_score();
+            resetBall();
+            return;
         }else if(x + diameter >= boardBottomRightX) {
             scoreBoard.add_bluescore();
+            resetBall();
+            return;
         
         }
 
@@ -155,5 +159,13 @@ public class SoccerBall {
    }
    public double getDy(){
     return dy;
+   }
+   private void resetBall () {
+    this.x = Config.BALL_INITIAL_X;
+    this.y = Config.BALL_INITIAL_Y;
+    this.dx = 0;
+    this.dy = 0;
+    this.tempDx = 0;
+    this.tempDy = 0;
    }
 }
