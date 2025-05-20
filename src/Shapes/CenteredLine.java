@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants

@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
@@ -33,6 +33,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -62,7 +63,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	private ScoreBoard scoreboard;
 	
 	/** Instantiates the Game frame.
-	 * Sets up the game objects and players. */
+	 * Sets up the game objects and players. and the scoreboard is a paramter to ensure same scoreboard for all players and server*/
 	public GameFrame(int w, int h, ScoreBoard scoreboard) {
 		
 		frame = new JFrame();
@@ -114,7 +115,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
     }
 	
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
+	public void mouseWheelMoved(MouseWheelEvent e) { //method that allows players to move sprites using scroll wheel
 		int scroll = e.getWheelRotation();
 
     	if (scroll < 0 ) {		
@@ -127,11 +128,11 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {// method that allows players to move sprites using up and down arrow keys as well as spacebar to command the ball to spawn
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_SPACE:
-				// TODO: Add restrictions for only when the ball is out
+				
 				sendStartBallCommand();
 				break;
 			case KeyEvent.VK_UP:
@@ -149,7 +150,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	
 	public void connectToServer() {
 		try {
-			socket = new Socket(Config.SERVER_IP, Config.SERVER_SOCKET);
+			Scanner scanner = new Scanner (System.in);
+			System.out.print("Enter server IP address : ");
+        	String serverIP = scanner.nextLine();
+			System.out.print("Enter server port (default 12345): ");
+        	String portNumber = scanner.nextLine();
+			int serverPort = 0000;
+			serverPort = Integer.parseInt(portNumber.trim());
+			socket = new Socket(serverIP, serverPort);
 			BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 			DataInputStream in = new DataInputStream(bis);
 			BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
@@ -171,14 +179,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
-	public int getPlayerID() {
+	public int getPlayerID() { //getts the player ID
         return playerID;
     }
 
-	private void sendStartBallCommand() {
+	private void sendStartBallCommand() { //this method sends the start ball command to server whenever it is called
 		if (wtsRunnable != null && wtsRunnable.dataOut != null) {
         	try {
-           		wtsRunnable.dataOut.writeUTF("BALL");
+           		wtsRunnable.dataOut.writeUTF("BALL");// string message to signify the server what it is receiving
             	wtsRunnable.dataOut.flush();
 	
         	} catch (IOException ex) {
@@ -193,7 +201,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		
 		private DataInputStream dataIn;
 		
-		public ReadFromServer(DataInputStream in) { // this is still testing but should work
+		public ReadFromServer(DataInputStream in) { 
 			dataIn = in;
 			System.out.println("RFS Runnable created.");
 		}
@@ -239,7 +247,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 							javax.swing.SwingUtilities.invokeLater(() -> {
 							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
                 			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
-           					System.exit(0); // Or disable controls just choose if u want to close it entirey
+           					System.exit(0); 
         					});
         					return; 
     					}

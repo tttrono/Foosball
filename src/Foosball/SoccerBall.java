@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
@@ -35,9 +35,9 @@ public class SoccerBall {
     private BufferedImage sprite; 
   
 	private int  diameter;
-	int boardTopLeftX = 90; 
+
     int boardTopY = 191;
-    int boardBottomRightX = 924; 
+   
     int boardBottomY = 599;
     int leftGoalBoundsX = 89;
     int goalBoundsUpperY = 317;
@@ -46,7 +46,7 @@ public class SoccerBall {
     
     private ScoreBoard scoreBoard;
 
-    /* Initiates the ball object. */
+    /* Initiates the ball object and loads a soccerball sprite as a ball*/
     public SoccerBall(double x, double y, ScoreBoard scoreBoard) {
         this.x = x;
         this.y = y;
@@ -113,7 +113,7 @@ public class SoccerBall {
         return goal();
     }
 
-	public void checkBoundaries()  {
+	public void checkBoundaries()  {// checks boundaries of the ball and ensure it doesnt pass through the board
     
 		if (y <= boardTopY) {
             y = boardTopY;
@@ -131,7 +131,7 @@ public class SoccerBall {
         }
     }
 
-    public boolean goal (){
+    public boolean goal (){// checks if the ball passes through the goal and returns true if it does
         if (x <= leftGoalBoundsX && (y <= goalBoundsLowerY && y >= goalBoundsUpperY)) {
             scoreBoard.add_red_score();
             System.out.println("goal");
@@ -146,7 +146,7 @@ public class SoccerBall {
 
     /* adjusting velocity if ball hits with character*/
     public void adjustVelocity(int playerID) { 
-        //double speed = 2.0; 
+        
         if (playerID == 1) {
             if (dx <= 0) {
                 dx = Math.abs(dx); 
@@ -163,23 +163,23 @@ public class SoccerBall {
         Hit = true;
     }
     
-    public double getX() {
+    public double getX() { // returns the x coordinate of the ball
         return x;
     }
 
-    public double getY() {
+    public double getY() {// returns the y coordinate of the ball
         return y;
     }
 
-    public void setX(double x) {
+    public void setX(double x) {// sets the x coordinate of the ball
         this.x = x;
     }
 
-    public void setY(double y) {
+    public void setY(double y) {// sets the y coordinate of the ball
         this.y = y;
     }
     
-    public int getDiameter(){
+    public int getDiameter(){// returns the diameter of the ball
         return diameter;
     }
     
@@ -187,10 +187,10 @@ public class SoccerBall {
 	public java.awt.Rectangle getArea() { 
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
-   public double getDx(){
+   public double getDx(){ // returns the x velocity of the ball
     return dx;
    }
-   public double getDy(){
+   public double getDy(){ // returns the y velocity of the ball
     return dy;
    }
   

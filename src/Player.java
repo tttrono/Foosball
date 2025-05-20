@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
@@ -20,7 +20,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+/** 
+ * Player class creates a new player everytime it is called
+ * The class has complete methods that loads sprites for each rod depending 
+ * on player ID as well as all the necessray methods like moving, setting, and collision detection
+ */
 public class Player {
     private ArrayList<BufferedImage> sprites; // List of sprites for the player
     private ArrayList<Point> spritePositions; // Positions of the sprites
@@ -31,21 +35,21 @@ public class Player {
     private int spriteWidth;
     
 
-    public Player(int playerID) {
+    public Player(int playerID) { // Constructor to initialize values depending on playerID
         this.playerID = playerID;
         sprites = new ArrayList<>();
         spritePositions = new ArrayList<>();
 
         if (playerID == 1) {
             spritePath = "./assets/Player1.png"; 
-            loadSpritesPerRow(spritePath, new int[]{1, 2, 3}, 150, 194, 155); //see loadSpritesPerRow method to understand parametrs
+            loadSpritesPerRow(spritePath, new int[]{1, 2, 3}, 150, 194, 155); 
         } else if (playerID == 2) {
             spritePath = "./assets/Player2.png"; 
             loadSpritesPerRow(spritePath, new int[]{3, 2, 1}, 564, 194, 155); 
         }
     }
 
-    private void loadSpritesPerRow(String spritePath, int[] rowCount, int startX, int startY, int rowSpacing) {
+    private void loadSpritesPerRow(String spritePath, int[] rowCount, int startX, int startY, int rowSpacing) { //load sprites into each row and their spacing is determined on total length and spce between rod
         BufferedImage sprite = SpriteLoader.loadSprite(spritePath);
         if (sprite == null) {
             System.out.println("Failed to load sprite");
@@ -70,7 +74,7 @@ public class Player {
         }
     }
 
-    public void draw(Graphics2D g2d) {
+    public void draw(Graphics2D g2d) { //draw sprites
         for (int i = 0; i < sprites.size(); i++) {
             BufferedImage sprite = sprites.get(i);
             Point position = spritePositions.get(i);
@@ -78,7 +82,7 @@ public class Player {
         }
     }
 
-    public void moveSprites(double dx, double dy) { //fixed movement 
+    public void moveSprites(double dx, double dy) { //method that moves all the sprites under player and allows each row to reach the border
         int topBoundary = 194; 
         int bottomBoundary = 599 - spriteHeight; 
         int[] rowCount = new int[]{};
@@ -93,7 +97,7 @@ public class Player {
         }
         int spriteIndex = 0;
 
-        for (int row = 0; row < rowCount.length; row++) {//moves sprites and checks for availability of movement per row
+        for (int row = 0; row < rowCount.length; row++) {
             boolean canMoveRow = true;
         
             double multiplier = 1;
@@ -130,23 +134,23 @@ public class Player {
     
 
     
-    public int getSpriteWidth() {
+    public int getSpriteWidth() { //returns the width of the sprite
 
         return spriteWidth;
 
     }
 
-    public int getSpriteHeight() {
+    public int getSpriteHeight() { //returns the height of the sprite
 
         return spriteHeight;
 
     }
 
-    public ArrayList<Point> getSpritePositions() {
+    public ArrayList<Point> getSpritePositions() { //returns the position of the sprite
         return new ArrayList<>(spritePositions);
     }
 
-    public void setSpritePositions(ArrayList<Point> positions) {
+    public void setSpritePositions(ArrayList<Point> positions) { //sets the position of the sprite
         this.spritePositions = positions;
        
     }

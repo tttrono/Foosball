@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
@@ -50,7 +50,7 @@ public class GameCanvas extends JComponent {
 	private BufferedImage backgroundImage;
 	
 	/** Instantiates the game canvas.
-	 * Set with the same scoreboard instance from game frame. */
+	 * Set with the same scoreboard instance from game frame to ensure the same scoreboard for every player and server*/
 	public GameCanvas(ScoreBoard scoreboard) {
 		
 		objects = new ArrayList<DrawingObject>();
@@ -74,7 +74,7 @@ public class GameCanvas extends JComponent {
 		
 	}
 	
-	private void renderBackground() {
+	private void renderBackground() { //creates rendered background image to reduce the amount of work done by repainting
         int width = Config.SCREEN_WIDTH;
         int height = Config.SCREEN_HEIGHT;
         
@@ -124,12 +124,10 @@ public class GameCanvas extends JComponent {
 	
 		scoreboard.draw(g2d);
 		
-//		for (DrawingObject object: objects) {
-//			object.draw(g2d);
-//		}
+
 		
 	}
-	public void createPlayers(int playerID) { 
+	public void createPlayers(int playerID) { //method that creates players depending on the playerID
 	     if (playerID == 1) {
             me = new Player(playerID);
             opponent = new Player(2);
@@ -138,23 +136,23 @@ public class GameCanvas extends JComponent {
             opponent = new Player(1);
         }
     }
-	public Player getMePlayer() {
+	public Player getMePlayer() {// method that returns the player
 		return me;
 	}
 	
-	public Player getOpponentPlayer() {
+	public Player getOpponentPlayer() {// method that returns the opponent
 		return opponent;
 	}
 	
-	public DigitalBoard getBoard() {
+	public DigitalBoard getBoard() {// method that returns the digitalboard
 		return digitalboard;
 	}
 	
-	public SoccerBall getBall() {
+	public SoccerBall getBall() {// method that returns the ball
 		return ball;
 	}
 
-	public void setBall(SoccerBall ball) {
+	public void setBall(SoccerBall ball) {// method that sets the ball
     	this.ball = ball;
 	}
 }

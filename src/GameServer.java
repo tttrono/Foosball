@@ -1,6 +1,6 @@
 /**
-@author Justin Heindrich V De Guzman
-@author Theiss Trono
+@author Justin Heindrich V De Guzman 227174
+@author Theiss Trono 248468
 @version May 20, 2025
 I have not discussed the Java language code in my program
 with anyone other than my instructor or the teaching assistants
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
 
 /** The Game server is dedicated to hosting the Foosball network game.
  * It establishes buffered connection with the 2 player clients and 
@@ -53,7 +54,8 @@ public class GameServer {
 	private ScoreBoard scoreBoard;
 	
 	/** Instantiates the Game server. 
-	 * Creates a new ServerSocket for accepting connections. */
+	 * Creates a new ServerSocket for accepting connections.
+	 */
 	public GameServer() {
 		System.out.println("===== GAME SERVER =====");
 		numPlayers = 0;
@@ -126,7 +128,7 @@ public class GameServer {
 	}
 
 	
-	private void checkCollisions() {
+	private void checkCollisions() { //checks if collision occurs and adjusts ball accordingly
 		if (ball == null || !ballActive) {
 			return; 
 		}
@@ -146,7 +148,7 @@ public class GameServer {
     	}
 
 	}
-	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) {
+	private boolean checkCollisionWithSprites(SoccerBall ball, ArrayList<Point> spritePositions) { //method that checks sets how ball and player sprites collied
     	java.awt.Rectangle ballBounds = ball.getArea();
     	int spriteWidth = Config.SPRITE_WIDTH/2;
     	int spriteHeight = Config.SPRITE_HEIGHT/2;
@@ -180,13 +182,13 @@ public class GameServer {
 				while(true) {
 				
                 	String command = dataIn.readUTF();
-                	if ("BALL".equals(command)) {
+                	if ("BALL".equals(command)) { // this string is sent from client and it is under if function ensure server handles the command properly
 						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreBoard);
-						ball.setVelocity(4, -1);
+						ball.setVelocity(-4, -1);
                     	ballActive = true;
                     	System.out.println("Ball activated by player " + playerID);
                     	
-                	}else if ("SPRITES".equals(command)){
+                	}else if ("SPRITES".equals(command)){// this string is sent from client and it is under if function ensure server handles the command properly
             		
 						int numSprites = dataIn.readInt();
             			ArrayList<Point> spritePositions = new ArrayList<>();
