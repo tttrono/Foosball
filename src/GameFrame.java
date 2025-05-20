@@ -182,13 +182,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
-<<<<<<< HEAD
-	public int getPlayerID() { //getts the player ID
-        return playerID;
-    }
-
-	private void sendStartBallCommand() { //this method sends the start ball command to server whenever it is called
-=======
 	/* Accessor method for getting player ID.*/
 	public int getPlayerID() {
         return playerID;
@@ -196,7 +189,6 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 
 	/* Spawns the ball in the center of the board for game start. */
 	private void sendStartBallCommand() {
->>>>>>> d619c9186937f94cf40112df897e74d06bf88f1b
 		if (wtsRunnable != null && wtsRunnable.dataOut != null) {
         	try {
            		wtsRunnable.dataOut.writeUTF("BALL");// string message to signify the server what it is receiving
@@ -259,10 +251,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 							javax.swing.SwingUtilities.invokeLater(() -> {
 							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
                 			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
-<<<<<<< HEAD
-=======
-							/* Or disable controls, just choose if you want to close it entirely */
->>>>>>> d619c9186937f94cf40112df897e74d06bf88f1b
+						
            					System.exit(0); 
         					});
         					return; 

@@ -20,17 +20,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-<<<<<<< HEAD
 /** 
  * Player class creates a new player everytime it is called
  * The class has complete methods that loads sprites for each rod depending 
  * on player ID as well as all the necessray methods like moving, setting, and collision detection
  */
-=======
-
-/* Creates the game objects for Player.
- * Incorporates 3 rods and sprites for either blue or red player. */
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
 public class Player {
     private ArrayList<BufferedImage> sprites; // List of sprites for the player
     private ArrayList<Point> spritePositions; // Positions of the sprites
@@ -40,13 +34,8 @@ public class Player {
     private int spriteHeight;
     private int spriteWidth;
     
-<<<<<<< HEAD
-
-    public Player(int playerID) { // Constructor to initialize values depending on playerID
-=======
     /* Instantiates the player object by playerID. */
     public Player(int playerID) {
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
         this.playerID = playerID;
         sprites = new ArrayList<>();
         spritePositions = new ArrayList<>();
@@ -86,12 +75,8 @@ public class Player {
         }
     }
 
-<<<<<<< HEAD
-    public void draw(Graphics2D g2d) { //draw sprites
-=======
     /* Draws the player objects. */
     public void draw(Graphics2D g2d) {
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
         for (int i = 0; i < sprites.size(); i++) {
             BufferedImage sprite = sprites.get(i);
             Point position = spritePositions.get(i);
@@ -99,7 +84,6 @@ public class Player {
         }
     }
 
-<<<<<<< HEAD
     public void moveSprites(double dx, double dy) { //method that moves all the sprites under player and allows each row to reach the border
         int topBoundary = 194; 
         int bottomBoundary = 599 - spriteHeight; 
@@ -154,73 +138,15 @@ public class Player {
     
     public int getSpriteWidth() { //returns the width of the sprite
 
-=======
-    /* Moves the player sprites for rod movement. */
-    public void moveSprites(double dx, double dy) { //fixed movement 
-    	int topBoundary = 194; 
-    	int bottomBoundary = 599 - spriteHeight; 
-    	int[] rowCount = new int[]{};
-    
-    	/* order of sprites depending on playerID */
-	    if (playerID == 1){
-	        rowCount = new int []{1, 2 ,3}; 
-	    }
-	    else if (playerID == 2){
-	        rowCount = new int [] {3, 2, 1};
-	    }
-	    
-	    int spriteIndex = 0;
-	
-	    /* moves sprites and checks for availability of movement per row. */
-	    for (int row = 0; row < rowCount.length; row++) {
-	        boolean canMoveRow = true;
-	        
-	        double multiplier = 1;
-	        if (rowCount [row] == 1) {
-	            multiplier = 1.5;
-	        }
-	        else if (rowCount[row] == 2) {
-	            multiplier = 1.25;
-	        }
-	            for (int i = 0; i < rowCount[row]; i++) { //sets which row
-	            Point position = spritePositions.get(spriteIndex + i);
-	            if ((dy  < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
-	                canMoveRow = false;
-	                break;
-	            }
-	        }
-	        if (canMoveRow) {
-	            for (int i = 0; i < rowCount[row]; i++) {
-	                Point position = spritePositions.get(spriteIndex + i);
-	                position.y += dy * multiplier;
-	            }
-	        }
-	        spriteIndex += rowCount[row];
-	    }
-    }
-    
-    /* Accessor methods to get sprite dimensions. */
-    public int getSpriteWidth() {
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
         return spriteWidth;
     }
 
-<<<<<<< HEAD
     public int getSpriteHeight() { //returns the height of the sprite
 
-=======
-    public int getSpriteHeight() {
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
         return spriteHeight;
     }
-<<<<<<< HEAD
 
     public ArrayList<Point> getSpritePositions() { //returns the position of the sprite
-=======
-    
-    /* Accessor methods to get player rod locations. */
-    public ArrayList<Point> getSpritePositions() {
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
         return new ArrayList<>(spritePositions);
     }
 

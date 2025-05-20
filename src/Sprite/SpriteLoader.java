@@ -21,13 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-<<<<<<< HEAD
 /**
  * a sprite loader class that loads a sprite from a file and has a the try and catch method already implemented to reduce code space
  */
-=======
-/* Loads sprite images game objects. */
->>>>>>> 404c1311eb67525230a31ca4fb628d287cd301a9
 public class SpriteLoader{
 	
 	/* Accepts filepath as parameter. */
