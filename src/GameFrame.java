@@ -1,3 +1,19 @@
+/**
+@author Justin Heindrich V De Guzman
+@author Theiss Trono
+@version May 20, 2025
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+**/
 import Foosball.Config;
 import Foosball.ScoreBoard;
 import Foosball.SoccerBall;
@@ -35,12 +51,9 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	//private SoccerBall ball;
 
 	//private Player2 opponent;
-	private Timer animationTimer;
-	private boolean up, down, left, right;
-
-	private boolean ballActive = false;
-
 	
+	private boolean up, down; 
+
 	private Socket socket;
 	private int playerID;
 	private ReadFromServer rfsRunnable;
@@ -142,22 +155,18 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			case KeyEvent.VK_SPACE:
 				sendStartBallCommand();
 				break;
-                //canvas.getBall().setVelocity(9, -2);
-				
-				// TODO: Add restrictions for only when the ball is out
+               
 			case KeyEvent.VK_UP:
 				up = true;
 				me.moveSprites(0, -Config.PLAYER_SPEED);
 				canvas.repaint();
-				//me.moveV(-Config.PLAYER_SPEED);
-				//canvas.repaint();
+				
 				break;
 			case KeyEvent.VK_DOWN:
 				down = true;
 				me.moveSprites(0, Config.PLAYER_SPEED);
 				canvas.repaint();
-				//me.moveV(Config.PLAYER_SPEED);
-				//canvas.repaint();
+			
 				break;
 		}
 	}
@@ -205,14 +214,14 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	
 
 	private void sendStartBallCommand() {
-    if (wtsRunnable != null && wtsRunnable.dataOut != null) {
-        try {
-            wtsRunnable.dataOut.writeUTF("BALL");
-            wtsRunnable.dataOut.flush();
+		if (wtsRunnable != null && wtsRunnable.dataOut != null) {
+        	try {
+           		wtsRunnable.dataOut.writeUTF("BALL");
+            	wtsRunnable.dataOut.flush();
 	
         	} catch (IOException ex) {
-            ex.printStackTrace();
-        	}
+            	ex.printStackTrace();
+        	}	
     	}
 	}
 
@@ -240,6 +249,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			
 					scoreboard.setBlueScore(blueScore);
 					scoreboard.setRedScore(redScore);
+
 					ArrayList<Point> spritePositions = readSpritePositions();
 					
                     
