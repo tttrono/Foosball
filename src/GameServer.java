@@ -244,7 +244,12 @@ public class GameServer {
                 		dataOut.writeDouble(pos.y);
             		}
 					
-
+					if (scoreBoard.get_bluescore() == 5 || scoreBoard.get_redscore() == 5) {
+						System.out.println("We have a winner!");
+    					dataOut.writeUTF("GAME_OVER");
+    					dataOut.flush();
+    					break; 
+					}				
 					dataOut.flush();
 					try {
 						Thread.sleep(Config.THREAD_SLEEP);

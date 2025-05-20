@@ -190,6 +190,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public int getPlayerID() {
         return playerID;
     }
+	
 
 	private void sendStartBallCommand() {
     if (wtsRunnable != null && wtsRunnable.dataOut != null) {
@@ -222,9 +223,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
                 	double ballY = dataIn.readDouble();
 					int redScore = dataIn.readInt();
 					int blueScore = dataIn.readInt();
-					System.err.println("blue score is" + blueScore);
-					System.err.println("red score is" + redScore);
-					
+			
 					scoreboard.setBlueScore(blueScore);
 					scoreboard.setRedScore(redScore);
 					ArrayList<Point> spritePositions = readSpritePositions();
@@ -247,8 +246,20 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         				canvas.setBall(null);
     					}
 					}
+					if (dataIn.available() > 0) { // Check if there's a message
+   			 			String msg = dataIn.readUTF();
+    					if (msg.startsWith("GAME_OVER")) {
+        	
+							javax.swing.SwingUtilities.invokeLater(() -> {
+							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
+                			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
+           					System.exit(0); // Or disable controls, etc.
+        					});
+        					return; // Stop the thread
+    					}
+}
                 
-				canvas.repaint();
+					canvas.repaint();
 				}
 			} catch (IOException ex) {
 				System.out.println("IOException from RFS run()");
