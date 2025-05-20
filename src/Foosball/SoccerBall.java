@@ -34,7 +34,7 @@ public class SoccerBall {
         this.Hit = true;
     
 	    try {
-            sprite = ImageIO.read(new File("assets/soccerball.png")); 
+            sprite = ImageIO.read(new File("./assets/soccerball.png")); 
         } catch (IOException e) {
             System.err.println("Error loading sprite: ");
             sprite = null; 

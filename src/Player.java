@@ -21,10 +21,10 @@ public class Player {
         spritePositions = new ArrayList<>();
 
         if (playerID == 1) {
-            spritePath = "assets/Player1.png"; 
+            spritePath = "./assets/Player1.png"; 
             loadSpritesPerRow(spritePath, new int[]{1, 2, 3}, 150, 194, 155); //see loadSpritesPerRow method to understand parametrs
         } else if (playerID == 2) {
-            spritePath = "assets/Player2.png"; 
+            spritePath = "./assets/Player2.png"; 
             loadSpritesPerRow(spritePath, new int[]{3, 2, 1}, 564, 194, 155); 
         }
     }
