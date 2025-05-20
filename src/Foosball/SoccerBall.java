@@ -107,14 +107,12 @@ public class SoccerBall {
         } else if (y + diameter >= boardBottomY) {
             y = boardBottomY - diameter;
             tempDy *= -1;
-        } else if (x <= leftGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
+        } else if (x <= leftGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
-        } else if (x <= leftGoalBoundsX && y >= boardBottomY && y <= goalBoundsLowerY){
+        
+        } else if (x >= rightGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
-        } else if (x >= rightGoalBoundsX && y >= boardBottomY && y <= goalBoundsLowerY){
-            tempDx *=-1;
-        } else if (x <= rightGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
-            tempDx *=-1;
+     
         }
     }
     public boolean goal (){
