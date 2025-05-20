@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-
+/* Create the ball instance for Foosball. */
 public class SoccerBall {
 
     private double x, y;
@@ -31,9 +31,16 @@ public class SoccerBall {
     
     private static final double friction = 0.99;
     private boolean Hit;
+    
     private BufferedImage sprite; 
+<<<<<<< HEAD
   
 	private int  diameter;
+=======
+    private int boardWidth, boardHeight; 
+	private int  diameterSprite, diameter;
+	
+>>>>>>> 610900ee50db312707c238de7831f53327c7252d
 	int boardTopLeftX = 90; 
     int boardTopY = 191;
     int boardBottomRightX = 924; 
@@ -43,9 +50,9 @@ public class SoccerBall {
     int goalBoundsLowerY = 474;
     int rightGoalBoundsX = 934;
     
-
     private ScoreBoard scoreBoard;
 
+    /* Initiates the ball object. */
     public SoccerBall(double x, double y, ScoreBoard scoreBoard) {
         this.x = x;
         this.y = y;
@@ -64,37 +71,41 @@ public class SoccerBall {
             sprite = null; 
         }
     
+<<<<<<< HEAD
 		diameter = sprite.getWidth();
 
 
 
+=======
+		diameterSprite = sprite.getWidth();
+>>>>>>> 610900ee50db312707c238de7831f53327c7252d
     }
 
+    /* Draws the ball object. */
     public void draw(Graphics2D g2d) {
 	
    		if (sprite != null) {
-       
             g2d.drawImage(sprite, (int) x, (int) y, diameter, diameter, null);
         } else {
-        
             g2d.setColor(java.awt.Color.BLACK);
             g2d.fillOval((int) x, (int) y, diameter, diameter);
         }
     }
-     public void setVelocity(double dx, double dy) {
+    
+    public void setVelocity(double dx, double dy) {
         this.dx = dx;
         this.dy = dy;
     }
-    public boolean update() { // update based on if it is hit by a character or if it is not (friction)
+     
+    /* update based on if it is hit by a character or if it is not (friction)*/
+    public boolean update() { 
         
-       if (Hit){
-        tempDx = dx;
-        tempDy = dy;
-        Hit = false;
-        } else {
-            tempDx *= friction;
- 
-
+    	if (Hit) {
+    		tempDx = dx;
+    		tempDy = dy;
+    		Hit = false;
+    	} else {
+    		tempDx *= friction;
         }
         
         if (Math.abs(tempDx) < 2) {
@@ -104,20 +115,17 @@ public class SoccerBall {
                 tempDx = 2; 
             }
         }
-
-    
     
         x = x + tempDx;
         y = y + tempDy;
        
         checkBoundaries();
         return goal();
-        
     }
 
 	public void checkBoundaries()  {
     
-        if (y <= boardTopY) {
+		if (y <= boardTopY) {
             y = boardTopY;
             tempDy *= -1;
         } 
@@ -127,11 +135,9 @@ public class SoccerBall {
         } 
         if (x <= leftGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
-        
         } 
         if (x + diameter>= rightGoalBoundsX && (y < goalBoundsLowerY || y > goalBoundsUpperY)){
             tempDx *=-1;
-     
         }
     }
 
@@ -148,11 +154,10 @@ public class SoccerBall {
         return false; 
     }
 
-    
-    public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character
+    /* adjusting velocity if ball hits with character*/
+    public void adjustVelocity(int playerID) { 
         //double speed = 2.0; 
         if (playerID == 1) {
-       
             if (dx <= 0) {
                 dx = Math.abs(dx); 
             }
@@ -167,6 +172,7 @@ public class SoccerBall {
 
         Hit = true;
     }
+    
     public double getX() {
         return x;
     }
@@ -182,12 +188,16 @@ public class SoccerBall {
     public void setY(double y) {
         this.y = y;
     }
+    
     public int getDiameter(){
         return diameter;
     }
-	public java.awt.Rectangle getArea() { // to encapsulate the sprite ball
+    
+    /* to encapsulate the sprite ball */
+	public java.awt.Rectangle getArea() { 
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
+<<<<<<< HEAD
    public double getDx(){
     return dx;
    }
@@ -195,4 +205,23 @@ public class SoccerBall {
     return dy;
    }
   
+=======
+	
+	public double getDx(){
+		return dx;
+	}
+   
+	public double getDy(){
+		return dy;
+	}
+   
+	private void resetBall () {
+	    this.x = Config.BALL_INITIAL_X;
+	    this.y = Config.BALL_INITIAL_Y;
+	    this.dx = 0;
+	    this.dy = 0;
+	    this.tempDx = 0;
+	    this.tempDy = 0;
+   }
+>>>>>>> 610900ee50db312707c238de7831f53327c7252d
 }

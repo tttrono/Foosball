@@ -25,9 +25,8 @@ import java.util.ArrayList;
 
 import Shapes.*;
 
-/*
- * 
- * */
+/* Renders the game board object of Foosball.
+ * Creates the basic field lines, bounds and goals. */
 public class DigitalBoard {
 	
 	double x;
@@ -38,11 +37,12 @@ public class DigitalBoard {
 	Shape upperbounds;
 	Shape lowerbounds;
 	
+	/* Initiates the board object. */
 	public DigitalBoard() {
-		
 		board = new ArrayList<DrawingObject>();
 	}
 	
+	/* Draws the board objects. */
 	public void draw(Graphics2D g2d) {
 		
 		int lineWidths = 5;
@@ -70,27 +70,50 @@ public class DigitalBoard {
 			object.draw(g2d);
 		}
 
-		// Adding invisible wall bounds for collisions
+		/* Invisible wall bounds for collisions and goal tracking. */ 
 		upperbounds = new Rectangle2D.Double(x-423, y-214, 845, 136);		
-		g2d.setColor(Color.BLACK);	// Colors.INVISIBLE
+		g2d.setColor(Colors.INVISIBLE);
 		g2d.setStroke(new BasicStroke(1));
 		g2d.draw(upperbounds);
 		
 		lowerbounds = new Rectangle2D.Double(x-423, y+79, 845, 135);					
-		g2d.setColor(Color.BLACK);	// Colors.INVISIBLE
+		g2d.setColor(Colors.INVISIBLE);
 		g2d.setStroke(new BasicStroke(1));
 		g2d.draw(lowerbounds);
 		
 	}
 	
-	public double upperbounds_X() { return upperbounds.getBounds2D().getX(); }			// upper left corner 
-	public double upperbounds_Y() { return upperbounds.getBounds2D().getY(); }			// upper left corner
-	public double upperbounds_Width() { return upperbounds.getBounds2D().getWidth(); }
-	public double upperbounds_Height() { return upperbounds.getBounds2D().getHeight(); }
+	/* Accessor methods for getting wall bounds. */
+	public double upperbounds_X() { // upper left corner 
+		return upperbounds.getBounds2D().getX(); 
+	}			
 	
-	public double lowerbounds_X() { return lowerbounds.getBounds2D().getX(); }			// lower half bounds	
-	public double lowerbounds_Y() { return lowerbounds.getBounds2D().getY(); }			// lower half bounds
-	public double lowerbounds_Width() { return lowerbounds.getBounds2D().getWidth(); }
-	public double lowerbounds_Height() { return lowerbounds.getBounds2D().getHeight(); }
+	public double upperbounds_Y() {  // upper left corner
+		return upperbounds.getBounds2D().getY(); 
+	}	
+	
+	public double upperbounds_Width() { 
+		return upperbounds.getBounds2D().getWidth(); 
+	}
+	
+	public double upperbounds_Height() { 
+		return upperbounds.getBounds2D().getHeight(); 
+	}
+	
+	public double lowerbounds_X() { // lower half bounds	
+		return lowerbounds.getBounds2D().getX(); 
+	}	
+	
+	public double lowerbounds_Y() { // lower half bounds
+		return lowerbounds.getBounds2D().getY(); 
+	}		
+	
+	public double lowerbounds_Width() { 
+		return lowerbounds.getBounds2D().getWidth(); 
+	}
+	
+	public double lowerbounds_Height() { 
+		return lowerbounds.getBounds2D().getHeight(); 
+	}
 	
 }
