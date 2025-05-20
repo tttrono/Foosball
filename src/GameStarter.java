@@ -1,4 +1,5 @@
 import Foosball.Config; 
+import Foosball.ScoreBoard;
 
 public class GameStarter {
 
@@ -7,7 +8,8 @@ public class GameStarter {
 	}
 	
 	public static void main(String[] args) {
-		GameFrame playerFrame = new GameFrame(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT);
+		ScoreBoard scoreboard = new ScoreBoard();
+		GameFrame playerFrame = new GameFrame(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, scoreboard);
 		
 		playerFrame.connectToServer();
 		playerFrame.setupGUI();
