@@ -211,15 +211,17 @@ public class GameServer {
 		public void run() {
 			try {
 				while(true) {
-					if (ballActive && ball != null) {
+					synchronized (ball) {
+						if (ballActive && ball != null) {
                 		
-						checkCollisions();
-						boolean goalScored = ball.update();
-       	 			if (goalScored) {
-            			ballActive = false; // Deactivate the ball after a goal
-        			}
+							checkCollisions();
+							boolean goalScored = ball.update();
+       	 					if (goalScored) {
+            					ballActive = false; // Deactivate the ball after a goal
+        					}
     
-					}
+						}
+				}	
 					
 					if (ballActive && ball != null) {
                 		dataOut.writeDouble(ball.getX());

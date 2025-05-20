@@ -122,20 +122,12 @@ public class ScoreBoard {
 		for(DrawingObject object: scoreboard) {
 			object.draw(g2d);
 		}
-		// Left goal blinds
-		Rectangle2D.Double goal_blinds_1 = new Rectangle2D.Double(0, 230, 90, 330);	
-		g2d.setColor(Colors.DARK_TEAL);
-		g2d.setStroke(new BasicStroke(1));
-		g2d.draw(goal_blinds_1);
+		
 		
 		CenteredLine goal_blinds_line_1 = new CenteredLine(95, 395, 322, 90, 8, Color.WHITE);
 		goal_blinds_line_1.draw(g2d);
 		
-		// Right goal blinds
-		Rectangle2D.Double goal_blinds_2 = new Rectangle2D.Double(934, 230, 90, 330);
-		g2d.setColor(Colors.DARK_TEAL);
-		g2d.setStroke(new BasicStroke(1));
-		g2d.draw(goal_blinds_2);
+		
 		
 		CenteredLine goal_blinds_line_2 = new CenteredLine(929, 395, 322, 90, 9, Color.WHITE);
 		goal_blinds_line_2.draw(g2d);
