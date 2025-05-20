@@ -120,11 +120,11 @@ public class SoccerBall {
     }
 
     public boolean goal (){
-        if (x <= leftGoalBoundsX && (y >= goalBoundsLowerY && y <= goalBoundsUpperY)) {
+        if (x <= leftGoalBoundsX && (y <= goalBoundsLowerY && y >= goalBoundsUpperY)) {
             scoreBoard.add_red_score();
             System.out.println("goal");
             return true; 
-        } else if (x + diameter >= rightGoalBoundsX && (y >= goalBoundsLowerY && y <= goalBoundsUpperY)) {
+        } else if (x + diameter >= rightGoalBoundsX && (y <= goalBoundsLowerY && y >= goalBoundsUpperY)) {
             scoreBoard.add_bluescore();
             System.out.println("goal");
             return true; 
