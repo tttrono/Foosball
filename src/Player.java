@@ -1,3 +1,19 @@
+/**
+@author Justin Heindrich V De Guzman
+@author Theiss Trono
+@version May 20, 2025
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+**/
 import Foosball.SoccerBall;
 import Sprite.SpriteLoader;
 import java.awt.Graphics2D;
@@ -32,7 +48,7 @@ public class Player {
     private void loadSpritesPerRow(String spritePath, int[] rowCount, int startX, int startY, int rowSpacing) {
         BufferedImage sprite = SpriteLoader.loadSprite(spritePath);
         if (sprite == null) {
-        System.out.println("Failed to load sprite");
+            System.out.println("Failed to load sprite");
         } else {
             System.out.println("Sprite loaded");
         }
@@ -62,54 +78,52 @@ public class Player {
         }
     }
 
-   public void moveSprites(double dx, double dy) { //fixed movement 
-    int topBoundary = 194; 
-    int bottomBoundary = 599 - spriteHeight; 
-    int[] rowCount = new int[]{};
+    public void moveSprites(double dx, double dy) { //fixed movement 
+        int topBoundary = 194; 
+        int bottomBoundary = 599 - spriteHeight; 
+        int[] rowCount = new int[]{};
 
     
-    if (playerID == 1){
-        rowCount = new int []{1, 2 ,3}; // order of sprites depending on playerID
-    }
-    else if (playerID == 2){
+        if (playerID == 1){
+            rowCount = new int []{1, 2 ,3}; // order of sprites depending on playerID
+        }
+        else if (playerID == 2){
         rowCount = new int [] {3, 2, 1};
         
-    }
-    int spriteIndex = 0;
+        }
+        int spriteIndex = 0;
 
-    for (int row = 0; row < rowCount.length; row++) {//moves sprites and checks for availability of movement per row
-        boolean canMoveRow = true;
+        for (int row = 0; row < rowCount.length; row++) {//moves sprites and checks for availability of movement per row
+            boolean canMoveRow = true;
         
-        double multiplier = 1;
-        if (rowCount [row] == 1) {
-            multiplier = 1.5;
-        }
-        else if (rowCount[row] == 2) {
-            multiplier = 1.25;
-        }
-            for (int i = 0; i < rowCount[row]; i++) { //sets which row
-            Point position = spritePositions.get(spriteIndex + i);
-            if ((dy  < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
-                canMoveRow = false;
-                break;
+            double multiplier = 1;
+            if (rowCount [row] == 1) {
+                multiplier = 1.5;
             }
-        }
-         if (canMoveRow) {
-            for (int i = 0; i < rowCount[row]; i++) {
+            else if (rowCount[row] == 2) {
+                multiplier = 1.25;
+            }
+            for (int i = 0; i < rowCount[row]; i++) { //sets which row
                 Point position = spritePositions.get(spriteIndex + i);
-                position.y += dy * multiplier;
+                if ((dy  < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
+                    canMoveRow = false;
+                    break;
+                }
+            }
+            if (canMoveRow) {
+                for (int i = 0; i < rowCount[row]; i++) {
+                    Point position = spritePositions.get(spriteIndex + i);
+                    position.y += dy * multiplier;
     
                 
-            }
+                }
             
+            }
+
+
+            spriteIndex += rowCount[row];
         }
-   
-     
-    
-        spriteIndex += rowCount[row];
-      
-        
-    }
+
 
   
     }
@@ -118,13 +132,13 @@ public class Player {
     
     public int getSpriteWidth() {
 
-    return spriteWidth;
+        return spriteWidth;
 
     }
 
     public int getSpriteHeight() {
 
-    return spriteHeight;
+        return spriteHeight;
 
     }
 
@@ -144,7 +158,7 @@ public class Player {
         for (Point spritePosition : spritePositions) {
         
             java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
-                spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
+            spritePosition.x, spritePosition.y, spriteWidth, spriteHeight
             );
 
         

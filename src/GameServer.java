@@ -1,3 +1,19 @@
+/**
+@author Justin Heindrich V De Guzman
+@author Theiss Trono
+@version May 20, 2025
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+**/
 import Foosball.Config;
 import Foosball.ScoreBoard;
 import Foosball.SoccerBall;
@@ -11,14 +27,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-/**
- * 
- */
+/** The Game server is dedicated to hosting the Foosball network game.
+ * It establishes buffered connection with the 2 player clients and 
+ * maintains game communication for player and ball coordinates. */
 public class GameServer {
 	
 	private ServerSocket ss;
 	private int numPlayers;
-	private int maxPlayers;
+	
 	
 	private Socket p1socket;
 	private Socket p2socket;
@@ -26,25 +42,22 @@ public class GameServer {
 	private ReadFromClient p2ReadRunnable;
 	private WriteToClient p1WriteRunnable;
 	private WriteToClient p2WriteRunnable;
-	
-	
 
 	private ArrayList<Point> p1Sprites = new ArrayList<>();
     private ArrayList<Point> p2Sprites = new ArrayList<>();
 	
 	private SoccerBall ball;
-
 	private GameCanvas canvas;
 
 	private volatile boolean ballActive;
 	private ScoreBoard scoreBoard;
-	/**
-	 * 
-	 */
+	
+	/** Instantiates the Game server. 
+	 * Creates a new ServerSocket for accepting connections. */
 	public GameServer() {
 		System.out.println("===== GAME SERVER =====");
 		numPlayers = 0;
-		maxPlayers = 2;
+		
 		
 	
 		ballActive = false;
@@ -60,6 +73,8 @@ public class GameServer {
 		}
 	}
 	
+	/** Creates a socket object for a new player. 
+	 * Assigns a playerID and creates the input/output streams for data. */
 	public void acceptConnections() {
 		try {
 			System.out.println("Waiting for connections... ");
@@ -146,6 +161,9 @@ public class GameServer {
     	}
     	return false;
 	}
+	
+	/** Runs the DataInputStream from the clients.
+	 * Receives data coordinates from the game players. */
 	private class ReadFromClient implements Runnable {
 		
 		private int playerID;
@@ -197,6 +215,8 @@ public class GameServer {
 		}
 	}
 	
+	/** Runs the DataOutputStream to the clients.
+	 * Sends data coordinates to the game players. */
 	private class WriteToClient implements Runnable {
 		
 		private int playerID;
