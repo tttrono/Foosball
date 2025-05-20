@@ -162,7 +162,16 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 		}
 	}
 	
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		switch ((e.getKeyCode())) {
+			case KeyEvent.VK_UP:
+				up = false;
+				break;				
+			case KeyEvent.VK_DOWN:
+				down = false;
+				break;
+		}
+	}
 	public void keyTyped(KeyEvent e) {}
 	
 	public void connectToServer() {
