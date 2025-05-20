@@ -246,16 +246,16 @@ public class GameFrame implements KeyListener, MouseWheelListener {
         				canvas.setBall(null);
     					}
 					}
-					if (dataIn.available() > 0) { // Check if there's a message
+					if (dataIn.available() > 0) { 
    			 			String msg = dataIn.readUTF();
     					if (msg.startsWith("GAME_OVER")) {
         	
 							javax.swing.SwingUtilities.invokeLater(() -> {
 							javax.swing.JOptionPane.showMessageDialog(null, "Game Over!\n" +
                 			(scoreboard.get_bluescore() == 5 ? "Blue" : "Red") + " wins!");
-           					System.exit(0); // Or disable controls, etc.
+           					System.exit(0); 
         					});
-        					return; // Stop the thread
+        					return; 
     					}
 }
                 
