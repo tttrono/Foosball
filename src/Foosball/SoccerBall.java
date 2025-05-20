@@ -19,9 +19,15 @@ public class SoccerBall {
     private int boardWidth, boardHeight; 
 	private int  diameterSprite, diameter;
 	int boardTopLeftX = 90; 
-    int boardTopLeftY = 191;
+    int boardTopY = 191;
     int boardBottomRightX = 924; 
-    int boardBottomRightY = 599;
+    int boardBottomY = 599;
+    int leftGoalBoundsX = 89;
+    int goalBoundsUpperY = 317;
+    int goalBoundsLowerY = 474;
+    int rightGoalBoundsX = 934;
+    
+
     private ScoreBoard scoreBoard;
 
     public SoccerBall(double x, double y, ScoreBoard scoreBoard) {
@@ -95,29 +101,35 @@ public class SoccerBall {
 
 	public void checkBoundaries()  {
     
-        if (y <= boardTopLeftY) {
-            y = boardTopLeftY;
+        if (y <= boardTopY) {
+            y = boardTopY;
             tempDy *= -1;
-        } else if (y + diameter >= boardBottomRightY) {
-            y = boardBottomRightY - diameter;
+        } else if (y + diameter >= boardBottomY) {
+            y = boardBottomY - diameter;
             tempDy *= -1;
+        } else if (x <= leftGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
+            tempDx *=-1;
+        } else if (x <= leftGoalBoundsX && y >= boardBottomY && y <= goalBoundsLowerY){
+            tempDx *=-1;
+        } else if (x >= rightGoalBoundsX && y >= boardBottomY && y <= goalBoundsLowerY){
+            tempDx *=-1;
+        } else if (x <= leftGoalBoundsX && y <= boardTopY && y >= goalBoundsUpperY){
+            tempDx *=-1;
         }
     }
     public boolean goal (){
-        if (x <= boardTopLeftX) {
+        if (x <= leftGoalBoundsX && y >= goalBoundsLowerY && y <= goalBoundsUpperY) {
             scoreBoard.add_red_score();
-            
             return true; 
-        } else if (x + diameter >= boardBottomRightX) {
+        } else if (x + diameter >= rightGoalBoundsX && y >= goalBoundsLowerY && y <= goalBoundsUpperY) {
             scoreBoard.add_bluescore();
-            
+
             return true; 
         }
         return false; 
     }
 
     
-
     public void adjustVelocity(int playerID) { // adjusting velocity if ball hits with character
         //double speed = 2.0; 
         if (playerID == 1) {
