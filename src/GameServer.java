@@ -61,6 +61,7 @@ public class GameServer {
 		
 		ballActive = false;
 		scoreBoard = new ScoreBoard();
+		ball = new SoccerBall(0, 0, scoreBoard);
 		canvas = new GameCanvas(scoreBoard);
 
 		try {
@@ -175,7 +176,8 @@ public class GameServer {
 				
                 	String command = dataIn.readUTF();
                 	if ("BALL".equals(command)) { // this string is sent from client and it is under if function ensure server handles the command properly
-						ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreBoard);
+						ball.setX(Config.BALL_INITIAL_X);
+						ball.setY(Config.BALL_INITIAL_Y);
 						ball.setVelocity(-4, -1);
                     	ballActive = true;
                     	System.out.println("Ball activated by player " + playerID);
