@@ -57,7 +57,7 @@ public class GameCanvas extends JComponent {
 		
 		digitalboard = new DigitalBoard();
 		this.scoreboard = scoreboard;
-		ball = new SoccerBall(Config.BALL_INITIAL_X, Config.BALL_INITIAL_Y, scoreboard);
+		ball = new SoccerBall(0, 0, scoreboard);
 
 		//BlueRod5 = new BlueTeam_Rod_5();
 		BlueRod3 = new BlueTeam_Rod_3();
