@@ -304,31 +304,29 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 			System.out.println("WTS Runnable created.");
 		}
 		
-	 public void run() {
-        try {
-            while (true) {       
-                ArrayList<Point> spritePositions = me.getSpritePositions();
+		public void run() {
+			try {
+				while (true) {       
+					ArrayList<Point> spritePositions = me.getSpritePositions();
 
-               	dataOut.writeUTF("SPRITES");
-                dataOut.writeInt(spritePositions.size());
-                
-				for (Point pos : spritePositions) {
+					dataOut.writeUTF("SPRITES");
+					dataOut.writeInt(spritePositions.size());
 					
-            		dataOut.writeDouble(pos.x);
-            		dataOut.writeDouble(pos.y);
-        		}
-        		dataOut.flush();
-        		
-            try {
-                Thread.sleep(25);
-            } catch (InterruptedException ex) {
-                System.out.println("InterruptedException from WTS run()");
-                }
-            }
-        } catch (IOException ex) {
-            System.out.println("IOException at WTS run()");
-        	}
+					for (Point pos : spritePositions) {
+						dataOut.writeDouble(pos.x);
+						dataOut.writeDouble(pos.y);
+					}
+					dataOut.flush();
+					
+					try {
+						Thread.sleep(25);
+					} catch (InterruptedException ex) {
+						System.out.println("InterruptedException from WTS run()");
+					}
+				}
+			} catch (IOException ex) {
+				System.out.println("IOException at WTS run()");
+			}
     	}	
-
 	}
 }

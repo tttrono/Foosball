@@ -22,12 +22,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-/** Draws the playing rod with 3 stick players for blue team.
- * 
- */
+/** Draws the playing rod with 3 stick players for blue team. */
 public class BlueTeam_Rod_3 implements DrawingObject {
-	ArrayList<DrawingObject> Rod_3;
 	
+	ArrayList<DrawingObject> Rod_3;
 	private double y;
 
 	public BlueTeam_Rod_3() {//initializes the rod with 3 stick players and sets their coordinates and color
@@ -37,10 +35,7 @@ public class BlueTeam_Rod_3 implements DrawingObject {
 	
 	@Override
 	public void draw(Graphics2D g2d) {// draws the rod
-			for (DrawingObject object: Rod_3) 
+		for (DrawingObject object: Rod_3) 
 			object.draw(g2d);
 	}
-	
-	
-
 }

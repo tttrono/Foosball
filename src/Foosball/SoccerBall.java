@@ -66,9 +66,6 @@ public class SoccerBall {
         }
     
 		diameter = sprite.getWidth();
-
-
-
     }
 
     /* Draws the ball object. */
@@ -187,11 +184,13 @@ public class SoccerBall {
 	public java.awt.Rectangle getArea() { 
         return new java.awt.Rectangle((int) x, (int) y, (int) diameter, (int) diameter);
     }
-   public double getDx(){ // returns the x velocity of the ball
-    return dx;
-   }
-   public double getDy(){ // returns the y velocity of the ball
-    return dy;
-   }
+	
+	public double getDx(){ // returns the x velocity of the ball
+		return dx;
+	}
+	
+	public double getDy(){ // returns the y velocity of the ball
+		return dy;
+	}
   
 }

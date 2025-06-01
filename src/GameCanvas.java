@@ -110,23 +110,20 @@ public class GameCanvas extends JComponent {
 		g2d.drawImage(backgroundImage, 0, 0, null);
 		
 		if (ball != null){
-		ball.draw(g2d);
+			ball.draw(g2d);
 		}
-
-
 	
 		if (me != null) {
             me.draw(g2d);
         }
+		
         if (opponent != null) {
             opponent.draw(g2d);
         }
 	
 		scoreboard.draw(g2d);
-		
-
-		
 	}
+	
 	public void createPlayers(int playerID) { //method that creates players depending on the playerID
 	     if (playerID == 1) {
             me = new Player(playerID);
@@ -136,6 +133,7 @@ public class GameCanvas extends JComponent {
             opponent = new Player(1);
         }
     }
+	
 	public Player getMePlayer() {// method that returns the player
 		return me;
 	}

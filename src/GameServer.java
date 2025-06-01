@@ -233,6 +233,7 @@ public class GameServer {
 							}
 						}
 					}
+					
 					if (ballActive && ball != null) {
                 		dataOut.writeDouble(ball.getX());
                 		dataOut.writeDouble(ball.getY());
@@ -249,6 +250,7 @@ public class GameServer {
             		} else {
                 		opponentSprites = p1Sprites;
             		}
+					
             		dataOut.writeInt(opponentSprites.size());
             		for (Point pos : opponentSprites) {
                 		dataOut.writeDouble(pos.x);
@@ -262,6 +264,7 @@ public class GameServer {
     					break; 
 					}				
 					dataOut.flush();
+					
 					try {
 						Thread.sleep(Config.THREAD_SLEEP);
 					} catch (InterruptedException ex) {

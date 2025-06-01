@@ -94,9 +94,9 @@ public class Player {
             rowCount = new int []{1, 2 ,3}; // order of sprites depending on playerID
         }
         else if (playerID == 2){
-        rowCount = new int [] {3, 2, 1};
-        
+			rowCount = new int [] {3, 2, 1};
         }
+		
         int spriteIndex = 0;
 
         for (int row = 0; row < rowCount.length; row++) {
@@ -109,6 +109,7 @@ public class Player {
             else if (rowCount[row] == 2) {
                 multiplier = 1.25;
             }
+			
             for (int i = 0; i < rowCount[row]; i++) { //sets which row
                 Point position = spritePositions.get(spriteIndex + i);
                 if ((dy  < 0 && position.y <= topBoundary) || (dy > 0 && position.y >= bottomBoundary)) {
@@ -116,33 +117,22 @@ public class Player {
                     break;
                 }
             }
+			
             if (canMoveRow) {
                 for (int i = 0; i < rowCount[row]; i++) {
                     Point position = spritePositions.get(spriteIndex + i);
                     position.y += dy * multiplier;
-    
-                
                 }
-            
             }
-
-
             spriteIndex += rowCount[row];
         }
-
-
-  
     }
-    
 
-    
     public int getSpriteWidth() { //returns the width of the sprite
-
         return spriteWidth;
     }
 
     public int getSpriteHeight() { //returns the height of the sprite
-
         return spriteHeight;
     }
 
@@ -158,7 +148,6 @@ public class Player {
     public boolean checkCollisionWithBall(SoccerBall ball) { 
         java.awt.Rectangle ballArea = ball.getArea();
 
-       
         for (Point spritePosition : spritePositions) {
         
             java.awt.Rectangle spriteBounds = new java.awt.Rectangle(
