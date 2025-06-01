@@ -1,29 +1,31 @@
-/**
-@author Justin Heindrich V De Guzman 227174
-@author Theiss Trono 248468
-@version May 20, 2025
-I have not discussed the Java language code in my program
-with anyone other than my instructor or the teaching assistants
-assigned to this course.
+/** 
+	@author Justin Heinrich de Guzman (227174), Theiss Thella Trono (248468)
+	@version May 20, 2025
+	
+	We have not discussed the Java language code in our program 
+	with anyone other than our instructor or the teaching assistants 
+	assigned to this course.
 
-I have not used Java language code obtained from another student,
-or any other unauthorized source, either modified or unmodified.
+	We have not used Java language code obtained from another student, 
+	or any other unauthorized source, either modified or unmodified.
 
-If any Java language code or documentation used in my program
-was obtained from another source, such as a textbook or website,
-that has been clearly noted with a proper citation in the comments
-of my program.
-**/
-import Foosball.SoccerBall;
-import Foosball.*;
-import Foosball.Teams.*;
-import Shapes.DrawingObject;
+	If any Java language code or documentation used in our program 
+	was obtained from another source, such as a textbook or website, 
+	that has been clearly noted with a proper citation in the comments 
+	of our program.
+*/
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import java.awt.image.BufferedImage;
+
+import Foosball.SoccerBall;
+import Foosball.*;
+import Foosball.Teams.*;
+import Shapes.DrawingObject;
 
 /** Create the drawing canvas for Foosball.
  * Integrates drawing objects for game board, player rods, soccerball and scoreboard.*/
@@ -71,7 +73,6 @@ public class GameCanvas extends JComponent {
    		opponent = new Player(2); 
 
 		renderBackground();
-		
 	}
 	
 	private void renderBackground() { //creates rendered background image to reduce the amount of work done by repainting
@@ -110,13 +111,14 @@ public class GameCanvas extends JComponent {
 		g2d.drawImage(backgroundImage, 0, 0, null);
 		
 		if (ball != null){
-			ball.draw(g2d);
+		ball.draw(g2d);
 		}
+
+
 	
 		if (me != null) {
             me.draw(g2d);
         }
-		
         if (opponent != null) {
             opponent.draw(g2d);
         }

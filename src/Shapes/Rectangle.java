@@ -28,8 +28,6 @@ public class Rectangle implements DrawingObject {
 		stroke = s;
 		color = c;
 	}
-
-
 	
 	@Override
 	public void draw(Graphics2D g2d) {
@@ -54,6 +52,5 @@ public class Rectangle implements DrawingObject {
 		}
 		
 		g2d.setTransform(reset);
-		
 	}
 }

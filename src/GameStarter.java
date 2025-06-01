@@ -1,4 +1,3 @@
-
 import Foosball.Config; 
 import Foosball.ScoreBoard;
 
@@ -22,7 +21,6 @@ import Foosball.ScoreBoard;
 */
  
 public class GameStarter {
-
 	public static void main(String[] args) {
 		ScoreBoard scoreboard = new ScoreBoard();
 		GameFrame playerFrame = new GameFrame(Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT, scoreboard);
@@ -32,5 +30,4 @@ public class GameStarter {
 
 		System.out.println("You are Player #" + playerFrame.getPlayerID());
 	}
-
 }
