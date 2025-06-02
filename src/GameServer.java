@@ -177,12 +177,13 @@ public class GameServer {
 				
                 	String command = dataIn.readUTF();
                 	if ("BALL".equals(command)) { // this string is sent from client and it is under if function ensure server handles the command properly
-						ball.setX(Config.BALL_INITIAL_X);
-						ball.setY(Config.BALL_INITIAL_Y);
-						ball.setVelocity(-4, -1);
-                    	ballActive = true;
-                    	System.out.println("Ball activated by player " + playerID);
-                    	
+						if (!ballActive) {
+							ball.setX(Config.BALL_INITIAL_X);
+							ball.setY(Config.BALL_INITIAL_Y);
+							ball.setVelocity(-4, -1);
+							ballActive = true;
+							System.out.println("Ball activated by player " + playerID);
+						}
                 	}else if ("SPRITES".equals(command)){// this string is sent from client and it is under if function ensure server handles the command properly
             		
 						int numSprites = dataIn.readInt();
