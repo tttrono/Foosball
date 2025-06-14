@@ -26,7 +26,7 @@ import javax.imageio.ImageIO;
 public class Config {
 	
 	public static final String SERVER_IP = "localhost"; 
-	public static final int SERVER_SOCKET = 54321;
+	public static final int SERVER_PORT = 5700;
 	
 	public static final int MAX_PLAYERS = 2;
 	public static final int MAX_SCORE = 5;

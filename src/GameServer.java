@@ -66,7 +66,7 @@ public class GameServer {
 		canvas = new GameCanvas(scoreBoard);
 
 		try {
-			ss = new ServerSocket(Config.SERVER_SOCKET);
+			ss = new ServerSocket(Config.SERVER_PORT);
 		} catch (IOException ex) {
 			System.out.println("IOException from GameServer constructor");
 			ex.printStackTrace();

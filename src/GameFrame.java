@@ -156,19 +156,26 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	public void connectToServer() {
 		try {
 			Scanner scanner = new Scanner (System.in);
-			System.out.print("Enter server IP address : ");
+			System.out.printf("\nEnter server IP address (default %s): ", Config.SERVER_IP);
         	String serverIP = scanner.nextLine();
-			System.out.print("Enter server port (default 12345): ");
+			System.out.printf("Enter server port (default %d): ", Config.SERVER_PORT);
         	String portNumber = scanner.nextLine();
-			int serverPort = 0000;
-			serverPort = Integer.parseInt(portNumber.trim());
+			int serverPort;
+			
+			if (serverIP.isEmpty()) serverIP = Config.SERVER_IP;
+			if (portNumber.isEmpty()) {
+				serverPort = Config.SERVER_PORT;
+			} else {
+				serverPort = Integer.parseInt(portNumber.trim());
+			}
 			socket = new Socket(serverIP, serverPort);
+			
 			BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 			DataInputStream in = new DataInputStream(bis);
 			BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
 			DataOutputStream out = new DataOutputStream(bos);
 			playerID = in.readInt();
-			System.out.println("You are player #" + playerID);
+			System.out.println("\nYou are player #" + playerID);
 			
 			rfsRunnable = new ReadFromServer(in);
 			wtsRunnable = new WriteToServer(out); 
