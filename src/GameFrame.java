@@ -1,5 +1,5 @@
 /** 
-	@author Justin Heinrich de Guzman (227174), Theiss Thella Trono (248468)
+	@author Justin Heindrich de Guzman (227174), Theiss Thella Trono (248468)
 	@version May 20, 2025
 	
 	We have not discussed the Java language code in our program 
@@ -277,7 +277,7 @@ public class GameFrame implements KeyListener, MouseWheelListener {
 	        }
 	        return spritePositions;
 		}
-	
+		
 		
 		public void waitForStartMsg() {
 			try {

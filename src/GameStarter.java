@@ -1,10 +1,8 @@
-import Foosball.Config; 
-import Foosball.ScoreBoard;
-
-/** Foosball is a two-player network game simulation of table soccer. 
- *  It runs on a digital game board w/ basic player rods and overhead scoreboard.
+/** 
+	Foosball is a two-player network game simulation of table soccer. 
+	It runs on a digital game board w/ player rods and overhead scoreboard.
  
-	@author Justin Heinrich de Guzman (227174), Theiss Thella Trono (248468)
+	@author Justin Heindrich de Guzman (227174), Theiss Thella Trono (248468)
 	@version May 20, 2025
 	
 	We have not discussed the Java language code in our program 
@@ -19,6 +17,9 @@ import Foosball.ScoreBoard;
 	that has been clearly noted with a proper citation in the comments 
 	of our program.
 */
+
+import Foosball.Config; 
+import Foosball.ScoreBoard;
  
 public class GameStarter {
 	public static void main(String[] args) {
