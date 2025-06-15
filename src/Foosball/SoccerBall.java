@@ -37,11 +37,10 @@ public class SoccerBall {
   
 	private int  diameter;
 
-    int boardTopY = 191;
-   
+    int boardTopY = 181;
     int boardBottomY = 599;
     int leftGoalBoundsX = 89;
-    int goalBoundsUpperY = 317;
+    int goalBoundsUpperY = 311;
     int goalBoundsLowerY = 474;
     int rightGoalBoundsX = 934;
     
